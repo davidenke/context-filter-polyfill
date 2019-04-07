@@ -1,62 +1,20 @@
 import { AvailableFilter } from './enums/available-filter.enum';
-import { Filter } from './types/filter.type';
+
+import { DRAWING_FUNCTIONS } from './globals/drawing-functions.global';
+import { SUPPORTED_FILTERS } from './globals/supported-filters.global';
+
+import { supportsContextFilters } from './utils/context.utils';
+import { applyFilter } from './utils/filter.utils';
 
 import { none } from './filters/none.filter';
+import { invert } from './filters/invert.filter';
 import { opacity } from './filters/opacity.filter';
 
-const SUPPORTED_FILTERS = new Map<string, Filter>();
+// add supported filters here by mapping the available
+// filter to the imported, implemented function
 SUPPORTED_FILTERS.set(AvailableFilter.None, none);
+SUPPORTED_FILTERS.set(AvailableFilter.Invert, invert);
 SUPPORTED_FILTERS.set(AvailableFilter.Opacity, opacity);
-
-const DRAWING_FUNCTIONS = [
-  'arc',
-  'arcTo',
-  'bezierCurveTo',
-  'clearRect',
-  'clip',
-  'closePath',
-  'createPattern',
-  'drawImage',
-  'fill',
-  'fillRect',
-  'fillText',
-  'lineTo',
-  'quadraticCurveTo',
-  'rect',
-  'stroke',
-  'strokeRect',
-  'strokeText'
-];
-
-// feature detection
-const supportsContextFilters = () => 'filter' in CanvasRenderingContext2D.prototype;
-
-// filter application
-const applyFilter = (context: CanvasRenderingContext2D, canvasFilters: CanvasFilters['filter']) => {
-  // read current canvas content
-  // TODO: we need the current path only instead
-  const input = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
-
-  // parse applied filters and call implementations
-  const filtered = canvasFilters
-    // filters are separated by whitespace
-    .split(' ')
-    // filters may have options within appended brackets
-    .map(filter => filter.match(/(\w+)\((.*)\)/si).slice(1, 3) as [AvailableFilter, string])
-    // apply all filters
-    .reduce((raw, [filter, options]) => {
-      // do we have a appropriate filter implementation?
-      if (SUPPORTED_FILTERS.has(filter)) {
-        // then filter and return the result
-        return SUPPORTED_FILTERS.get(filter)(raw, options);
-      }
-      // nope, so skip this
-      return raw;
-    }, input);
-
-  // set back the filtered image data
-  context.putImageData(filtered, 0, 0);
-};
 
 // polyfill if the feature is not implemented
 if (!supportsContextFilters()) {
@@ -80,7 +38,7 @@ if (!supportsContextFilters()) {
       original.apply(this, args);
 
       // apply filter
-      applyFilter(this, this.filter);
+      applyFilter(this, this['__filter']);
     };
   });
   CanvasRenderingContext2D.prototype;

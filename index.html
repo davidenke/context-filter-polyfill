@@ -11,15 +11,21 @@
     <script>
       const canvas = document.querySelector('canvas');
       const context = canvas.getContext('2d');
+
+      // 1st step: single filter - blurred text
       context.filter = 'blur(4px)';
       context.font = '48px serif';
       context.fillText('Hello world', 50, 80);
 
-      context.filter = 'invert(100%) opacity(.5)';
+      // 2nd step: multiple filters - inverted, opaque and rotated rectangle
+      context.filter = 'invert(.75) opacity(.5)';
       context.fillStyle = '#f00';
       context.translate(55, 55);
       context.rotate(45 * Math.PI / 180);
       context.fillRect(-15, -15, 30, 30);
+
+      // 3rd step: n/a - none
+
     </script>
 
   </body>

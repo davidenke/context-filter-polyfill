@@ -1,1 +1,1 @@
-export type Filter = (data: ImageData, ...options: any[]) => ImageData;
+export type Filter = (imageData: ImageData, ...options: any[]) => ImageData;
