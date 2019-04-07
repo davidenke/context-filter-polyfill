@@ -1,12 +1,12 @@
 {
   "name": "context-filter-polyfill",
   "version": "0.0.1",
-  "description": "Polyfills `CanvasRenderingContext2d.filter` capability of adopting CSS3 filters to canvas contexts.",
+  "description": "Polyfills `CanvasRenderingContext2d.filter` capability of adopting CSS3 filters to canvas contexts at least partially.",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": ".git"
+    "url": "git@github.com:davidenke/context-filter-polyfill.git"
   },
   "author": {
     "name": "Zalari GmbH",
