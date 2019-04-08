@@ -6,7 +6,6 @@ export const applyFilter = (context: CanvasRenderingContext2D, canvasFilters: Ca
   // read current canvas content
   // TODO: we need the current path only instead
   const input = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
-  console.log(context)
 
   // parse applied filters and call implementations
   const filtered = canvasFilters
@@ -19,7 +18,7 @@ export const applyFilter = (context: CanvasRenderingContext2D, canvasFilters: Ca
       // do we have a appropriate filter implementation?
       if (SUPPORTED_FILTERS.has(filter)) {
         // then filter and return the result
-        return SUPPORTED_FILTERS.get(filter).call(context, raw, options);
+        return SUPPORTED_FILTERS.get(filter)(raw, options);
       }
       // nope, skip this
       return raw;

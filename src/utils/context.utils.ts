@@ -2,14 +2,15 @@
 export const supportsContextFilters = () => 'filter' in CanvasRenderingContext2D.prototype;
 
 // creates an offscreen context matching the origin
-export const createOffscreenContext = (origin: CanvasRenderingContext2D): CanvasRenderingContext2D => {
+export const createOffscreenContext = (original: CanvasRenderingContext2D): CanvasRenderingContext2D => {
+  // prepare a non-patched canvas
   const canvas = document.createElement('canvas') as HTMLCanvasElement;
-  const context = canvas.getContext.call(canvas, '2d', undefined, true);
+  canvas.height = original.canvas.height;
+  canvas.width = original.canvas.width;
 
-  // apply original dimensions and transforms
-  canvas.height = origin.canvas.height;
-  canvas.width = origin.canvas.width;
-  context.setTransform(origin.getTransform());
+  // we won't patch the mirror as it will lead to a loop
+  Object.defineProperty(canvas, '__skipFilterPatch', { value: true });
 
-  return context;
+  // get context
+  return canvas.getContext('2d');
 };

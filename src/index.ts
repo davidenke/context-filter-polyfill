@@ -20,25 +20,9 @@ SUPPORTED_FILTERS.set(AvailableFilter.Opacity, opacity);
 // polyfill if the feature is not implemented
 if (!supportsContextFilters()) {
   // add filter property
-  Object.defineProperty(CanvasRenderingContext2D.prototype, 'filter', { value: AvailableFilter.None });
-
-  // we use a separate offscreen canvas to mirror the draw of the current
-  // path which is reset after every draw but must be initialized first
-  const original = HTMLCanvasElement.prototype.getContext;
-  HTMLCanvasElement.prototype.getContext = function (contextId: string, contextAttributes?: {}, doNotPatch = false) {
-    // call original constructor
-    const context = original.call(this, contextId, contextAttributes);
-
-    // create the mirror
-    if (!doNotPatch) {
-      Object.defineProperties(context, {
-        __filterPatched: { writable: false, value: true },
-        __currentPathMirror: { writable: true, value: createOffscreenContext(context) }
-      });
-    }
-
-    return context;
-  };
+  Object.defineProperty(HTMLCanvasElement.prototype, '__skipFilterPatch', { writable: true, value: false });
+  Object.defineProperty(HTMLCanvasElement.prototype, '__currentPathMirror', { writable: true, value: undefined });
+  Object.defineProperty(CanvasRenderingContext2D.prototype, 'filter', { writable: true, value: AvailableFilter.None });
 
   // we monkey-patch all context members to
   // apply everything to the current mirror
@@ -52,39 +36,72 @@ if (!supportsContextFilters()) {
 
       // overload setter
       if (descriptor.set) {
-        const original = descriptor.set;
+        const original = descriptor;
         Object.defineProperty(CanvasRenderingContext2D.prototype, member, {
-          ...descriptor,
-          set: function(value: any) {
-            // call original implementation
-            original.call(this, value);
-
-            // do we have a mirror?
-            if (this.__filterPatched) {
-              // apply to mirror
-              this.__currentPathMirror[member] = value;
+          get: function () {
+            if (this.canvas.__skipFilterPatch) {
+              return original.get.call(this);
             }
+
+            return this.canvas.__currentPathMirror[member];
+          },
+          set: function (value: any) {
+            // do not apply on mirror
+            if (this.canvas.__skipFilterPatch) {
+              return original.set.call(this, value);
+            }
+
+            // prepare mirror context if missing
+            if (!this.canvas.__currentPathMirror) {
+              this.canvas.__currentPathMirror = createOffscreenContext(this);
+            }
+
+            // apply to mirror
+            this.canvas.__currentPathMirror[member] = value;
           }
         });
       }
+
       // monkey-patch method
       else if (descriptor.value && typeof descriptor.value === 'function') {
         const original = descriptor.value;
         Object.defineProperty(CanvasRenderingContext2D.prototype, member, {
           value: function (...args) {
-            // call original drawing function
-            original.apply(this, args);
-
-            // do we have a mirror?
-            if (this.__filterPatched) {
-              // apply to mirror
-              this.__currentPathMirror[member].apply(this, args);
-
-              if (DRAWING_FUNCTIONS.includes(member)) {
-                // draw, apply and then reset current path mirror
-                applyFilter(this.__currentPathMirror, this.__filter);
-              }
+            // do not apply on mirror
+            if (this.canvas.__skipFilterPatch) {
+              return original.call(this, ...args);
             }
+
+            // prepare mirror context if missing
+            if (!this.canvas.__currentPathMirror) {
+              this.canvas.__currentPathMirror = createOffscreenContext(this);
+            }
+
+            // apply to mirror
+            const result = this.canvas.__currentPathMirror[member](...args);
+
+            // draw functions may get filters applied and copied back to original
+            if (DRAWING_FUNCTIONS.includes(member)) {
+              // apply the filter
+              applyFilter(this.canvas.__currentPathMirror, this.filter);
+
+              // disable patch and reset transform temporary
+              this.canvas.__skipFilterPatch = true;
+              const originalTransform = this.getTransform();
+              this.setTransform(1, 0, 0, 1, 0, 0);
+
+              // draw mirror back
+              this.drawImage(this.canvas.__currentPathMirror.canvas, 0, 0);
+
+              // set back transforms and re-enable patch
+              this.setTransform(originalTransform);
+              this.canvas.__skipFilterPatch = false;
+
+              // reset the mirror for next draw cycle
+              this.canvas.__currentPathMirror = createOffscreenContext(this);
+            }
+
+            return result;
           }
         });
       }

@@ -1,6 +1,7 @@
 export const PROTECTED_KEYS = [
-  '__filterPatched',
+  '__skipFilterPatch',
   '__currentPathMirror',
   'canvas',
-  'filter'
+  'filter',
+  'getImageData'
 ];
