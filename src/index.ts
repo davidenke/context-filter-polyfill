@@ -8,14 +8,12 @@ import { createOffscreenContext, supportsContextFilters } from './utils/context.
 import { applyFilter } from './utils/filter.utils';
 
 import { none } from './filters/none.filter';
-import { blur } from './filters/blur.filter';
 import { invert } from './filters/invert.filter';
 import { opacity } from './filters/opacity.filter';
 
 // add supported filters here by mapping the available
 // filter to the imported, implemented function
 SUPPORTED_FILTERS.set(AvailableFilter.None, none);
-SUPPORTED_FILTERS.set(AvailableFilter.Blur, blur);
 SUPPORTED_FILTERS.set(AvailableFilter.Invert, invert);
 SUPPORTED_FILTERS.set(AvailableFilter.Opacity, opacity);
 

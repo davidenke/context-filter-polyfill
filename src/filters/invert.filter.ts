@@ -1,10 +1,8 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const invert: Filter = (context, invert = '0') => {
+export const invert: Filter = (imageData, invert = '0') => {
   const amount = normalizeNumberPercentage(invert);
-  const { width, height } = context.canvas;
-  const imageData = context.getImageData(0, 0, width, height);
   const { data } = imageData;
   const { length } = data;
   console.log('invert', amount)
@@ -21,6 +19,5 @@ export const invert: Filter = (context, invert = '0') => {
     i += 4;
   }
 
-  // set back the image data
-  context.putImageData(imageData, 0, 0);
+  return imageData;
 };

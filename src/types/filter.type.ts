@@ -1,1 +1,1 @@
-export type Filter = (context: CanvasRenderingContext2D, ...options: any[]) => void;
+export type Filter = (imageData: ImageData, ...options: any[]) => ImageData;
