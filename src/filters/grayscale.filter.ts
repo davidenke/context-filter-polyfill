@@ -10,6 +10,11 @@ export const grayscale: Filter = (imageData, grayscale = '0') => {
     return imageData;
   }
 
+  // a maximum of 100%
+  if (amount >= 1) {
+    amount = 1;
+  }
+
   const { data } = imageData;
   const { length } = data;
 

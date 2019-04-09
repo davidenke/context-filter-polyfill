@@ -2,12 +2,17 @@ import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const invert: Filter = (imageData, invert = '0') => {
-  const amount = normalizeNumberPercentage(invert);
+  let amount = normalizeNumberPercentage(invert);
   console.log('invert', amount)
 
   // do not manipulate without proper amount
   if (amount <= 0) {
     return imageData;
+  }
+
+  // a maximum of 100%
+  if (amount >= 1) {
+    amount = 1;
   }
 
   const { data } = imageData;
