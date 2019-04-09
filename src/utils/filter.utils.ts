@@ -12,7 +12,7 @@ export const applyFilter = (context: CanvasRenderingContext2D, canvasFilters: Ca
     // filters are separated by whitespace
     .split(' ')
     // filters may have options within appended brackets
-    .map(filter => filter.match(/(\w+)\((.*)\)/si).slice(1, 3) as [AvailableFilter, string])
+    .map(filter => filter.match(/(\w+)(?:\((.*)\))?/si).slice(1, 3) as [AvailableFilter, string])
     // apply all filters
     .reduce((raw, [filter, options]) => {
       // do we have a appropriate filter implementation?
