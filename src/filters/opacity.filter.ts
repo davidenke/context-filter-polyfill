@@ -3,9 +3,15 @@ import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const opacity: Filter = (imageData, opacity = '1') => {
   const amount = normalizeNumberPercentage(opacity);
+  console.log('opacity', amount)
+
+  // do not manipulate without proper amount
+  if (amount < 0 || amount >= 1) {
+    return imageData;
+  }
+
   const { data } = imageData;
   const { length } = data;
-  console.log('opacity', amount)
 
   // in rgba world, the 4th entry is the alpha channel
   for (let i = 3; i < length;) {

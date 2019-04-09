@@ -5,6 +5,11 @@ export const blur: Filter = (imageData, radius = '0') => {
   const amount = normalizeLength(radius);
   console.log('blur', amount);
 
+  // do not manipulate without proper amount
+  if (amount < 1) {
+    return imageData;
+  }
+
   const { data, height, width } = imageData;
 
   // http://www.quasimondo.com/BoxBlurForCanvas/FastBlur.js

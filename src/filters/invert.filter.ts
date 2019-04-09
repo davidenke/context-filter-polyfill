@@ -3,9 +3,15 @@ import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const invert: Filter = (imageData, invert = '0') => {
   const amount = normalizeNumberPercentage(invert);
+  console.log('invert', amount)
+
+  // do not manipulate without proper amount
+  if (amount <= 0) {
+    return imageData;
+  }
+
   const { data } = imageData;
   const { length } = data;
-  console.log('invert', amount)
 
   // in rgba world, every
   // n * 4 is red,
