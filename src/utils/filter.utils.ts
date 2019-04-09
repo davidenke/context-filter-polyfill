@@ -33,3 +33,9 @@ export const normalizeNumberPercentage = (percentage: string): number => {
 
   return normalized;
 };
+
+// TODO: we're assuming pixel based values for now only, so adopt to other lengths as well
+// https://developer.mozilla.org/en-US/docs/Web/CSS/length
+export const normalizeLength = (length: string): number => {
+  return parseFloat(length);
+};
