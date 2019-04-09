@@ -9,6 +9,7 @@ import { applyFilter } from './utils/filter.utils';
 
 import { none } from './filters/none.filter';
 import { blur } from './filters/blur.filter';
+import { grayscale } from './filters/grayscale.filter';
 import { invert } from './filters/invert.filter';
 import { opacity } from './filters/opacity.filter';
 
@@ -16,6 +17,7 @@ import { opacity } from './filters/opacity.filter';
 // filter to the imported, implemented function
 SUPPORTED_FILTERS.set(AvailableFilter.None, none);
 SUPPORTED_FILTERS.set(AvailableFilter.Blur, blur);
+SUPPORTED_FILTERS.set(AvailableFilter.Grayscale, grayscale);
 SUPPORTED_FILTERS.set(AvailableFilter.Invert, invert);
 SUPPORTED_FILTERS.set(AvailableFilter.Opacity, opacity);
 

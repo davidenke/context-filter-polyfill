@@ -94,11 +94,11 @@
 
       <section>
         <canvas class="grayscale" width="100px" height="134px"></canvas>
-        <pre>grayscale(100%)</pre>
+        <pre>grayscale(50%)</pre>
         <script>
           const imgGrayscale = new Image();
           const ctxGrayscale = document.querySelector('canvas.grayscale').getContext('2d');
-          ctxGrayscale.filter = 'grayscale(100%)';
+          ctxGrayscale.filter = 'grayscale(50%)';
           imgGrayscale.onload = () => ctxGrayscale.drawImage(imgGrayscale, 0, 0);
           imgGrayscale.src = window.testSrc;
         </script>
