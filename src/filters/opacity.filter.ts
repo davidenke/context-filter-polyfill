@@ -19,9 +19,8 @@ export const opacity: Filter = (imageData, opacity = '1') => {
   const { length } = data;
 
   // in rgba world, the 4th entry is the alpha channel
-  for (let i = 3; i < length;) {
+  for (let i = 3; i < length; i += 4) {
     data[i] *= amount;
-    i += 4;
   }
 
   return imageData;
