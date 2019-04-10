@@ -81,11 +81,11 @@
       </section>
 
       <section>
-        <canvas class="dropShadow" width="100px" height="134px"></canvas>
+        <canvas class="drop-shadow" width="100px" height="134px"></canvas>
         <pre>drop-shadow(5px 5px 10px red)</pre>
         <script>
           const imgDropShadow = new Image();
-          const ctxDropShadow = document.querySelector('canvas.dropShadow').getContext('2d');
+          const ctxDropShadow = document.querySelector('canvas.drop-shadow').getContext('2d');
           ctxDropShadow.filter = 'drop-shadow(3px 3px 5px red)';
           imgDropShadow.onload = () => ctxDropShadow.drawImage(imgDropShadow, 10, 10, 80, 110);
           imgDropShadow.src = window.testSrc;
@@ -105,11 +105,11 @@
       </section>
 
       <section>
-        <canvas class="hueRotate" width="100px" height="134px"></canvas>
+        <canvas class="hue-rotate" width="100px" height="134px"></canvas>
         <pre>hue-rotate(180deg)</pre>
         <script>
           const imgHueRotate = new Image();
-          const ctxHueRotate = document.querySelector('canvas.hueRotate').getContext('2d');
+          const ctxHueRotate = document.querySelector('canvas.hue-rotate').getContext('2d');
           ctxHueRotate.filter = 'hue-rotate(180deg)';
           imgHueRotate.onload = () => ctxHueRotate.drawImage(imgHueRotate, 0, 0);
           imgHueRotate.src = window.testSrc;

@@ -12,6 +12,7 @@ import { blur } from './filters/blur.filter';
 import { brightness } from './filters/brightness.filter';
 import { contrast } from './filters/contrast.filter';
 import { grayscale } from './filters/grayscale.filter';
+import { hueRotate } from './filters/hue-rotate.filter';
 import { invert } from './filters/invert.filter';
 import { opacity } from './filters/opacity.filter';
 
@@ -22,6 +23,7 @@ SUPPORTED_FILTERS.set(AvailableFilter.Blur, blur);
 SUPPORTED_FILTERS.set(AvailableFilter.Brightness, brightness);
 SUPPORTED_FILTERS.set(AvailableFilter.Contrast, contrast);
 SUPPORTED_FILTERS.set(AvailableFilter.Grayscale, grayscale);
+SUPPORTED_FILTERS.set(AvailableFilter.HueRotate, hueRotate);
 SUPPORTED_FILTERS.set(AvailableFilter.Invert, invert);
 SUPPORTED_FILTERS.set(AvailableFilter.Opacity, opacity);
 
