@@ -15,6 +15,7 @@ import { grayscale } from './filters/grayscale.filter';
 import { hueRotate } from './filters/hue-rotate.filter';
 import { invert } from './filters/invert.filter';
 import { opacity } from './filters/opacity.filter';
+import { saturate } from './filters/saturate.filter';
 import { sepia } from './filters/sepia.filter';
 
 // add supported filters here by mapping the available
@@ -27,6 +28,7 @@ SUPPORTED_FILTERS.set(AvailableFilter.Grayscale, grayscale);
 SUPPORTED_FILTERS.set(AvailableFilter.HueRotate, hueRotate);
 SUPPORTED_FILTERS.set(AvailableFilter.Invert, invert);
 SUPPORTED_FILTERS.set(AvailableFilter.Opacity, opacity);
+SUPPORTED_FILTERS.set(AvailableFilter.Saturate, saturate);
 SUPPORTED_FILTERS.set(AvailableFilter.Sepia, sepia);
 
 // polyfill if the feature is not implemented
