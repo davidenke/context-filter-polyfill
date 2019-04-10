@@ -17,8 +17,8 @@
   "private": true,
   "scripts": {
     "lint": "tslint --config tslint.json --project tsconfig.json",
-    "test": "jest --verbose -c jest.config.unit.js",
-    "test:ci": "npm run test:unit -- --runInBand",
+    "test": "jest --watch",
+    "test:ci": "npm test -- --runInBand",
     "build": "rollup --config --environment NODE_ENV:production",
     "start:build": "rollup --config --environment NODE_ENV:development --watch",
     "start:server": "http-server .",
@@ -30,12 +30,22 @@
     "@types/puppeteer": "1.12.3",
     "http-server": "0.11.1",
     "jest": "24.7.1",
+    "jest-canvas-mock": "2.0.0-beta.1",
     "jest-cli": "24.7.1",
     "npm-run-all": "4.1.5",
     "puppeteer": "1.14.0",
     "rollup": "1.9.0",
     "rollup-plugin-typescript2": "0.20.1",
+    "ts-jest": "24.0.2",
     "tslint": "5.15.0",
     "typescript": "3.4.2"
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-canvas-mock"
+    ],
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    }
   }
 }

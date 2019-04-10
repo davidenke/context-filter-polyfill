@@ -43,6 +43,28 @@ export const normalizeNumberPercentage = (percentage: string): number => {
   return normalized;
 };
 
+// normalizes angles to a float between 0 and 1.
+// https://developer.mozilla.org/en-US/docs/Web/CSS/angle#Units
+export const normalizeAngle = (angle: string): number => {
+  let normalized = parseFloat(angle);
+  const unit = angle.slice(normalized.toString().length);
+
+  // check for units and align accordingly
+  switch (unit) {
+    case 'deg':
+      normalized /= 360;
+      break;
+    case 'grad':
+      normalized /= 400;
+      break;
+    case 'rad':
+      normalized /= 2 * Math.PI;
+      break;
+  }
+
+  return normalized;
+};
+
 // TODO: we're assuming pixel based values for now only, so adopt to other lengths as well
 // https://developer.mozilla.org/en-US/docs/Web/CSS/length
 export const normalizeLength = (length: string): number => {
