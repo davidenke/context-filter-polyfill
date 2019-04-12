@@ -10,23 +10,26 @@ export const saturate: Filter = (imageData, saturation = '0') => {
     return imageData;
   }
 
-  const { data } = imageData;
-  const { length } = data;
-  const adjust = -saturation;
+  const { data, height, width } = imageData;
 
-  // in rgba world, every
-  // n * 4 is red,
-  // n * 4 + 1 green and
-  // n * 4 + 2 is blue
-  // the fourth can be skipped as it's the alpha channel
-  // https://github.com/fabricjs/fabric.js/blob/master/src/filters/saturate_filter.class.js
-  // TODO: improve the filter as it is does not match
-  // TODO: check this: https://github.com/keithwhor/canvasBlurRect/blob/master/canvas_blur_rect.js#L10
-  for (let i = 0; i < length; i += 4) {
-    const max = Math.max(data[i + 0], data[i + 1], data[i + 2]);
-    data[i + 0] += max !== data[i + 0] ? (max - data[i]) * adjust : 0;
-    data[i + 1] += max !== data[i + 1] ? (max - data[i + 1]) * adjust : 0;
-    data[i + 2] += max !== data[i + 2] ? (max - data[i + 2]) * adjust : 0;
+  const lumR = (1 - amount) * 0.3086;
+  const lumG = (1 - amount) * 0.6094;
+  const lumB = (1 - amount) * 0.0820;
+  const shiftW = width << 2;
+
+  for (let j = 0; j < height; j++) {
+    const offset = j * shiftW;
+    for (let i = 0; i < width; i++) {
+      const pos = offset + (i << 2);
+      const r = data[pos + 0];
+      const g = data[pos + 1];
+      const b = data[pos + 2];
+
+      data[pos + 0] = ((lumR + amount) * r) + (lumG * g) + (lumB * b);
+      data[pos + 1] = (lumR * r) + ((lumG + amount) * g) + (lumB * b);
+      data[pos + 2] = (lumR * r) + (lumG * g) + ((lumB + amount) * b);
+    }
+
   }
 
   return imageData;
