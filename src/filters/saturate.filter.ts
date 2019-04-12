@@ -11,10 +11,9 @@ export const saturate: Filter = (imageData, saturation = '0') => {
   }
 
   const { data, height, width } = imageData;
-
-  const lumR = (1 - amount) * 0.3086;
-  const lumG = (1 - amount) * 0.6094;
-  const lumB = (1 - amount) * 0.0820;
+  const lumR = (1 - amount) * .3086;
+  const lumG = (1 - amount) * .6094;
+  const lumB = (1 - amount) * .0820;
   const shiftW = width << 2;
 
   for (let j = 0; j < height; j++) {
