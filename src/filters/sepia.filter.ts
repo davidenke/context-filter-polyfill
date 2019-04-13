@@ -1,13 +1,13 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const sepia: Filter = (imageData, sepia = '0') => {
+export const sepia: Filter = (context, sepia = '0') => {
   let amount = normalizeNumberPercentage(sepia);
   console.log('sepia', amount)
 
   // do not manipulate without proper amount
   if (amount <= 0) {
-    return imageData;
+    return context;
   }
 
   // a maximum of 100%
@@ -15,6 +15,8 @@ export const sepia: Filter = (imageData, sepia = '0') => {
     amount = 1;
   }
 
+  const { height, width } = context.canvas;
+  const imageData = context.getImageData(0, 0, width, height);
   const { data } = imageData;
   const { length } = data;
 
@@ -33,5 +35,9 @@ export const sepia: Filter = (imageData, sepia = '0') => {
     data[i + 2] = (0.272 * r + 0.534 * g + 0.131 * b) * amount + b * (1 - amount);
   }
 
-  return imageData;
+  // set back image data to context
+  context.putImageData(imageData, 0, 0);
+
+  // return the context itself
+  return context;
 };

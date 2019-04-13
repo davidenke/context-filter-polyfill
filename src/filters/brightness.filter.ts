@@ -1,15 +1,17 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const brightness: Filter = (imageData, brightness = '0') => {
+export const brightness: Filter = (context, brightness = '0') => {
   let amount = normalizeNumberPercentage(brightness);
   console.log('brightness', amount)
 
   // do not manipulate without proper amount
   if (amount <= 1) {
-    return imageData;
+    return context;
   }
 
+  const { height, width } = context.canvas;
+  const imageData = context.getImageData(0, 0, width, height);
   const { data } = imageData;
   const { length } = data;
 
@@ -24,5 +26,9 @@ export const brightness: Filter = (imageData, brightness = '0') => {
     data[i + 2] *= amount;
   }
 
-  return imageData;
+  // set back image data to context
+  context.putImageData(imageData, 0, 0);
+
+  // return the context itself
+  return context;
 };

@@ -1,16 +1,18 @@
 import { Filter } from '../types/filter.type';
 import { normalizeLength } from '../utils/filter.utils';
 
-export const blur: Filter = (imageData, radius = '0') => {
+export const blur: Filter = (context, radius = '0') => {
   const amount = normalizeLength(radius);
   console.log('blur', amount);
 
   // do not manipulate without proper amount
   if (amount < 1) {
-    return imageData;
+    return context;
   }
 
-  const { data, height, width } = imageData;
+  const { height, width } = context.canvas;
+  const imageData = context.getImageData(0, 0, width, height);
+  const { data } = imageData;
 
   // http://www.quasimondo.com/BoxBlurForCanvas/FastBlur.js
   const wm = width - 1;
@@ -121,5 +123,9 @@ export const blur: Filter = (imageData, radius = '0') => {
     }
   }
 
-  return imageData;
+  // set back image data to context
+  context.putImageData(imageData, 0, 0);
+
+  // return the context itself
+  return context;
 };

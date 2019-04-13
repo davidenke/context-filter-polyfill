@@ -1,16 +1,18 @@
 import { Filter } from '../types/filter.type';
 import { normalizeAngle } from '../utils/filter.utils';
 
-export const hueRotate: Filter = (imageData, rotate = '0deg') => {
+export const hueRotate: Filter = (context, rotate = '0deg') => {
   let amount = normalizeAngle(rotate);
   console.log('hue-rotate', amount);
 
   // do not manipulate without proper amount
   if (amount <= 0) {
-    return imageData;
+    return context;
   }
 
-  const { data, height, width } = imageData;
+  const { height, width } = context.canvas;
+  const imageData = context.getImageData(0, 0, width, height);
+  const { data } = imageData;
 
   // in rgba world, every
   // n * 4 is red,
@@ -78,5 +80,9 @@ export const hueRotate: Filter = (imageData, rotate = '0deg') => {
     }
   }
 
-  return imageData;
+  // set back image data to context
+  context.putImageData(imageData, 0, 0);
+
+  // return the context itself
+  return context;
 };

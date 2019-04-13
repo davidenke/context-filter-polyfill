@@ -1,16 +1,18 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const saturate: Filter = (imageData, saturation = '0') => {
+export const saturate: Filter = (context, saturation = '0') => {
   let amount = normalizeNumberPercentage(saturation);
   console.log('saturate', amount);
 
   // do not manipulate without proper amount
   if (amount <= 0) {
-    return imageData;
+    return context;
   }
 
-  const { data, height, width } = imageData;
+  const { height, width } = context.canvas;
+  const imageData = context.getImageData(0, 0, width, height);
+  const { data } = imageData;
   const lumR = (1 - amount) * .3086;
   const lumG = (1 - amount) * .6094;
   const lumB = (1 - amount) * .0820;
@@ -31,5 +33,9 @@ export const saturate: Filter = (imageData, saturation = '0') => {
 
   }
 
-  return imageData;
+  // set back image data to context
+  context.putImageData(imageData, 0, 0);
+
+  // return the context itself
+  return context;
 };

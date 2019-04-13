@@ -1,16 +1,17 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const contrast: Filter = (imageData, brightness = '0') => {
+export const contrast: Filter = (context, brightness = '0') => {
   let amount = normalizeNumberPercentage(brightness);
   console.log('contrast', amount)
 
   // do not manipulate without proper amount
   if (amount <= 1) {
-    return imageData;
+    return context;
   }
 
-  const { data } = imageData;
+  const { height, width } = context.canvas;
+  const { data } = context.getImageData(0, 0, width, height);
   const { length } = data;
 
   // in rgba world, every
@@ -25,5 +26,5 @@ export const contrast: Filter = (imageData, brightness = '0') => {
     data[i + 2] = ((((data[i + 2] / 255) - .5) * amount) + .5) * 255;
   }
 
-  return imageData;
+  return context;
 };

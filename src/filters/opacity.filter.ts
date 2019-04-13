@@ -1,13 +1,13 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const opacity: Filter = (imageData, opacity = '1') => {
+export const opacity: Filter = (context, opacity = '1') => {
   let amount = normalizeNumberPercentage(opacity);
   console.log('opacity', amount)
 
   // do not manipulate without proper amount
   if (amount < 0) {
-    return imageData;
+    return context;
   }
 
   // a maximum of 100%
@@ -15,6 +15,8 @@ export const opacity: Filter = (imageData, opacity = '1') => {
     amount = 1;
   }
 
+  const { height, width } = context.canvas;
+  const imageData = context.getImageData(0, 0, width, height);
   const { data } = imageData;
   const { length } = data;
 
@@ -23,5 +25,9 @@ export const opacity: Filter = (imageData, opacity = '1') => {
     data[i] *= amount;
   }
 
-  return imageData;
+  // set back image data to context
+  context.putImageData(imageData, 0, 0);
+
+  // return the context itself
+  return context;
 };
