@@ -1,0 +1,2 @@
+# keep empty just to allow npm releases from `.gitignore`d files
+# https://docs.travis-ci.com/user/deployment/npm/#note-on-gitignore

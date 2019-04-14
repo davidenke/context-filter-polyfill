@@ -2,6 +2,11 @@ language: node_js
 
 cache: npm
 
+# install dependencies
+install:
+  - npm install --silent
+
+# the jobs for building and deploying
 jobs:
   include:
     - stage: lint
@@ -22,22 +27,27 @@ jobs:
         - cp -R dist/* ./gh-pages/dist
         - cp index.html README.md ./gh-pages
 
-    - stage: deploy
+    - stage: github pages
       if: branch = master
+      script: echo "deploying github pages"
       provider: pages
       skip-cleanup: true
       keep-history: true
       local-dir: gh-pages
-      github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+      github-token: $GITHUB_TOKEN
       on:
         branch: master
 
     - stage: npm release
-      script: echo "Deploying to npm ..."
+      if: branch = master
+      script: echo "releasing to npm"
       deploy:
         provider: npm
         skip-cleanup: true
+        keep-history: true
+        local-dir: dist
         email: $NPM_EMAIL
         api_key: $NPM_API_KEY
         on:
+          branch: master
           tags: true
