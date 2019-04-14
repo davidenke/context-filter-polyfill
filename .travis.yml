@@ -40,6 +40,8 @@ jobs:
       deploy:
         provider: npm
         skip-cleanup: true
+        keep-history: true
+        local-dir: dist
         email: $NPM_EMAIL
         api_key: $NPM_API_KEY
         on:
