@@ -41,12 +41,11 @@ jobs:
     - stage: npm release
       if: branch = master
       script: echo "releasing to npm"
-      deploy:
-        provider: npm
-        skip-cleanup: true
-        keep-history: true
-        local-dir: dist
-        email: $NPM_EMAIL
-        api_key: $NPM_API_KEY
-        on:
-          tags: true
+      provider: npm
+      skip-cleanup: true
+      keep-history: true
+      local-dir: dist
+      email: $NPM_EMAIL
+      api_key: $NPM_API_KEY
+      on:
+        tags: true
