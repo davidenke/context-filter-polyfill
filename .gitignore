@@ -3,6 +3,10 @@
 **/.versions/
 **/node_modules/
 
+# test reports
+**/coverage/
+**/reports/
+
 # build
 **/build/
 **/dist/

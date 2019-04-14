@@ -17,8 +17,9 @@
   "private": true,
   "scripts": {
     "lint": "tslint --config tslint.json --project tsconfig.json",
-    "test": "jest --watch",
-    "test:ci": "npm test -- --runInBand",
+    "test": "jest --coverage",
+    "test:watch": "npm test -- --watch",
+    "test:ci": "npm test -- --ci --runInBand --reporters=default --reporters=jest-junit",
     "build": "rollup --config --environment NODE_ENV:production",
     "start:build": "rollup --config --environment NODE_ENV:development --watch",
     "start:server": "http-server .",
@@ -32,6 +33,7 @@
     "jest": "24.7.1",
     "jest-canvas-mock": "2.0.0-beta.1",
     "jest-cli": "24.7.1",
+    "jest-junit": "6.3.0",
     "npm-run-all": "4.1.5",
     "puppeteer": "1.14.0",
     "rollup": "1.9.0",
@@ -46,6 +48,15 @@
     ],
     "transform": {
       ".(ts|tsx)": "ts-jest"
-    }
+    },
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
+  },
+  "jest-junit": {
+    "suiteName": "unit tests",
+    "outputDirectory": "./reports",
+    "outputName": "./junit.xml"
   }
 }
