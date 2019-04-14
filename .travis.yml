@@ -27,8 +27,7 @@ jobs:
         - cp -R dist/* ./gh-pages/dist
         - cp index.html README.md ./gh-pages
 
-    - stage: deploy
-      name: "github pages"
+    - stage: github pages
       if: branch = master
       provider: pages
       skip-cleanup: true
@@ -38,8 +37,8 @@ jobs:
       on:
         branch: master
 
-    - stage: deploy
-      name: "npm release"
+    - stage: npm release
+      if: branch = master
       script:
         - ls -lah
       deploy:
