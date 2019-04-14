@@ -39,7 +39,6 @@ jobs:
         branch: master
 
     - stage: npm release
-      if: branch = master
       script: echo "releasing to npm"
       provider: npm
       skip-cleanup: true
