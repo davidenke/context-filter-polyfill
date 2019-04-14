@@ -35,11 +35,10 @@ jobs:
     - stage: npm release
       script:
         - ls -lah
-        - ls dist
-        - ls gh-pages
       deploy:
         provider: npm
         skip-cleanup: true
+        local-dir: dist
         email: $NPM_EMAIL
         api_key: $NPM_API_KEY
         on:
