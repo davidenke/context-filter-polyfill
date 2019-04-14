@@ -28,7 +28,7 @@ jobs:
         - cp index.html README.md ./gh-pages
 
     - stage: github pages
-      if: branch = master
+#      if: branch = master
       provider: pages
       skip-cleanup: true
       keep-history: true
@@ -38,7 +38,7 @@ jobs:
         branch: master
 
     - stage: npm release
-      if: branch = master
+#      if: branch = master
       script:
         - ls -lah
       deploy:
