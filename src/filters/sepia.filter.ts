@@ -1,8 +1,8 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const sepia: Filter = (context, sepia = '0') => {
-  let amount = normalizeNumberPercentage(sepia);
+export const sepia: Filter = (context, amount = '0') => {
+  amount = normalizeNumberPercentage(amount);
 
   // do not manipulate without proper amount
   if (amount <= 0) {

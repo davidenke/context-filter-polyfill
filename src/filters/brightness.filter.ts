@@ -1,8 +1,8 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const brightness: Filter = (context, brightness = '1') => {
-  let amount = normalizeNumberPercentage(brightness);
+export const brightness: Filter = (context, amount = '1') => {
+  amount = normalizeNumberPercentage(amount);
 
   // do not manipulate without proper amount
   if (amount === 1) {

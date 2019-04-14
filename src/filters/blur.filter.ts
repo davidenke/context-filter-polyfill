@@ -2,7 +2,7 @@ import { Filter } from '../types/filter.type';
 import { normalizeLength } from '../utils/filter.utils';
 
 export const blur: Filter = (context, radius = '0') => {
-  let amount = normalizeLength(radius);
+  const amount = normalizeLength(radius);
 
   // do not manipulate without proper amount
   if (amount <= 0) {
@@ -33,10 +33,11 @@ export const blur: Filter = (context, radius = '0') => {
   const vmax = [];
 
   let iterations = 3; // 1 - 3
-  let rsum, gsum, bsum, asum, x, y, i, p, p1, p2, yp, yi, pa;
+  let p, p1, p2, pa;
 
   while (iterations-- > 0) {
-    let yw = yi = 0;
+    let yw = 0;
+    let yi = 0;
 
     for (let y = 0; y < height; y++) {
       let rsum = data[yw] * rad1;
@@ -44,8 +45,8 @@ export const blur: Filter = (context, radius = '0') => {
       let bsum = data[yw + 2] * rad1;
       let asum = data[yw + 3] * rad1;
 
-
       for (let i = 1; i <= amount; i++) {
+        // tslint:disable-next-line no-bitwise
         p = yw + (((i > wm ? wm : i)) << 2);
         rsum += data[p++];
         gsum += data[p++];
@@ -53,14 +54,16 @@ export const blur: Filter = (context, radius = '0') => {
         asum += data[p];
       }
 
-      for (x = 0; x < width; x++) {
+      for (let x = 0; x < width; x++) {
         r[yi] = rsum;
         g[yi] = gsum;
         b[yi] = bsum;
         a[yi] = asum;
 
-        if (y == 0) {
+        if (y === 0) {
+          // tslint:disable-next-line no-bitwise
           vmin[x] = ((p = x + rad1) < wm ? p : wm) << 2;
+          // tslint:disable-next-line no-bitwise
           vmax[x] = ((p = x - amount) > 0 ? p << 2 : 0);
         }
 
@@ -74,17 +77,18 @@ export const blur: Filter = (context, radius = '0') => {
 
         yi++;
       }
+      // tslint:disable-next-line no-bitwise
       yw += (width << 2);
     }
 
-    for (x = 0; x < width; x++) {
-      yp = x;
-      rsum = r[yp] * rad1;
-      gsum = g[yp] * rad1;
-      bsum = b[yp] * rad1;
-      asum = a[yp] * rad1;
+    for (let x = 0; x < width; x++) {
+      let yp = x;
+      let rsum = r[yp] * rad1;
+      let gsum = g[yp] * rad1;
+      let bsum = b[yp] * rad1;
+      let asum = a[yp] * rad1;
 
-      for (i = 1; i <= amount; i++) {
+      for (let i = 1; i <= amount; i++) {
         yp += (i > hm ? 0 : width);
         rsum += r[yp];
         gsum += g[yp];
@@ -92,19 +96,26 @@ export const blur: Filter = (context, radius = '0') => {
         asum += a[yp];
       }
 
+      // tslint:disable-next-line no-bitwise
       yi = x << 2;
-      for (y = 0; y < height; y++) {
 
+      for (let y = 0; y < height; y++) {
+        // tslint:disable-next-line no-bitwise
         data[yi + 3] = pa = (asum * mulSum) >>> shgSum;
+
         if (pa > 0) {
           pa = 255 / pa;
+          // tslint:disable-next-line no-bitwise
           data[yi] = ((rsum * mulSum) >>> shgSum) * pa;
+          // tslint:disable-next-line no-bitwise
           data[yi + 1] = ((gsum * mulSum) >>> shgSum) * pa;
+          // tslint:disable-next-line no-bitwise
           data[yi + 2] = ((bsum * mulSum) >>> shgSum) * pa;
         } else {
           data[yi] = data[yi + 1] = data[yi + 2] = 0;
         }
-        if (x == 0) {
+
+        if (x === 0) {
           vmin[y] = ((p = y + rad1) < hm ? p : hm) * width;
           vmax[y] = ((p = y - amount) > 0 ? p * width : 0);
         }
@@ -117,6 +128,7 @@ export const blur: Filter = (context, radius = '0') => {
         bsum += b[p1] - b[p2];
         asum += a[p1] - a[p2];
 
+        // tslint:disable-next-line no-bitwise
         yi += width << 2;
       }
     }

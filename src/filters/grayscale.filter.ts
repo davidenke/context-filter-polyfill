@@ -1,8 +1,8 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const grayscale: Filter = (context, grayscale = '0') => {
-  let amount = normalizeNumberPercentage(grayscale);
+export const grayscale: Filter = (context, amount = '0') => {
+  amount = normalizeNumberPercentage(amount);
 
   // do not manipulate without proper amount
   if (amount <= 0) {

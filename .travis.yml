@@ -2,20 +2,32 @@ language: node_js
 node_js:
   - stable
 
-script:
-  # build polyfill
-  - npm run build
-  # create the target
-  - mkdir -p ./gh-pages/dist
-  # copy the built folder and html to target
-  - cp -R dist/* ./gh-pages/dist
-  - cp index.html ./gh-pages
+jobs:
+  include:
+    - stage: lint
+      script:
+        - npm run lint
 
-deploy:
-  provider: pages
-  skip-cleanup: true
-  keep-history: true
-  local-dir: gh-pages
-  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  on:
-    branch: master
+    - stage: test
+      script:
+        - npm run test:ci
+
+    - stage: build
+      script:
+        # build polyfill
+        - npm run build
+        # create the target
+        - mkdir -p ./gh-pages/dist
+        # copy the built folder and html to target
+        - cp -R dist/* ./gh-pages/dist
+        - cp index.html ./gh-pages
+
+    - stage: deploy
+      if: branch = master
+      provider: pages
+      skip-cleanup: true
+      keep-history: true
+      local-dir: gh-pages
+      github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+      on:
+        branch: master

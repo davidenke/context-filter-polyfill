@@ -1,8 +1,8 @@
 import { Filter } from '../types/filter.type';
 import { normalizeAngle } from '../utils/filter.utils';
 
-export const hueRotate: Filter = (context, rotate = '0deg') => {
-  let amount = normalizeAngle(rotate);
+export const hueRotate: Filter = (context, rotation = '0deg') => {
+  const amount = normalizeAngle(rotation);
 
   // do not manipulate without proper amount
   if (amount <= 0) {
@@ -63,7 +63,7 @@ export const hueRotate: Filter = (context, rotate = '0deg') => {
       mi = d;
       break;
   }
-  //do the pixels
+  // do the pixels
   let place = 0;
   for (let y = 0; y < height; ++y) {
     for (let x = 0; x < width; ++x) {
