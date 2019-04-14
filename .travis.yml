@@ -23,6 +23,7 @@ jobs:
         - cp index.html README.md ./gh-pages
 
     - stage: deploy
+      name: "github pages"
       if: branch = master
       provider: pages
       skip-cleanup: true
@@ -32,13 +33,13 @@ jobs:
       on:
         branch: master
 
-    - stage: npm release
+    - stage: deploy
+      name: "npm release"
       script:
         - ls -lah
       deploy:
         provider: npm
         skip-cleanup: true
-        local-dir: dist
         email: $NPM_EMAIL
         api_key: $NPM_API_KEY
         on:
