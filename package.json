@@ -1,6 +1,6 @@
 {
   "name": "context-filter-polyfill",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Polyfills `CanvasRenderingContext2d.filter` capability of adopting CSS3 filters to canvas contexts at least partially.",
   "main": "dist/index.js",
   "files": [
