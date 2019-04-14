@@ -1,13 +1,18 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const brightness: Filter = (context, brightness = '0') => {
+export const brightness: Filter = (context, brightness = '1') => {
   let amount = normalizeNumberPercentage(brightness);
   console.log('brightness', amount)
 
   // do not manipulate without proper amount
-  if (amount <= 1) {
+  if (amount === 1) {
     return context;
+  }
+
+  // align minimum
+  if (amount < 0) {
+    amount = 0;
   }
 
   const { height, width } = context.canvas;
@@ -16,7 +21,7 @@ export const brightness: Filter = (context, brightness = '0') => {
   const { length } = data;
 
   // in rgba world, every
-  // n * 4 is red,
+  // n * 4 + 0 is red,
   // n * 4 + 1 green and
   // n * 4 + 2 is blue
   // the fourth can be skipped as it's the alpha channel

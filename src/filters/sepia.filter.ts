@@ -21,7 +21,7 @@ export const sepia: Filter = (context, sepia = '0') => {
   const { length } = data;
 
   // in rgba world, every
-  // n * 4 is red,
+  // n * 4 + 0 is red,
   // n * 4 + 1 green and
   // n * 4 + 2 is blue
   // the fourth can be skipped as it's the alpha channel
