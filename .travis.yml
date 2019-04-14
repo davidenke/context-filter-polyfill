@@ -33,11 +33,15 @@ jobs:
         branch: master
 
     - stage: npm release
-      script: echo "Deploying to npm ..."
+      script:
+        - ls -lah
+        - ls dist
+        - ls gh-pages
       deploy:
         provider: npm
         skip-cleanup: true
         email: $NPM_EMAIL
         api_key: $NPM_API_KEY
         on:
-          tags: true
+          branch: develop
+#          tags: true
