@@ -8,6 +8,9 @@
     "index.html",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:davidenke/context-filter-polyfill.git"
@@ -18,7 +21,6 @@
     "url": "www.zalari.de"
   },
   "license": "MIT",
-  "private": true,
   "scripts": {
     "lint": "tslint --config tslint.json --project tsconfig.json",
     "test": "jest --coverage",

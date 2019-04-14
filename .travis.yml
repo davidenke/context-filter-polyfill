@@ -31,3 +31,12 @@ jobs:
       github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
       on:
         branch: master
+
+    - stage: npm release
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        email: $NPM_EMAIL
+        api_key: $NPM_API_KEY
+        on:
+          tags: true
