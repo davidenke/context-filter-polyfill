@@ -36,6 +36,7 @@ jobs:
       script: echo "Deploying to npm ..."
       deploy:
         provider: npm
+        skip-cleanup: true
         email: $NPM_EMAIL
         api_key: $NPM_API_KEY
         on:
