@@ -1,13 +1,17 @@
 import { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
-export const saturate: Filter = (context, saturation = '0') => {
+export const saturate: Filter = (context, saturation = '1') => {
   let amount = normalizeNumberPercentage(saturation);
-  console.log('saturate', amount);
 
   // do not manipulate without proper amount
-  if (amount <= 0) {
+  if (amount === 1) {
     return context;
+  }
+
+  // align minimum
+  if (amount < 0) {
+    amount = 0;
   }
 
   const { height, width } = context.canvas;

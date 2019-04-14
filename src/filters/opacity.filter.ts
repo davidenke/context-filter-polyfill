@@ -3,7 +3,6 @@ import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const opacity: Filter = (context, opacity = '1') => {
   let amount = normalizeNumberPercentage(opacity);
-  console.log('opacity', amount)
 
   // do not manipulate without proper amount
   if (amount < 0) {
@@ -11,7 +10,7 @@ export const opacity: Filter = (context, opacity = '1') => {
   }
 
   // a maximum of 100%
-  if (amount >= 1) {
+  if (amount > 1) {
     amount = 1;
   }
 

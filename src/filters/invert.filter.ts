@@ -3,7 +3,6 @@ import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const invert: Filter = (context, invert = '0') => {
   let amount = normalizeNumberPercentage(invert);
-  console.log('invert', amount)
 
   // do not manipulate without proper amount
   if (amount <= 0) {
@@ -11,7 +10,7 @@ export const invert: Filter = (context, invert = '0') => {
   }
 
   // a maximum of 100%
-  if (amount >= 1) {
+  if (amount > 1) {
     amount = 1;
   }
 

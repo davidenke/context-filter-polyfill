@@ -3,7 +3,6 @@ import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const contrast: Filter = (context, brightness = '1') => {
   let amount = normalizeNumberPercentage(brightness);
-  console.log('contrast', amount)
 
   // do not manipulate without proper amount
   if (amount === 1) {

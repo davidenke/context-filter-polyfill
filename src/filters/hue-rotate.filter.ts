@@ -3,7 +3,6 @@ import { normalizeAngle } from '../utils/filter.utils';
 
 export const hueRotate: Filter = (context, rotate = '0deg') => {
   let amount = normalizeAngle(rotate);
-  console.log('hue-rotate', amount);
 
   // do not manipulate without proper amount
   if (amount <= 0) {

@@ -4,9 +4,9 @@ export class CanvasMock implements Partial<HTMLCanvasElement> {
 
   private readonly _context = new ContextMock(this as unknown as HTMLCanvasElement);
 
-  width = 100;
+  width = 30;
 
-  height = 134;
+  height = 30;
 
   getContext(contextId: '2d', contextAttributes?: CanvasRenderingContext2DSettings): CanvasRenderingContext2D | null;
   getContext(contextId: 'webgl' | 'experimental-webgl', contextAttributes?: WebGLContextAttributes): WebGLRenderingContext | null;

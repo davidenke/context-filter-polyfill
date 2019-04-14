@@ -3,7 +3,6 @@ import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const grayscale: Filter = (context, grayscale = '0') => {
   let amount = normalizeNumberPercentage(grayscale);
-  console.log('grayscale', amount)
 
   // do not manipulate without proper amount
   if (amount <= 0) {
@@ -11,7 +10,7 @@ export const grayscale: Filter = (context, grayscale = '0') => {
   }
 
   // a maximum of 100%
-  if (amount >= 1) {
+  if (amount > 1) {
     amount = 1;
   }
 

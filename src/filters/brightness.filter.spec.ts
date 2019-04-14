@@ -22,15 +22,15 @@ describe('filters/brightness', () => {
   });
 
   it('should not manipulate image data with defaults', () => {
-    const dataBefore = Array.from(context.getImageData(0, 0, width, height).data);
-    const dataAfter = Array.from(brightness(context).getImageData(0, 0, width, height).data);
-    expect(dataBefore).toEqual(expect.arrayContaining(dataAfter));
+    const dataBefore = context.getImageData(0, 0, width, height).data.toString();
+    const dataAfter = brightness(context).getImageData(0, 0, width, height).data.toString();
+    expect(dataBefore).toEqual(dataAfter);
   });
 
   it('should manipulate image data if arguments match', () => {
-    const dataBefore = Array.from(context.getImageData(0, 0, width, height).data);
+    const dataBefore = context.getImageData(0, 0, width, height).data.toString();
     const dataAfter = Array.from(brightness(context, '2').getImageData(0, 0, width, height).data);
-    expect(dataBefore).not.toEqual(expect.arrayContaining(dataAfter));
+    expect(dataBefore).not.toEqual(dataAfter);
   });
 
 });

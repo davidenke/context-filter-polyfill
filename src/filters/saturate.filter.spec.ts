@@ -1,8 +1,8 @@
 import { CanvasMock } from '../mocks/canvas.mock';
 import { ContextMock } from '../mocks/context.mock';
-import { contrast } from './contrast.filter';
+import { saturate } from './saturate.filter';
 
-describe('filters/contrast', () => {
+describe('filters/saturate', () => {
 
   let width: number;
   let height: number;
@@ -17,19 +17,19 @@ describe('filters/contrast', () => {
 
 
   it('should always return a context', () => {
-    expect(contrast(context)).toBeInstanceOf(ContextMock);
-    expect(contrast(context, '2')).toBeInstanceOf(ContextMock);
+    expect(saturate(context)).toBeInstanceOf(ContextMock);
+    expect(saturate(context, '5')).toBeInstanceOf(ContextMock);
   });
 
   it('should not manipulate image data with defaults', () => {
     const dataBefore = context.getImageData(0, 0, width, height).data.toString();
-    const dataAfter = contrast(context).getImageData(0, 0, width, height).data.toString();
+    const dataAfter = saturate(context).getImageData(0, 0, width, height).data.toString();
     expect(dataBefore).toEqual(dataAfter);
   });
 
   it('should manipulate image data if arguments match', () => {
     const dataBefore = context.getImageData(0, 0, width, height).data.toString();
-    const dataAfter = Array.from(contrast(context, '2').getImageData(0, 0, width, height).data);
+    const dataAfter = Array.from(saturate(context, '5').getImageData(0, 0, width, height).data);
     expect(dataBefore).not.toEqual(dataAfter);
   });
 

@@ -2,11 +2,10 @@ import { Filter } from '../types/filter.type';
 import { normalizeLength } from '../utils/filter.utils';
 
 export const blur: Filter = (context, radius = '0') => {
-  const amount = normalizeLength(radius);
-  console.log('blur', amount);
+  let amount = normalizeLength(radius);
 
   // do not manipulate without proper amount
-  if (amount < 1) {
+  if (amount <= 0) {
     return context;
   }
 
