@@ -2,6 +2,11 @@ language: node_js
 
 cache: npm
 
+# install dependencies
+install:
+  - npm install --silent
+
+# the jobs for building and deploying
 jobs:
   include:
 #    - stage: lint
