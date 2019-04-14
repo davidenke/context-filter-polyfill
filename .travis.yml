@@ -20,7 +20,7 @@ jobs:
         - mkdir -p ./gh-pages/dist
         # copy the built folder and html to target
         - cp -R dist/* ./gh-pages/dist
-        - cp index.html ./gh-pages
+        - cp index.html README.md ./gh-pages
 
     - stage: deploy
       if: branch = master
