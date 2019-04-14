@@ -29,6 +29,8 @@ jobs:
 
     - stage: github pages
 #      if: branch = master
+      script:
+        - ls -lah
       provider: pages
       skip-cleanup: true
       keep-history: true
