@@ -8,9 +8,6 @@ export const dropShadow: Filter = (context, offsetX: string, offsetY: string, bl
   context.shadowBlur = color ? normalizeLength(blurOrColor || '0') : 0;
   context.shadowColor = color || blurOrColor || 'transparent';
 
-  const { shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor } = context;
-  console.log(shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor)
-
   // return the context itself
   return context;
 };
