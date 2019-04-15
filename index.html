@@ -82,7 +82,7 @@
 
       <section>
         <canvas class="drop-shadow" width="100px" height="134px"></canvas>
-        <pre>drop-shadow(5px 5px 10px red)</pre>
+        <pre>drop-shadow(3px 3px 5px red)</pre>
         <script>
           const imgDropShadow = new Image();
           const ctxDropShadow = document.querySelector('canvas.drop-shadow').getContext('2d');
@@ -168,12 +168,12 @@
         <canvas class="testOrigin" width="30px" height="30px"></canvas>
         <script>
           const ctxTestOrigin = document.querySelector('canvas.testOrigin').getContext('2d');
-          const grdntTestOrigin = ctxTestOrigin.createLinearGradient(0, 0, 50, 50);
+          const grdntTestOrigin = ctxTestOrigin.createLinearGradient(0, 0, 30, 30);
           grdntTestOrigin.addColorStop(.15, 'cyan');
           grdntTestOrigin.addColorStop(.5, 'magenta');
           grdntTestOrigin.addColorStop(.85, 'yellow');
           ctxTestOrigin.fillStyle = grdntTestOrigin;
-          ctxTestOrigin.fillRect(0, 0, 50, 50);
+          ctxTestOrigin.fillRect(0, 0, 30, 30);
         </script>
       </section>
 
@@ -181,13 +181,13 @@
         <canvas class="test" width="30px" height="30px"></canvas>
         <script>
           const ctxTest = document.querySelector('canvas.test').getContext('2d');
-          const grdntTest = ctxTestOrigin.createLinearGradient(0, 0, 50, 50);
+          const grdntTest = ctxTestOrigin.createLinearGradient(0, 0, 30, 30);
           ctxTest.filter = 'invert(1)';
           grdntTest.addColorStop(.15, 'cyan');
           grdntTest.addColorStop(.5, 'magenta');
           grdntTest.addColorStop(.85, 'yellow');
           ctxTest.fillStyle = grdntTest;
-          ctxTest.fillRect(0, 0, 50, 50);
+          ctxTest.fillRect(0, 0, 30, 30);
         </script>
       </section>
       
@@ -198,12 +198,12 @@
       const ctxMixed = document.querySelector('canvas.mixed').getContext('2d');
 
       // 1st step: single filter - blurred text
-      ctxMixed.filter = 'blur(4px)';
+      ctxMixed.filter = 'blur(4px) drop-shadow(3px 3px 5px red)';
       ctxMixed.font = '48px serif';
       ctxMixed.fillText('Hello world', 50, 80);
 
       // 2nd step: multiple filters - inverted, opaque and rotated rectangle
-      ctxMixed.filter = 'invert(.75) opacity(.5)';
+      ctxMixed.filter = 'invert(.75) opacity(.5) drop-shadow(3px 3px 5px red)';
       ctxMixed.fillStyle = '#f00';
       ctxMixed.translate(55, 55);
       ctxMixed.rotate(45 * Math.PI / 180);

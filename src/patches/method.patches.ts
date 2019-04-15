@@ -31,6 +31,8 @@ export function applyMethodPatches() {
             }
 
             // apply to mirror
+            this.canvas.__currentPathMirror.shadowBlur = 5;
+            this.canvas.__currentPathMirror.shadowColor = 'red';
             const result = this.canvas.__currentPathMirror[member](...args);
 
             // draw functions may get filters applied and copied back to original
