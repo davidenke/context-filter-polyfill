@@ -1,6 +1,9 @@
 language: node_js
 
-cache: npm
+cache:
+  - npm
+  directories:
+    - dist
 
 # install dependencies
 install:
@@ -48,3 +51,6 @@ jobs:
       api_key: $NPM_API_KEY
       on:
         tags: true
+
+    - stage: free cached built
+      script: rm -rf dist
