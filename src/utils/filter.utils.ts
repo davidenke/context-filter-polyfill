@@ -6,7 +6,7 @@ export const applyFilter = (context: CanvasRenderingContext2D, canvasFilters: Ca
   // parse applied filters and call implementations
   canvasFilters
     // filters are separated by whitespace
-    .split(' ')
+    .match(/([-a-z]+)(?:\(([\w\d\s\.%-]*)\))?/gmi)
     // filters may have options within appended brackets
     .map(filter => filter.match(/([-a-z]+)(?:\((.*)\))?/si).slice(1, 3) as [AvailableFilter, string])
     // apply all filters
@@ -14,7 +14,7 @@ export const applyFilter = (context: CanvasRenderingContext2D, canvasFilters: Ca
       // do we have a appropriate filter implementation?
       if (SUPPORTED_FILTERS.has(filter)) {
         // then filter and return the result
-        return SUPPORTED_FILTERS.get(filter)(input, options);
+        return SUPPORTED_FILTERS.get(filter)(input, ...(options || '').split(' '));
       }
       // nope, skip this
       return input;
