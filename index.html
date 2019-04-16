@@ -43,7 +43,7 @@
           imgNone.src = window.testSrc;
         </script>
       </section>
-      
+
       <section>
         <canvas class="blur" width="100px" height="134px"></canvas>
         <pre>blur(6px)</pre>
@@ -55,7 +55,7 @@
           imgBlur.src = window.testSrc;
         </script>
       </section>
-      
+
       <section>
         <canvas class="brightness" width="100px" height="134px"></canvas>
         <pre>brightness(2)</pre>
@@ -67,7 +67,7 @@
           imgBrightness.src = window.testSrc;
         </script>
       </section>
-      
+
       <section>
         <canvas class="contrast" width="100px" height="134px"></canvas>
         <pre>contrast(250%)</pre>
@@ -115,7 +115,7 @@
           imgHueRotate.src = window.testSrc;
         </script>
       </section>
-      
+
       <section>
         <canvas class="invert" width="100px" height="134px"></canvas>
         <pre>invert(.9)</pre>
@@ -127,7 +127,7 @@
           imgInvert.src = window.testSrc;
         </script>
       </section>
-      
+
       <section>
         <canvas class="opacity" width="100px" height="134px"></canvas>
         <pre>opacity(.5)</pre>
@@ -139,7 +139,7 @@
           imgOpacity.src = window.testSrc;
         </script>
       </section>
-      
+
       <section>
         <canvas class="saturate" width="100px" height="134px"></canvas>
         <pre>saturate(5)</pre>
@@ -151,7 +151,7 @@
           imgSaturate.src = window.testSrc;
         </script>
       </section>
-      
+
       <section>
         <canvas class="sepia" width="100px" height="134px"></canvas>
         <pre>sepia(100%)</pre>
@@ -190,7 +190,7 @@
           ctxTest.fillRect(0, 0, 30, 30);
         </script>
       </section>
-      
+
     </main>
 
     <canvas class="mixed" width="400px" height="200px"></canvas>
@@ -198,12 +198,12 @@
       const ctxMixed = document.querySelector('canvas.mixed').getContext('2d');
 
       // 1st step: single filter - blurred text
-      ctxMixed.filter = 'blur(4px) drop-shadow(3px 3px 5px red)';
+      ctxMixed.filter = 'blur(4px) drop-shadow(2px 2px 10px red)';
       ctxMixed.font = '48px serif';
       ctxMixed.fillText('Hello world', 50, 80);
 
       // 2nd step: multiple filters - inverted, opaque and rotated rectangle
-      ctxMixed.filter = 'invert(.75) opacity(.5) drop-shadow(3px 3px 5px red)';
+      ctxMixed.filter = 'invert(.75) opacity(.5) drop-shadow(4px 4px 4px red)';
       ctxMixed.fillStyle = '#f00';
       ctxMixed.translate(55, 55);
       ctxMixed.rotate(45 * Math.PI / 180);
