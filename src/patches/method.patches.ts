@@ -38,16 +38,21 @@ export function applyMethodPatches() {
               // apply the filter
               applyFilter(this.canvas.__currentPathMirror, this.filter);
 
-              // disable patch and reset transform temporary
+              // disable patch and reset transform temporary if supported
               this.canvas.__skipFilterPatch = true;
-              const originalTransform = this.getTransform();
-              this.setTransform(1, 0, 0, 1, 0, 0);
+              let originalTransform;
+              if ('getTransform' in this) {
+                originalTransform = this.getTransform();
+                this.setTransform(1, 0, 0, 1, 0, 0);
+              }
 
               // draw mirror back
               this.drawImage(this.canvas.__currentPathMirror.canvas, 0, 0);
 
               // set back transforms and re-enable patch
-              this.setTransform(originalTransform);
+              if (originalTransform) {
+                this.setTransform(originalTransform);
+              }
               this.canvas.__skipFilterPatch = false;
 
               // reset the mirror for next draw cycle
