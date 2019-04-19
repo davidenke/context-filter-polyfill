@@ -16,9 +16,9 @@
     "url": "git@github.com:davidenke/context-filter-polyfill.git"
   },
   "author": {
-    "name": "Zalari GmbH",
-    "email": "info@zalari.de",
-    "url": "www.zalari.de"
+    "name": "David Enke",
+    "email": "david@enke.dev",
+    "url": "http://www.davidenke.de"
   },
   "license": "MIT",
   "scripts": {
