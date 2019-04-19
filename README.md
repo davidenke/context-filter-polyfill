@@ -6,6 +6,12 @@ https://davidenke.github.io/context-filter-polyfill/
 
 Polyfills [`CanvasRenderingContext2d.filter`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter) capability of adopting CSS3 filters to canvas contexts at least partially.
 
+Successfully tested on
+* macOS Safari
+* iOS Safari
+* Windows 10 IE11
+* Windows 10 Edge 16-18
+
 ## Supported filters
 * [`url`](https://developer.mozilla.org/en-US/docs/Web/CSS/filter#url()) ✗
 * [`blur`](https://developer.mozilla.org/en-US/docs/Web/CSS/filter#blur()) ✔
@@ -21,10 +27,7 @@ Polyfills [`CanvasRenderingContext2d.filter`](https://developer.mozilla.org/en-U
 * [`sepia`](https://developer.mozilla.org/en-US/docs/Web/CSS/filter#sepia()) ✔
 
 ## See it in action
-Just open the [integration demo](https://davidenke.github.io/context-filter-polyfill/) on Safari.
-
-## Use case
-tbd
+Just open the [integration demo](https://davidenke.github.io/context-filter-polyfill/) on Safari / iOS or IE11.
 
 ## Strategy
 The polyfill is applied by the following steps:
