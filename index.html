@@ -6,12 +6,16 @@
     <title>CanvasContextRenderingContext2d.filter partial polyfill</title>
     <style>
       body {
-        margin: 10px;
+        margin: 5px;
       }
       main {
-        display: grid;
-        grid-gap: 10px;
-        grid-template-columns: repeat(auto-fill, 100px);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      main > section {
+        padding: 5px;
+        width: 100px;
       }
       main > section > pre {
         font-size: 11px;
