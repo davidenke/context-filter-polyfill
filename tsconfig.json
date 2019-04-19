@@ -10,7 +10,7 @@
       "dom",
       "esnext"
     ],
-    "module": "esnext",
+    "module": "es2015",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,

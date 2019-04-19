@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en"
       dir="ltr"
 >
@@ -39,7 +40,7 @@
           const imgNone = new Image();
           const ctxNone = document.querySelector('canvas.none').getContext('2d');
           ctxNone.filter = 'none';
-          imgNone.onload = () => ctxNone.drawImage(imgNone, 0, 0);
+          imgNone.onload = function() { ctxNone.drawImage(imgNone, 0, 0); };
           imgNone.src = window.testSrc;
         </script>
       </section>
@@ -51,7 +52,7 @@
           const imgBlur = new Image();
           const ctxBlur = document.querySelector('canvas.blur').getContext('2d');
           ctxBlur.filter = 'blur(6px)';
-          imgBlur.onload = () => ctxBlur.drawImage(imgBlur, 0, 0);
+          imgBlur.onload = function() { ctxBlur.drawImage(imgBlur, 0, 0); };
           imgBlur.src = window.testSrc;
         </script>
       </section>
@@ -63,7 +64,7 @@
           const imgBrightness = new Image();
           const ctxBrightness = document.querySelector('canvas.brightness').getContext('2d');
           ctxBrightness.filter = 'brightness(2)';
-          imgBrightness.onload = () => ctxBrightness.drawImage(imgBrightness, 0, 0);
+          imgBrightness.onload = function() { ctxBrightness.drawImage(imgBrightness, 0, 0); };
           imgBrightness.src = window.testSrc;
         </script>
       </section>
@@ -75,7 +76,7 @@
           const imgContrast = new Image();
           const ctxContrast = document.querySelector('canvas.contrast').getContext('2d');
           ctxContrast.filter = 'contrast(250%)';
-          imgContrast.onload = () => ctxContrast.drawImage(imgContrast, 0, 0);
+          imgContrast.onload = function() { ctxContrast.drawImage(imgContrast, 0, 0); };
           imgContrast.src = window.testSrc;
         </script>
       </section>
@@ -87,7 +88,7 @@
           const imgDropShadow = new Image();
           const ctxDropShadow = document.querySelector('canvas.drop-shadow').getContext('2d');
           ctxDropShadow.filter = 'drop-shadow(3px 3px 5px red)';
-          imgDropShadow.onload = () => ctxDropShadow.drawImage(imgDropShadow, 10, 10, 80, 110);
+          imgDropShadow.onload = function() { ctxDropShadow.drawImage(imgDropShadow, 10, 10, 80, 110); };
           imgDropShadow.src = window.testSrc;
         </script>
       </section>
@@ -99,7 +100,7 @@
           const imgGrayscale = new Image();
           const ctxGrayscale = document.querySelector('canvas.grayscale').getContext('2d');
           ctxGrayscale.filter = 'grayscale(50%)';
-          imgGrayscale.onload = () => ctxGrayscale.drawImage(imgGrayscale, 0, 0);
+          imgGrayscale.onload = function() { ctxGrayscale.drawImage(imgGrayscale, 0, 0); };
           imgGrayscale.src = window.testSrc;
         </script>
       </section>
@@ -111,7 +112,7 @@
           const imgHueRotate = new Image();
           const ctxHueRotate = document.querySelector('canvas.hue-rotate').getContext('2d');
           ctxHueRotate.filter = 'hue-rotate(180deg)';
-          imgHueRotate.onload = () => ctxHueRotate.drawImage(imgHueRotate, 0, 0);
+          imgHueRotate.onload = function() { ctxHueRotate.drawImage(imgHueRotate, 0, 0); };
           imgHueRotate.src = window.testSrc;
         </script>
       </section>
@@ -123,7 +124,7 @@
           const imgInvert = new Image();
           const ctxInvert = document.querySelector('canvas.invert').getContext('2d');
           ctxInvert.filter = 'invert(.9)';
-          imgInvert.onload = () => ctxInvert.drawImage(imgInvert, 0, 0);
+          imgInvert.onload = function() { ctxInvert.drawImage(imgInvert, 0, 0); };
           imgInvert.src = window.testSrc;
         </script>
       </section>
@@ -135,7 +136,7 @@
           const imgOpacity = new Image();
           const ctxOpacity = document.querySelector('canvas.opacity').getContext('2d');
           ctxOpacity.filter = 'opacity(.5)';
-          imgOpacity.onload = () => ctxOpacity.drawImage(imgOpacity, 0, 0);
+          imgOpacity.onload = function() { ctxOpacity.drawImage(imgOpacity, 0, 0); };
           imgOpacity.src = window.testSrc;
         </script>
       </section>
@@ -147,7 +148,7 @@
           const imgSaturate = new Image();
           const ctxSaturate = document.querySelector('canvas.saturate').getContext('2d');
           ctxSaturate.filter = 'saturate(5)';
-          imgSaturate.onload = () => ctxSaturate.drawImage(imgSaturate, 0, 0);
+          imgSaturate.onload = function() { ctxSaturate.drawImage(imgSaturate, 0, 0); };
           imgSaturate.src = window.testSrc;
         </script>
       </section>
@@ -159,7 +160,7 @@
           const imgSepia = new Image();
           const ctxSepia = document.querySelector('canvas.sepia').getContext('2d');
           ctxSepia.filter = 'sepia(100%)';
-          imgSepia.onload = () => ctxSepia.drawImage(imgSepia, 0, 0);
+          imgSepia.onload = function() { ctxSepia.drawImage(imgSepia, 0, 0); };
           imgSepia.src = window.testSrc;
         </script>
       </section>

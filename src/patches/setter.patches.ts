@@ -4,17 +4,16 @@ import { createOffscreenContext } from '../utils/context.utils';
 export function applySetterPatches() {
   // we monkey-patch all context members to
   // apply everything to the current mirror
-  const descriptors = Object.getOwnPropertyDescriptors(CanvasRenderingContext2D.prototype);
   Object
-    .keys(descriptors)
+    .keys(CanvasRenderingContext2D.prototype)
     // do not overload these
-    .filter(member => !PROTECTED_KEYS.includes(member))
+    .filter(member => PROTECTED_KEYS.indexOf(member) < 0)
+    // get the whole descriptor
+    .map(member => ({ member, descriptor: Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype, member) }))
     // get setters only
-    .filter(member => descriptors[member].set)
+    .filter(({ descriptor }) => descriptor.set)
     // apply monkey-patch to pass through
-    .forEach(member => {
-      const descriptor = descriptors[member];
-
+    .forEach(({ member, descriptor }) => {
       // overload setter
       const original = descriptor;
       Object.defineProperty(CanvasRenderingContext2D.prototype, member, {

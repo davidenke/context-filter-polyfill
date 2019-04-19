@@ -6,16 +6,16 @@ import { applyFilter } from '../utils/filter.utils';
 export function applyMethodPatches() {
   // we monkey-patch all context members to
   // apply everything to the current mirror
-  const descriptors = Object.getOwnPropertyDescriptors(CanvasRenderingContext2D.prototype);
   Object
-    .keys(descriptors)
+    .keys(CanvasRenderingContext2D.prototype)
     // do not overload these
-    .filter(member => !PROTECTED_KEYS.includes(member))
+    .filter(member => PROTECTED_KEYS.indexOf(member) < 0)
+    // get the whole descriptor
+    .map(member => ({ member, descriptor: Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype, member) }))
     // get methods only
-    .filter(member => descriptors[member].value && typeof descriptors[member].value === 'function')
+    .filter(({ descriptor }) => descriptor.value && typeof descriptor.value === 'function')
     // apply monkey-patch to pass through
-    .forEach(member => {
-      const descriptor = descriptors[member];
+    .forEach(({ member, descriptor }) => {
       if (descriptor.value && typeof descriptor.value === 'function') {
         const original = descriptor.value;
         Object.defineProperty(CanvasRenderingContext2D.prototype, member, {
@@ -34,7 +34,7 @@ export function applyMethodPatches() {
             const result = this.canvas.__currentPathMirror[member](...args);
 
             // draw functions may get filters applied and copied back to original
-            if (DRAWING_FUNCTIONS.includes(member)) {
+            if (DRAWING_FUNCTIONS.indexOf(member) > -1) {
               // apply the filter
               applyFilter(this.canvas.__currentPathMirror, this.filter);
 
