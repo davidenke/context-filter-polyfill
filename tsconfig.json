@@ -10,11 +10,11 @@
       "dom",
       "esnext"
     ],
-    "module": "esnext",
+    "module": "es2015",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "target": "es2017"
+    "target": "es5"
   },
   "include": [
     "src"

@@ -1,12 +1,15 @@
 import { AvailableFilter } from './enums/available-filter.enum';
 import { SUPPORTED_FILTERS } from './globals/supported-filters.global';
 
+// feature detector
 import { supportsContextFilters } from './utils/context.utils';
 
+// the patches we'll be using
 import { applyPropertyPatches } from './patches/property.patches';
 import { applySetterPatches } from './patches/setter.patches';
 import { applyMethodPatches } from './patches/method.patches';
 
+// add supported filters here by mapping the available
 import { none } from './filters/none.filter';
 import { blur } from './filters/blur.filter';
 import { brightness } from './filters/brightness.filter';
@@ -19,7 +22,6 @@ import { opacity } from './filters/opacity.filter';
 import { saturate } from './filters/saturate.filter';
 import { sepia } from './filters/sepia.filter';
 
-// add supported filters here by mapping the available
 // filter to the imported, implemented function
 SUPPORTED_FILTERS.set(AvailableFilter.None, none);
 SUPPORTED_FILTERS.set(AvailableFilter.Blur, blur);
