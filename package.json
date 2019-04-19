@@ -1,6 +1,6 @@
 {
   "name": "context-filter-polyfill",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Polyfills `CanvasRenderingContext2d.filter` capability of adopting CSS3 filters to canvas contexts at least partially.",
   "main": "dist/index.js",
   "files": [
@@ -16,9 +16,9 @@
     "url": "git@github.com:davidenke/context-filter-polyfill.git"
   },
   "author": {
-    "name": "Zalari GmbH",
-    "email": "info@zalari.de",
-    "url": "www.zalari.de"
+    "name": "David Enke",
+    "email": "david@enke.dev",
+    "url": "http://www.davidenke.de"
   },
   "license": "MIT",
   "scripts": {
@@ -32,7 +32,7 @@
     "start": "run-p start:*"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.81",
+    "@types/chrome": "0.0.83",
     "@types/jest": "24.0.11",
     "@types/puppeteer": "1.12.3",
     "http-server": "0.11.1",
@@ -42,13 +42,13 @@
     "jest-junit": "6.3.0",
     "npm-run-all": "4.1.5",
     "puppeteer": "1.14.0",
-    "rollup": "1.9.0",
+    "rollup": "1.10.1",
     "rollup-plugin-commonjs": "9.3.4",
     "rollup-plugin-terser": "4.0.4",
     "rollup-plugin-typescript2": "0.20.1",
     "ts-jest": "24.0.2",
-    "tslint": "5.15.0",
-    "typescript": "3.4.2"
+    "tslint": "5.16.0",
+    "typescript": "3.4.4"
   },
   "jest": {
     "setupFiles": [
