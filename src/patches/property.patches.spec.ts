@@ -7,7 +7,7 @@ describe('patches/property.patches', () => {
   let context: CanvasRenderingContext2D;
 
   beforeAll(() => {
-    applyPropertyPatches();
+    applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);
   });
 
   beforeEach(() => {

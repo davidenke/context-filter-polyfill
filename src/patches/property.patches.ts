@@ -2,8 +2,8 @@
 import { AvailableFilter } from '../enums/available-filter.enum';
 
 // apply property patches
-export function applyPropertyPatches() {
-  Object.defineProperty(HTMLCanvasElement.prototype, '__skipFilterPatch', { writable: true, value: false });
-  Object.defineProperty(HTMLCanvasElement.prototype, '__currentPathMirror', { writable: true, value: undefined });
-  Object.defineProperty(CanvasRenderingContext2D.prototype, 'filter', { writable: true, value: AvailableFilter.None });
+export function applyPropertyPatches(canvas: any, context: any) {
+  Object.defineProperty(canvas.prototype, '__skipFilterPatch', { writable: true, value: false });
+  Object.defineProperty(canvas.prototype, '__currentPathMirror', { writable: true, value: undefined });
+  Object.defineProperty(context.prototype, 'filter', { writable: true, value: AvailableFilter.None });
 }
