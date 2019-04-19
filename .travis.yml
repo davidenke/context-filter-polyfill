@@ -33,13 +33,14 @@ jobs:
     - stage: github pages
       if: branch = master
       script: echo "deploying github pages"
-      provider: pages
-      skip-cleanup: true
-      keep-history: true
-      local-dir: gh-pages
-      github-token: $GITHUB_TOKEN
-      on:
-        branch: master
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        keep-history: true
+        local-dir: gh-pages
+        github-token: $GITHUB_TOKEN
+        on:
+          branch: master
 
     - stage: npm release
       if: tag IS present
