@@ -39,7 +39,7 @@ SUPPORTED_FILTERS.set(AvailableFilter.Sepia, sepia);
 if (!supportsContextFilters()) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
-  applyPropertyPatches();
-  applySetterPatches();
-  applyMethodPatches();
+  applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);
+  applySetterPatches(CanvasRenderingContext2D);
+  applyMethodPatches(CanvasRenderingContext2D);
 }
