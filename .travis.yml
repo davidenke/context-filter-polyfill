@@ -4,6 +4,7 @@ cache:
   directories:
     - node_modules
     - dist
+    - gh-pages
 
 # install dependencies
 install:
