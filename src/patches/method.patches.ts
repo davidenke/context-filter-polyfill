@@ -21,8 +21,8 @@ export function applyMethodPatches(context: any) {
       const original = descriptor!.value;
       Object.defineProperty(context.prototype, member, {
         value: function (...args: any[]) {
-          // do not apply on mirror
-          if (this.canvas.__skipFilterPatch) {
+          // do not apply on mirror, but apply clearRect to original
+          if (this.canvas.__skipFilterPatch || member === 'clearRect') {
             return original.call(this, ...args);
           }
 

@@ -1,3 +1,4 @@
+import { imageDataMock } from '../mocks/mock.data';
 import { applyMethodPatches } from './method.patches';
 
 describe('patches/setter.patches', () => {
@@ -11,6 +12,7 @@ describe('patches/setter.patches', () => {
   beforeEach(() => {
     canvas = document.createElement('canvas');
     context = canvas.getContext('2d')!;
+    context.putImageData(imageDataMock, 0, 0);
   });
 
   afterEach(() => {
@@ -36,4 +38,18 @@ describe('patches/setter.patches', () => {
     context.setLineDash([3]);
     expect(canvas.__currentPathMirror).toBeUndefined();
   });
+
+  // @FIXME: use playwright and test this properly
+  // it('should allow clearRect, even if skip flag is set', () => {
+  //   const before = context
+  //     .getImageData(0, 0, 10, 10)
+  //     .data.slice(0, 10 * 10 * 4)
+  //     .toString();
+  //   context.clearRect(0, 0, 10, 10);
+  //   const after = context
+  //     .getImageData(0, 0, 10, 10)
+  //     .data.slice(0, 10 * 10 * 4)
+  //     .toString();
+  //   expect(before).not.toEqual(after);
+  // });
 });
