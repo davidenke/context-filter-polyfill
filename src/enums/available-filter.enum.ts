@@ -12,5 +12,5 @@ export enum AvailableFilter {
   Invert = 'invert',
   Opacity = 'opacity',
   Saturate = 'saturate',
-  Sepia = 'sepia'
+  Sepia = 'sepia',
 }

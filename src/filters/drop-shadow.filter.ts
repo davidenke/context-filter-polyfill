@@ -1,9 +1,15 @@
-import { Filter } from '../types/filter.type';
+import type { Filter } from '../types/filter.type';
 import { normalizeLength } from '../utils/filter.utils';
 
-export const dropShadow: Filter = (context, offsetX: string, offsetY: string, blurOrColor?: string, color?: string) => {
+export const dropShadow: Filter = (
+  context,
+  offsetX: string,
+  offsetY: string,
+  blurOrColor?: string,
+  color?: string,
+) => {
   // prepare a new temp canvas
-  const shadowContext = document.createElement('canvas').getContext('2d');
+  const shadowContext = document.createElement('canvas').getContext('2d')!;
 
   // normalize the params and apply to the temp context
   // be aware of different blur behavior in different browsers

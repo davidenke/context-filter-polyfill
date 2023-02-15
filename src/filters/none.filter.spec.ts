@@ -1,23 +1,21 @@
-import { CanvasMock } from '../mocks/canvas.mock';
-import { ContextMock } from '../mocks/context.mock';
+import { imageDataMock } from '../mocks/mock.data';
 import { none } from './none.filter';
 
 describe('filters/none', () => {
-
   let width: number;
   let height: number;
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
 
   beforeEach(() => {
-    canvas = new CanvasMock() as unknown as HTMLCanvasElement;
-    context = canvas.getContext('2d');
-    ({ width, height } = canvas);
+    canvas = document.createElement('canvas');
+    ({ height, width } = canvas);
+    context = canvas.getContext('2d')!;
+    context.putImageData(imageDataMock, 0, 0);
   });
 
-
   it('should always return a context', () => {
-    expect(none(context)).toBeInstanceOf(ContextMock);
+    expect(none(context)).toBeInstanceOf(CanvasRenderingContext2D);
   });
 
   it('should not manipulate image data', () => {
@@ -25,5 +23,4 @@ describe('filters/none', () => {
     const dataAfter = none(context).getImageData(0, 0, width, height).data.toString();
     expect(dataBefore).toEqual(dataAfter);
   });
-
 });

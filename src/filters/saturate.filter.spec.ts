@@ -1,24 +1,22 @@
-import { CanvasMock } from '../mocks/canvas.mock';
-import { ContextMock } from '../mocks/context.mock';
+import { imageDataMock } from '../mocks/mock.data';
 import { saturate } from './saturate.filter';
 
 describe('filters/saturate', () => {
-
   let width: number;
   let height: number;
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
 
   beforeEach(() => {
-    canvas = new CanvasMock() as unknown as HTMLCanvasElement;
-    context = canvas.getContext('2d');
-    ({ width, height } = canvas);
+    canvas = document.createElement('canvas');
+    ({ height, width } = canvas);
+    context = canvas.getContext('2d')!;
+    context.putImageData(imageDataMock, 0, 0);
   });
 
-
   it('should always return a context', () => {
-    expect(saturate(context)).toBeInstanceOf(ContextMock);
-    expect(saturate(context, '5')).toBeInstanceOf(ContextMock);
+    expect(saturate(context)).toBeInstanceOf(CanvasRenderingContext2D);
+    expect(saturate(context, '5')).toBeInstanceOf(CanvasRenderingContext2D);
   });
 
   it('should not manipulate image data with defaults', () => {
@@ -32,5 +30,4 @@ describe('filters/saturate', () => {
     const dataAfter = Array.from(saturate(context, '5').getImageData(0, 0, width, height).data);
     expect(dataBefore).not.toEqual(dataAfter);
   });
-
 });

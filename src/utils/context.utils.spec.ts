@@ -1,21 +1,19 @@
 import { createOffscreenContext, supportsContextFilters } from './context.utils';
 
 describe('utils/context.utils', () => {
-
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
   let offscreen: CanvasRenderingContext2D;
 
   beforeEach(() => {
     canvas = document.createElement('canvas') as HTMLCanvasElement;
-    context = canvas.getContext('2d');
+    context = canvas.getContext('2d')!;
     offscreen = createOffscreenContext(context);
   });
 
   it('should detect filter support', () => {
     expect(supportsContextFilters()).toBeTruthy();
   });
-
 
   it('should create an offscreen canvas', () => {
     expect(offscreen).toBeInstanceOf(CanvasRenderingContext2D);
@@ -30,5 +28,4 @@ describe('utils/context.utils', () => {
   it('should set an internal property flag to skip', () => {
     expect(offscreen.canvas).toHaveProperty('__skipFilterPatch');
   });
-
 });

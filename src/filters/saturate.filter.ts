@@ -1,4 +1,4 @@
-import { Filter } from '../types/filter.type';
+import type { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const saturate: Filter = (context, saturation = '1') => {
@@ -17,9 +17,9 @@ export const saturate: Filter = (context, saturation = '1') => {
   const { height, width } = context.canvas;
   const imageData = context.getImageData(0, 0, width, height);
   const { data } = imageData;
-  const lumR = (1 - amount) * .3086;
-  const lumG = (1 - amount) * .6094;
-  const lumB = (1 - amount) * .0820;
+  const lumR = (1 - amount) * 0.3086;
+  const lumG = (1 - amount) * 0.6094;
+  const lumB = (1 - amount) * 0.082;
   // tslint:disable-next-line no-bitwise
   const shiftW = width << 2;
 
@@ -32,11 +32,10 @@ export const saturate: Filter = (context, saturation = '1') => {
       const g = data[pos + 1];
       const b = data[pos + 2];
 
-      data[pos + 0] = ((lumR + amount) * r) + (lumG * g) + (lumB * b);
-      data[pos + 1] = (lumR * r) + ((lumG + amount) * g) + (lumB * b);
-      data[pos + 2] = (lumR * r) + (lumG * g) + ((lumB + amount) * b);
+      data[pos + 0] = (lumR + amount) * r + lumG * g + lumB * b;
+      data[pos + 1] = lumR * r + (lumG + amount) * g + lumB * b;
+      data[pos + 2] = lumR * r + lumG * g + (lumB + amount) * b;
     }
-
   }
 
   // set back image data to context

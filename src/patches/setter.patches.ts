@@ -4,14 +4,16 @@ import { createOffscreenContext } from '../utils/context.utils';
 export function applySetterPatches(context: any) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
-  Object
-    .keys(context.prototype)
+  Object.keys(context.prototype)
     // do not overload these
     .filter(member => PROTECTED_KEYS.indexOf(member) < 0)
     // get the whole descriptor
-    .map(member => ({ member, descriptor: Object.getOwnPropertyDescriptor(context.prototype, member) }))
+    .map(member => ({
+      member,
+      descriptor: Object.getOwnPropertyDescriptor(context.prototype, member),
+    }))
     // get setters only
-    .filter(({ descriptor }) => descriptor.set)
+    .filter(({ descriptor }) => descriptor!.set)
     // apply monkey-patch to pass through
     .forEach(({ member, descriptor }) => {
       // overload setter
@@ -19,7 +21,7 @@ export function applySetterPatches(context: any) {
       Object.defineProperty(context.prototype, member, {
         get: function () {
           if (this.canvas.__skipFilterPatch) {
-            return original.get.call(this);
+            return original!.get!.call(this);
           }
 
           // read from mirror
@@ -28,7 +30,7 @@ export function applySetterPatches(context: any) {
         set: function (value: any) {
           // do not apply on mirror
           if (this.canvas.__skipFilterPatch) {
-            return original.set.call(this, value);
+            return original!.set!.call(this, value);
           }
 
           // prepare mirror context if missing
@@ -38,7 +40,7 @@ export function applySetterPatches(context: any) {
 
           // apply to mirror
           this.canvas.__currentPathMirror[member] = value;
-        }
+        },
       });
     });
 }

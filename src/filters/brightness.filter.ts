@@ -1,4 +1,4 @@
-import { Filter } from '../types/filter.type';
+import type { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const brightness: Filter = (context, amount = '1') => {

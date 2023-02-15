@@ -13,5 +13,5 @@ export const DRAWING_FUNCTIONS = [
 
   'stroke',
   'strokeRect',
-  'strokeText'
+  'strokeText',
 ];

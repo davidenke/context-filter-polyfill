@@ -1,4 +1,4 @@
-import { Filter } from '../types/filter.type';
+import type { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const contrast: Filter = (context, amount = '1') => {
@@ -26,9 +26,9 @@ export const contrast: Filter = (context, amount = '1') => {
   // the fourth can be skipped as it's the alpha channel
   // https://gist.github.com/jonathantneal/2053866
   for (let i = 0; i < length; i += 4) {
-    data[i + 0] = ((((data[i + 0] / 255) - .5) * amount) + .5) * 255;
-    data[i + 1] = ((((data[i + 1] / 255) - .5) * amount) + .5) * 255;
-    data[i + 2] = ((((data[i + 2] / 255) - .5) * amount) + .5) * 255;
+    data[i + 0] = ((data[i + 0] / 255 - 0.5) * amount + 0.5) * 255;
+    data[i + 1] = ((data[i + 1] / 255 - 0.5) * amount + 0.5) * 255;
+    data[i + 2] = ((data[i + 2] / 255 - 0.5) * amount + 0.5) * 255;
   }
 
   // set back image data to context

@@ -1,24 +1,22 @@
-import { CanvasMock } from '../mocks/canvas.mock';
-import { ContextMock } from '../mocks/context.mock';
+import { imageDataMock } from '../mocks/mock.data';
 import { opacity } from './opacity.filter';
 
 describe('filters/opacity', () => {
-
   let width: number;
   let height: number;
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
 
   beforeEach(() => {
-    canvas = new CanvasMock() as unknown as HTMLCanvasElement;
-    context = canvas.getContext('2d');
-    ({ width, height } = canvas);
+    canvas = document.createElement('canvas');
+    ({ height, width } = canvas);
+    context = canvas.getContext('2d')!;
+    context.putImageData(imageDataMock, 0, 0);
   });
 
-
   it('should always return a context', () => {
-    expect(opacity(context)).toBeInstanceOf(ContextMock);
-    expect(opacity(context, '.5')).toBeInstanceOf(ContextMock);
+    expect(opacity(context)).toBeInstanceOf(CanvasRenderingContext2D);
+    expect(opacity(context, '.5')).toBeInstanceOf(CanvasRenderingContext2D);
   });
 
   it('should not manipulate image data with defaults', () => {
@@ -34,11 +32,9 @@ describe('filters/opacity', () => {
   });
 
   it('should have empty alpha channels on full opacity', () => {
-    const all = Array
-      .from(opacity(context, '0').getImageData(0, 0, width, height).data)
+    const all = Array.from(opacity(context, '0').getImageData(0, 0, width, height).data)
       .filter((_, index) => (index + 1) % 4 === 0)
       .reduce((sum, current) => sum + current, 0);
     expect(all).toBe(0);
   });
-
 });
