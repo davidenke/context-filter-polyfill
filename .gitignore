@@ -11,14 +11,8 @@
 **/build/
 **/dist/
 
-# we do not want to enforce ignored; because this might be user-specific especially for a MonoRepo
-# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
-# User-specific stuff
+# ide
 .vscode/
-.idea/*
-!.idea/runConfigurations/
-!.idea/codeStyleSettings.xml
-!.idea/codeStyles
 
 # logs
 lerna-debug.log
