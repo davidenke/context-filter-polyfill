@@ -14,6 +14,12 @@
     "strict": true,
     "target": "es6"
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "ts-node": {
+    "esm": true,
+    "files": true,
+    "compilerOptions": {
+      "module": "esnext",
+      "target": "esnext"
+    }
+  }
 }

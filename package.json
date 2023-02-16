@@ -2,6 +2,7 @@
   "name": "context-filter-polyfill",
   "version": "0.2.4",
   "description": "Polyfills `CanvasRenderingContext2d.filter` capability of adopting CSS3 filters to canvas contexts at least partially.",
+  "type": "module",
   "main": "dist/index.js",
   "files": [
     "dist/index.js",
@@ -26,10 +27,9 @@
     "test": "jest --coverage",
     "test:watch": "npm test -- --watch",
     "test:ci": "npm test -- --ci --runInBand --reporters=default --reporters=jest-junit",
-    "prebundle": "rimraf dist",
-    "bundle": "esbuild src/index.ts src/index.html --loader:.html=copy --outdir=dist --format=iife --bundle --minify",
-    "build": "npm run bundle -- --sourcemap",
-    "start": "npm run bundle -- --servedir=dist --serve --watch"
+    "prebuild": "rimraf dist",
+    "build": "ts-node esbuild.config.ts",
+    "start": "ts-node esbuild.config.ts --serve"
   },
   "devDependencies": {
     "@types/chrome": "0.0.213",
@@ -43,6 +43,7 @@
     "prettier": "2.8.4",
     "rimraf": "4.1.2",
     "ts-jest": "29.0.5",
+    "ts-node": "10.9.1",
     "tslint": "6.1.3",
     "typescript": "4.9.5"
   },
