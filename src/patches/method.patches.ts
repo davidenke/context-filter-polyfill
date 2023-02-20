@@ -22,7 +22,7 @@ export function applyMethodPatches(context: any) {
       Object.defineProperty(context.prototype, member, {
         value: function (...args: any[]) {
           // do not apply on mirror, but apply clearRect to original
-          if (this.canvas.__skipFilterPatch || member === 'clearRect') {
+          if (this.canvas.__skipFilterPatch) {
             return original.call(this, ...args);
           }
 
@@ -35,7 +35,7 @@ export function applyMethodPatches(context: any) {
           const result = this.canvas.__currentPathMirror[member](...args);
 
           // draw functions may get filters applied and copied back to original
-          if (DRAWING_FUNCTIONS.indexOf(member) > -1) {
+          if (DRAWING_FUNCTIONS.includes(member)) {
             // apply the filter
             applyFilter(this.canvas.__currentPathMirror, this.filter);
 

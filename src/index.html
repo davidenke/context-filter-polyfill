@@ -239,5 +239,26 @@
       };
       imgIssue.src = '/mocks/mock-2.png';
     </script>
+
+    <canvas class="comp" width="300" height="150"></canvas>
+    <script>
+      const ctxComp = document.querySelector('canvas.comp').getContext('2d');
+      ctxComp.globalCompositeOperation = 'xor';
+      ctxComp.filter = 'invert(.75) blur(6px)';
+      ctxComp.fillStyle = 'blue';
+      ctxComp.fillRect(10, 10, 100, 100);
+      ctxComp.fillStyle = 'red';
+      ctxComp.fillRect(50, 50, 100, 100);
+    </script>
+
+    <canvas class="clear" width="150" height="150"></canvas>
+    <script>
+      const ctxClear = document.querySelector('canvas.clear').getContext('2d');
+      ctxClear.globalCompositeOperation = 'xor';
+      ctxClear.filter = 'blur(5px)';
+      ctxClear.fillStyle = 'red';
+      ctxClear.fillRect(10, 10, 130, 130);
+      ctxClear.clearRect(35, 35, 80, 80);
+    </script>
   </body>
 </html>
