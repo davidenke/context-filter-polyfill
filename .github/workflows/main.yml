@@ -1,0 +1,103 @@
+name: Build and release
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: v1-npm-deps-
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:ci
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: v1-npm-deps-
+      - run: npm ci
+      - run: npm run build
+
+  # Deploy to GitHub Pages
+  gh-pages:
+    if: github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: v1-npm-deps-
+      - uses: actions/configure-pages@v3
+      - run: npm ci
+      - run: npm run build
+      - run: mkdir -p ./gh-pages/dist
+      - run: cp -R dist/* ./gh-pages/dist
+      - run: cp index.html README.md ./gh-pages
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: './gh-pages'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+
+  # Deploy to npm
+  release:
+    if: github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+          registry-url: https://registry.npmjs.org/
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: v1-npm-deps-
+      - run: npm ci
+      - run: npm run build
+
+      - run: git config user.email "${{ secrets.NPM_EMAIL }}"
+      - run: git config user.name "${{ secrets.NPM_USERNAME }}"
+      - run: npm run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
