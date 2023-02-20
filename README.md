@@ -19,10 +19,7 @@ Add the polyfill to your page via script tag from a CDN:
 
 ```html
 <head>
-  <script
-    type="module"
-    src="https://cdn.jsdelivr.net/npm/context-filter-polyfill/dist/index.min.js"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/context-filter-polyfill/dist/index.min.js"></script>
 </head>
 ```
 
