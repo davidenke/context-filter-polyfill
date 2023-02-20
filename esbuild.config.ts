@@ -12,7 +12,7 @@ const { port, serve } = values;
 const options: BuildOptions = {
   entryPoints: ['src/index.ts', 'src/index.html', 'src/mocks/mock-1.jpg', 'src/mocks/mock-2.png'],
   outdir: 'dist',
-  format: 'iife',
+  format: 'esm',
   bundle: true,
   sourcemap: true,
   minify: true,
