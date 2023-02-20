@@ -3,5 +3,5 @@ export const PROTECTED_KEYS = [
   '__currentPathMirror',
   'canvas',
   'filter',
-  'getImageData'
+  'getImageData',
 ];

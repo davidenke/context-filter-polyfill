@@ -1,7 +1,8 @@
 {
   "name": "context-filter-polyfill",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "Polyfills `CanvasRenderingContext2d.filter` capability of adopting CSS3 filters to canvas contexts at least partially.",
+  "type": "module",
   "main": "dist/index.js",
   "files": [
     "dist/index.js",
@@ -26,34 +27,31 @@
     "test": "jest --coverage",
     "test:watch": "npm test -- --watch",
     "test:ci": "npm test -- --ci --runInBand --reporters=default --reporters=jest-junit",
-    "build": "rollup --config --environment NODE_ENV:production",
-    "start:build": "rollup --config --environment NODE_ENV:development --watch",
-    "start:server": "http-server .",
-    "start": "run-p start:*"
+    "prebuild": "rimraf dist",
+    "build": "ts-node esbuild.config.ts",
+    "start": "ts-node esbuild.config.ts --serve"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.83",
-    "@types/jest": "24.0.11",
-    "@types/puppeteer": "1.12.3",
-    "http-server": "0.11.1",
-    "jest": "24.7.1",
-    "jest-canvas-mock": "2.0.0-beta.1",
-    "jest-cli": "24.7.1",
+    "@types/chrome": "0.0.213",
+    "@types/jest": "29.4.0",
+    "esbuild": "0.17.8",
+    "jest": "29.4.3",
+    "jest-canvas-mock": "2.4.0",
+    "jest-environment-jsdom": "29.4.3",
     "jest-junit": "6.3.0",
     "npm-run-all": "4.1.5",
-    "puppeteer": "1.14.0",
-    "rollup": "1.10.1",
-    "rollup-plugin-commonjs": "9.3.4",
-    "rollup-plugin-terser": "4.0.4",
-    "rollup-plugin-typescript2": "0.20.1",
-    "ts-jest": "24.0.2",
-    "tslint": "5.16.0",
-    "typescript": "3.4.4"
+    "prettier": "2.8.4",
+    "rimraf": "4.1.2",
+    "ts-jest": "29.0.5",
+    "ts-node": "10.9.1",
+    "tslint": "6.1.3",
+    "typescript": "4.9.5"
   },
   "jest": {
     "setupFiles": [
       "jest-canvas-mock"
     ],
+    "testEnvironment": "jsdom",
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },

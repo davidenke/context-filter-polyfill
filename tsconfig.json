@@ -6,20 +6,16 @@
     "experimentalDecorators": true,
     "jsx": "react",
     "jsxFactory": "h",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "module": "es2015",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "target": "es5"
+    "strict": true,
+    "target": "esnext"
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "ts-node": {
+    "esm": true,
+    "files": true
+  }
 }

@@ -1,4 +1,4 @@
-import { Filter } from '../types/filter.type';
+import type { Filter } from '../types/filter.type';
 import { normalizeNumberPercentage } from '../utils/filter.utils';
 
 export const grayscale: Filter = (context, amount = '0') => {
@@ -25,7 +25,7 @@ export const grayscale: Filter = (context, amount = '0') => {
   // n * 4 + 2 is blue
   // the fourth can be skipped as it's the alpha channel
   for (let i = 0; i < length; i += 4) {
-    const luma = data[i] * .2126 + data[i + 1] * .7152 + data[i + 2] * .0722;
+    const luma = data[i] * 0.2126 + data[i + 1] * 0.7152 + data[i + 2] * 0.0722;
     data[i + 0] += (luma - data[i + 0]) * amount;
     data[i + 1] += (luma - data[i + 1]) * amount;
     data[i + 2] += (luma - data[i + 2]) * amount;

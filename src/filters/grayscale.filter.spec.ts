@@ -1,24 +1,22 @@
-import { CanvasMock } from '../mocks/canvas.mock';
-import { ContextMock } from '../mocks/context.mock';
+import { imageDataMock } from '../mocks/mock.data';
 import { grayscale } from './grayscale.filter';
 
 describe('filters/grayscale', () => {
-
   let width: number;
   let height: number;
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
 
   beforeEach(() => {
-    canvas = new CanvasMock() as unknown as HTMLCanvasElement;
-    context = canvas.getContext('2d');
-    ({ width, height } = canvas);
+    canvas = document.createElement('canvas');
+    ({ height, width } = canvas);
+    context = canvas.getContext('2d')!;
+    context.putImageData(imageDataMock, 0, 0);
   });
 
-
   it('should always return a context', () => {
-    expect(grayscale(context)).toBeInstanceOf(ContextMock);
-    expect(grayscale(context, '1')).toBeInstanceOf(ContextMock);
+    expect(grayscale(context)).toBeInstanceOf(CanvasRenderingContext2D);
+    expect(grayscale(context, '1')).toBeInstanceOf(CanvasRenderingContext2D);
   });
 
   it('should not manipulate image data with defaults', () => {
@@ -32,5 +30,4 @@ describe('filters/grayscale', () => {
     const dataAfter = Array.from(grayscale(context, '1').getImageData(0, 0, width, height).data);
     expect(dataBefore).not.toEqual(dataAfter);
   });
-
 });

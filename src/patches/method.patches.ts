@@ -6,21 +6,23 @@ import { applyFilter } from '../utils/filter.utils';
 export function applyMethodPatches(context: any) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
-  Object
-    .keys(context.prototype)
+  Object.keys(context.prototype)
     // do not overload these
     .filter(member => PROTECTED_KEYS.indexOf(member) < 0)
     // get the whole descriptor
-    .map(member => ({ member, descriptor: Object.getOwnPropertyDescriptor(context.prototype, member) }))
+    .map(member => ({
+      member,
+      descriptor: Object.getOwnPropertyDescriptor(context.prototype, member),
+    }))
     // get methods only
-    .filter(({ descriptor }) => descriptor.value && typeof descriptor.value === 'function')
+    .filter(({ descriptor }) => descriptor!.value && typeof descriptor!.value === 'function')
     // apply monkey-patch to pass through
     .forEach(({ member, descriptor }) => {
-      const original = descriptor.value;
+      const original = descriptor!.value;
       Object.defineProperty(context.prototype, member, {
-        value: function (...args) {
-          // do not apply on mirror
-          if (this.canvas.__skipFilterPatch) {
+        value: function (...args: any[]) {
+          // do not apply on mirror, but apply clearRect to original
+          if (this.canvas.__skipFilterPatch || member === 'clearRect') {
             return original.call(this, ...args);
           }
 
@@ -59,7 +61,7 @@ export function applyMethodPatches(context: any) {
           }
 
           return result;
-        }
+        },
       });
     });
 }

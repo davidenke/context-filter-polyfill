@@ -1,4 +1,4 @@
-import { Filter } from '../types/filter.type';
+import type { Filter } from '../types/filter.type';
 import { normalizeAngle } from '../utils/filter.utils';
 
 export const hueRotate: Filter = (context, rotation = '0deg') => {
@@ -19,7 +19,7 @@ export const hueRotate: Filter = (context, rotation = '0deg') => {
   // n * 4 + 2 is blue
   // the fourth can be skipped as it's the alpha channel
   // https://github.com/makoConstruct/canvas-hue-rotate/blob/master/hueShiftCanvas.js
-  const h = (amount % 1 + 1) % 1; // wraps the angle to unit interval, even when negative
+  const h = ((amount % 1) + 1) % 1; // wraps the angle to unit interval, even when negative
   const th = h * 3;
   const thr = Math.floor(th);
   const d = th - thr;
@@ -29,6 +29,9 @@ export const hueRotate: Filter = (context, rotation = '0deg') => {
   let mg, mh, mi;
 
   switch (thr) {
+    default:
+      ma = mb = mc = md = me = mf = mg = mh = mi = 0;
+      break;
     case 0:
       ma = b;
       mb = 0;

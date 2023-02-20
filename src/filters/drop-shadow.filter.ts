@@ -1,9 +1,21 @@
-import { Filter } from '../types/filter.type';
+import type { Filter } from '../types/filter.type';
 import { normalizeLength } from '../utils/filter.utils';
 
-export const dropShadow: Filter = (context, offsetX: string, offsetY: string, blurOrColor?: string, color?: string) => {
+export const dropShadow: Filter = (
+  context,
+  offsetX: string,
+  offsetY: string,
+  blurOrColor?: string,
+  color?: string,
+) => {
   // prepare a new temp canvas
-  const shadowContext = document.createElement('canvas').getContext('2d');
+  const shadowContext = document.createElement('canvas').getContext('2d')!;
+  const { width, height } = context.canvas;
+
+  // set the same size of the original canvas
+  // https://github.com/davidenke/context-filter-polyfill/issues/9
+  shadowContext.canvas.width = width;
+  shadowContext.canvas.height = height;
 
   // normalize the params and apply to the temp context
   // be aware of different blur behavior in different browsers
@@ -17,7 +29,6 @@ export const dropShadow: Filter = (context, offsetX: string, offsetY: string, bl
   shadowContext.drawImage(context.canvas, 0, 0);
 
   // set back shadowed contents
-  const { width, height } = context.canvas;
   context.putImageData(shadowContext.getImageData(0, 0, width, height), 0, 0);
 
   // return the context itself
