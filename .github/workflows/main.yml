@@ -65,9 +65,8 @@ jobs:
       - uses: actions/configure-pages@v3
       - run: npm ci
       - run: npm run build
-      - run: mkdir -p ./gh-pages/dist
-      - run: cp -R dist/* ./gh-pages/dist
-      - run: cp index.html README.md ./gh-pages
+      - run: cp -R dist gh-pages
+      - run: cp README.md gh-pages/
       - uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
