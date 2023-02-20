@@ -7,19 +7,15 @@
     "jsx": "react",
     "jsxFactory": "h",
     "lib": ["dom", "esnext"],
-    "module": "es6",
+    "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "target": "es6"
+    "target": "esnext"
   },
   "ts-node": {
     "esm": true,
-    "files": true,
-    "compilerOptions": {
-      "module": "esnext",
-      "target": "esnext"
-    }
+    "files": true
   }
 }

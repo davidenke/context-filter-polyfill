@@ -10,7 +10,7 @@ const { values } = parseArgs({
 const { port, serve } = values;
 
 const options: BuildOptions = {
-  entryPoints: ['src/index.ts', 'src/index.html'],
+  entryPoints: ['src/index.ts', 'src/index.html', 'src/mocks/mock-1.jpg', 'src/mocks/mock-2.png'],
   outdir: 'dist',
   format: 'iife',
   bundle: true,
@@ -18,7 +18,7 @@ const options: BuildOptions = {
   minify: true,
   splitting: false,
   target: ['es6'],
-  loader: { '.html': 'copy' },
+  loader: { '.html': 'copy', '.jpg': 'copy', '.png': 'copy' },
 };
 
 try {
