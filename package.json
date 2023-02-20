@@ -4,9 +4,9 @@
   "description": "Polyfills `CanvasRenderingContext2d.filter` capability of adopting CSS3 filters to canvas contexts at least partially.",
   "type": "module",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist/index.js",
-    "index.html",
+    "dist",
     "README.md"
   ],
   "publishConfig": {
@@ -29,6 +29,7 @@
     "test:ci": "npm test -- --ci --runInBand --reporters=default --reporters=jest-junit",
     "prebuild": "rimraf dist",
     "build": "ts-node esbuild.config.ts",
+    "postbuild": "tsc --emitDeclarationOnly --declaration --outFile dist/index.d.ts src/index.ts",
     "start": "ts-node esbuild.config.ts --serve",
     "release": "release-it --ci --verbose"
   },
