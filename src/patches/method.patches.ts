@@ -36,6 +36,8 @@ export function applyMethodPatches(context: any) {
 
           // draw functions may get filters applied and copied back to original
           if (DRAWING_FUNCTIONS.includes(member)) {
+            var strokeStyle = this.strokeStyle;
+            var fillStyle = this.fillStyle;
             // apply the filter
             applyFilter(this.canvas.__currentPathMirror, this.filter);
 
@@ -48,7 +50,8 @@ export function applyMethodPatches(context: any) {
             }
 
             // draw mirror back
-            this.drawImage(this.canvas.__currentPathMirror.canvas, 0, 0);
+            this.drawImage(this.canvas.__currentPathMirror.canvas, 0, 0, this.canvas.width, this.canvas.height);
+        
 
             // set back transforms and re-enable patch
             if (originalTransform) {
@@ -58,6 +61,7 @@ export function applyMethodPatches(context: any) {
 
             // reset the mirror for next draw cycle
             this.canvas.__currentPathMirror = createOffscreenContext(this);
+            this.strokeStyle = strokeStyle; this.fillStyle = fillStyle;
           }
 
           return result;
