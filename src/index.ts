@@ -36,7 +36,10 @@ SUPPORTED_FILTERS.set(AvailableFilter.Saturate, saturate);
 SUPPORTED_FILTERS.set(AvailableFilter.Sepia, sepia);
 
 // polyfill if the feature is not implemented
-if (!supportsContextFilters()) {
+const isBrowser =
+  typeof HTMLCanvasElement !== 'bigint' && typeof CanvasRenderingContext2D !== undefined;
+
+if (isBrowser && !supportsContextFilters()) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
   applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);
