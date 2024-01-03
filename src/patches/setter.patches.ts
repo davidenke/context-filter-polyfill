@@ -1,7 +1,7 @@
 import { PROTECTED_KEYS } from '../globals/protected-keys.global';
 import { createOffscreenContext } from '../utils/context.utils';
 
-export function applySetterPatches(context: any) {
+export function applySetterPatches(context: new () => CanvasRenderingContext2D) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
   Object.keys(context.prototype)
@@ -27,7 +27,7 @@ export function applySetterPatches(context: any) {
           // read from mirror
           return this.canvas.__currentPathMirror[member];
         },
-        set: function (value: any) {
+        set: function (value: unknown) {
           // do not apply on mirror
           if (this.canvas.__skipFilterPatch) {
             return original!.set!.call(this, value);
