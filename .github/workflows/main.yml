@@ -1,9 +1,9 @@
 name: Build and release
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 concurrency:
   group: 'pages'
@@ -43,7 +43,7 @@ jobs:
       - run: npm run build
 
   github-pages:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -78,7 +78,7 @@ jobs:
 
   # Deploy to npm
   release:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:

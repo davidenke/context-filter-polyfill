@@ -1,6 +1,6 @@
 # context-filter-polyfill
 
-[![Build Status](https://github.com/davidenke/context-filter-polyfill/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/davidenke/context-filter-polyfill)
+[![Build Status](https://github.com/davidenke/context-filter-polyfill/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/davidenke/context-filter-polyfill)
 
 https://davidenke.github.io/context-filter-polyfill/
 
