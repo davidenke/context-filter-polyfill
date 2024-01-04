@@ -29,8 +29,7 @@
     "test:ci": "wtr --ci",
     "prebuild": "rimraf dist",
     "build": "ts-node esbuild.config.ts",
-    "start": "ts-node esbuild.config.ts --serve",
-    "release": "release-it --ci --verbose"
+    "start": "ts-node esbuild.config.ts --serve"
   },
   "devDependencies": {
     "@esm-bundle/chai": "4.3.4-fix.0",
@@ -49,7 +48,6 @@
     "mocha-junit-reporter": "2.2.1",
     "npm-run-all": "4.1.5",
     "prettier": "3.1.1",
-    "release-it": "17.0.1",
     "rimraf": "5.0.5",
     "sinon": "17.0.1",
     "sinon-chai-es": "3.7.0",
