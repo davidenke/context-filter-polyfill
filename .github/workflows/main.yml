@@ -28,6 +28,7 @@ jobs:
       - uses: mikepenz/action-junit-report@v4
         if: success() || failure()
         with:
+          check_name: "report"
           report_paths: "**/reports/junit.xml"
 
   build:
@@ -74,7 +75,7 @@ jobs:
           path: "dist"
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v2
 
   release:
     if: github.ref == 'refs/heads/main'
