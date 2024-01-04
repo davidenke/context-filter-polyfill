@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
@@ -25,6 +25,10 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run test:ci
+      - uses: mikepenz/action-junit-report@v4
+        if: success() || failure()
+        with:
+          report_paths: "**/reports/junit.xml"
 
   build:
     needs: test
@@ -71,7 +75,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'dist'
+          path: "dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
