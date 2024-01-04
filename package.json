@@ -24,49 +24,36 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint",
-    "test": "jest --coverage",
-    "test:watch": "npm test -- --watch",
-    "test:ci": "npm test -- --ci --runInBand --reporters=default --reporters=jest-junit",
+    "test": "wtr",
+    "test:watch": "wtr --watch",
+    "test:ci": "wtr --ci",
     "prebuild": "rimraf dist",
     "build": "ts-node esbuild.config.ts",
     "start": "ts-node esbuild.config.ts --serve",
     "release": "release-it --ci --verbose"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.254",
-    "@types/jest": "29.5.11",
+    "@esm-bundle/chai": "4.3.4-fix.0",
+    "@types/mocha": "10.0.6",
+    "@types/sinon": "17.0.2",
+    "@types/sinon-chai": "3.2.12",
     "@typescript-eslint/eslint-plugin": "6.17.0",
     "@typescript-eslint/parser": "6.17.0",
+    "@web/dev-server-esbuild": "1.0.1",
+    "@web/test-runner": "0.18.0",
+    "@web/test-runner-junit-reporter": "0.7.0",
     "esbuild": "0.19.11",
+    "esbuild-plugin-d.ts": "1.2.2",
     "eslint": "8.56.0",
-    "jest": "29.7.0",
-    "jest-canvas-mock": "2.5.2",
-    "jest-environment-jsdom": "29.7.0",
-    "jest-junit": "16.0.0",
+    "mocha": "10.2.0",
+    "mocha-junit-reporter": "2.2.1",
     "npm-run-all": "4.1.5",
     "prettier": "3.1.1",
     "release-it": "17.0.1",
     "rimraf": "5.0.5",
-    "ts-jest": "29.1.1",
+    "sinon": "17.0.1",
+    "sinon-chai-es": "3.7.0",
     "ts-node": "10.9.2",
     "typescript": "5.3.3"
-  },
-  "jest": {
-    "setupFiles": [
-      "jest-canvas-mock"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      ".(ts|tsx)": "ts-jest"
-    },
-    "reporters": [
-      "default",
-      "jest-junit"
-    ]
-  },
-  "jest-junit": {
-    "suiteName": "unit tests",
-    "outputDirectory": "./reports",
-    "outputName": "./junit.xml"
   }
 }
