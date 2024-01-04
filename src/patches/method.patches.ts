@@ -3,7 +3,7 @@ import { DRAWING_FUNCTIONS } from '../globals/drawing-functions.global';
 import { PROTECTED_KEYS } from '../globals/protected-keys.global';
 import { applyFilter } from '../utils/filter.utils';
 
-export function applyMethodPatches(context: any) {
+export function applyMethodPatches(context: new () => CanvasRenderingContext2D) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
   Object.keys(context.prototype)
@@ -20,7 +20,7 @@ export function applyMethodPatches(context: any) {
     .forEach(({ member, descriptor }) => {
       const original = descriptor!.value;
       Object.defineProperty(context.prototype, member, {
-        value: function (...args: any[]) {
+        value: function (...args: unknown[]) {
           // do not apply on mirror, but apply clearRect to original
           if (this.canvas.__skipFilterPatch) {
             return original.call(this, ...args);

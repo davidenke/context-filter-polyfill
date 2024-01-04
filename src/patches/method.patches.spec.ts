@@ -1,3 +1,4 @@
+import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
 import { applyMethodPatches } from './method.patches';
 
@@ -5,7 +6,7 @@ describe('patches/setter.patches', () => {
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
 
-  beforeAll(() => {
+  before(() => {
     applyMethodPatches(CanvasRenderingContext2D);
   });
 
@@ -19,24 +20,20 @@ describe('patches/setter.patches', () => {
     canvas.__skipFilterPatch = false;
   });
 
-  it('should not have a mirror canvas initially', () => {
-    expect(canvas.__currentPathMirror).toBeUndefined();
+  it('should have a mirror canvas after calling a method', () => {
+    context.getLineDash();
+    expect(canvas.__currentPathMirror).to.be.instanceOf(CanvasRenderingContext2D);
   });
 
-  // it('should have a mirror canvas after calling a method', () => {
-  //   context.getLineDash();
-  //   expect(canvas.__currentPathMirror).toBeInstanceOf(CanvasRenderingContext2D);
-  // });
-
-  // it('should mirror method', () => {
-  //   context.setLineDash([3]);
-  //   expect(canvas.__currentPathMirror.getLineDash()).toEqual([3, 3]);
-  // });
+  it('should mirror method', () => {
+    context.setLineDash([3]);
+    expect(canvas.__currentPathMirror!.getLineDash()).to.deep.equal([3, 3]);
+  });
 
   it('should not mirror method if skip flag is set', () => {
     canvas.__skipFilterPatch = true;
     context.setLineDash([3]);
-    expect(canvas.__currentPathMirror).toBeUndefined();
+    expect(canvas.__currentPathMirror!.getLineDash()).to.be.empty;
   });
 
   // @FIXME: use playwright and test this properly
@@ -50,6 +47,6 @@ describe('patches/setter.patches', () => {
   //     .getImageData(0, 0, 10, 10)
   //     .data.slice(0, 10 * 10 * 4)
   //     .toString();
-  //   expect(before).not.toEqual(after);
+  //   expect(before).not.to.equal(after);
   // });
 });

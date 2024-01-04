@@ -1,3 +1,4 @@
+import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
 import { none } from './none.filter';
 
@@ -15,12 +16,12 @@ describe('filters/none', () => {
   });
 
   it('should always return a context', () => {
-    expect(none(context)).toBeInstanceOf(CanvasRenderingContext2D);
+    expect(none(context)).to.be.instanceOf(CanvasRenderingContext2D);
   });
 
   it('should not manipulate image data', () => {
     const dataBefore = context.getImageData(0, 0, width, height).data.toString();
     const dataAfter = none(context).getImageData(0, 0, width, height).data.toString();
-    expect(dataBefore).toEqual(dataAfter);
+    expect(dataBefore).to.equal(dataAfter);
   });
 });

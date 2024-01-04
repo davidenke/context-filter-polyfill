@@ -1,6 +1,6 @@
 declare global {
   interface HTMLCanvasElement {
-    __currentPathMirror?: boolean;
+    __currentPathMirror?: CanvasRenderingContext2D;
     __skipFilterPatch?: boolean;
   }
 }

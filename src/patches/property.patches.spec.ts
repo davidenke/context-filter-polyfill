@@ -1,3 +1,4 @@
+import { expect } from '@esm-bundle/chai';
 import { AvailableFilter } from '../enums/available-filter.enum';
 import { applyPropertyPatches } from './property.patches';
 
@@ -5,7 +6,7 @@ describe('patches/property.patches', () => {
   let canvas: HTMLCanvasElement;
   let context: CanvasRenderingContext2D;
 
-  beforeAll(() => {
+  before(() => {
     applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);
   });
 
@@ -19,26 +20,26 @@ describe('patches/property.patches', () => {
   });
 
   it('should apply internal skip flag property', () => {
-    expect(canvas).toHaveProperty('__skipFilterPatch');
+    expect(canvas).to.have.property('__skipFilterPatch');
   });
 
   it('should set internal skip flag property default', () => {
-    expect(canvas.__skipFilterPatch).toBeFalsy();
+    expect(canvas.__skipFilterPatch).to.be.false;
   });
 
   it('should apply internal mirror context', () => {
-    expect(canvas).toHaveProperty('__currentPathMirror');
+    expect(canvas).to.have.property('__currentPathMirror');
   });
 
   it('should set internal mirror context default', () => {
-    expect(canvas.__currentPathMirror).toBeUndefined();
+    expect(canvas.__currentPathMirror).to.be.undefined;
   });
 
   it('should prepare filter property', () => {
-    expect(context).toHaveProperty('filter');
+    expect(context).to.have.property('filter');
   });
 
   it('should set filter property default', () => {
-    expect(context.filter).toBe(AvailableFilter.None);
+    expect(context.filter).to.equal(AvailableFilter.None);
   });
 });

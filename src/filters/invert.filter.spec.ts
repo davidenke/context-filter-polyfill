@@ -1,3 +1,4 @@
+import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
 import { invert } from './invert.filter';
 
@@ -14,14 +15,14 @@ describe('filters/invert', () => {
   });
 
   it('should always return a context', () => {
-    expect(invert(context)).toBeInstanceOf(CanvasRenderingContext2D);
-    expect(invert(context, '1')).toBeInstanceOf(CanvasRenderingContext2D);
+    expect(invert(context)).to.be.instanceOf(CanvasRenderingContext2D);
+    expect(invert(context, '1')).to.be.instanceOf(CanvasRenderingContext2D);
   });
 
   it('should not manipulate image data with defaults', () => {
     const dataBefore = context.getImageData(0, 0, size, size).data.toString();
     const dataAfter = invert(context).getImageData(0, 0, size, size).data.toString();
-    expect(dataBefore).toEqual(dataAfter);
+    expect(dataBefore).to.equal(dataAfter);
   });
 
   // @FIXME: use playwright and test this properly
@@ -30,6 +31,6 @@ describe('filters/invert', () => {
   //   const dataAfter = invert(context, '1')
   //     .getImageData(0, 0, size, size, { colorSpace: 'srgb' })
   //     .data.toString();
-  //   expect(dataBefore).not.toEqual(dataAfter);
+  //   expect(dataBefore).not.to.equal(dataAfter);
   // });
 });
