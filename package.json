@@ -29,7 +29,6 @@
     "test:ci": "npm test -- --ci --runInBand --reporters=default --reporters=jest-junit",
     "prebuild": "rimraf dist",
     "build": "ts-node esbuild.config.ts",
-    "postbuild": "tsc --emitDeclarationOnly --declaration --outFile dist/index.d.ts src/index.ts",
     "start": "ts-node esbuild.config.ts --serve",
     "release": "release-it --ci --verbose"
   },

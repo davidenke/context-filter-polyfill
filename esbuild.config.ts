@@ -1,5 +1,6 @@
 import { parseArgs } from 'node:util';
 import { type BuildOptions, build, context } from 'esbuild';
+import { dtsPlugin } from 'esbuild-plugin-d.ts';
 
 const { values } = parseArgs({
   options: {
@@ -19,6 +20,7 @@ const options: BuildOptions = {
   splitting: false,
   target: ['es6'],
   loader: { '.html': 'copy', '.jpg': 'copy', '.png': 'copy' },
+  plugins: [dtsPlugin()],
 };
 
 try {
