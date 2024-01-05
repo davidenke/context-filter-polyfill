@@ -10,17 +10,23 @@ export function applyMethodPatches(context: new () => CanvasRenderingContext2D) 
     // do not overload these
     .filter(member => PROTECTED_KEYS.indexOf(member) < 0)
     // get the whole descriptor
-    .map(member => ({
-      member,
-      descriptor: Object.getOwnPropertyDescriptor(context.prototype, member),
-    }))
+    .map(
+      member =>
+        ({
+          member,
+          descriptor: Object.getOwnPropertyDescriptor(context.prototype, member),
+        }) as {
+          member: keyof CanvasRenderingContext2D;
+          descriptor: PropertyDescriptor | undefined;
+        },
+    )
     // get methods only
     .filter(({ descriptor }) => descriptor!.value && typeof descriptor!.value === 'function')
     // apply monkey-patch to pass through
     .forEach(({ member, descriptor }) => {
       const original = descriptor!.value;
       Object.defineProperty(context.prototype, member, {
-        value: function (...args: unknown[]) {
+        value: function (this: CanvasRenderingContext2D, ...args: unknown[]) {
           // do not apply on mirror, but apply clearRect to original
           if (this.canvas.__skipFilterPatch) {
             return original.call(this, ...args);
@@ -28,11 +34,11 @@ export function applyMethodPatches(context: new () => CanvasRenderingContext2D) 
 
           // prepare mirror context if missing
           if (!this.canvas.__currentPathMirror) {
-            this.canvas.__currentPathMirror = createOffscreenContext(this);
+            this.canvas.__currentPathMirror = createOffscreenContext();
           }
 
           // apply to mirror
-          const result = this.canvas.__currentPathMirror[member](...args);
+          const result = (this.canvas.__currentPathMirror as any)[member](...args);
 
           // draw functions may get filters applied and copied back to original
           if (DRAWING_FUNCTIONS.includes(member)) {
@@ -48,7 +54,8 @@ export function applyMethodPatches(context: new () => CanvasRenderingContext2D) 
             }
 
             // draw mirror back
-            this.drawImage(this.canvas.__currentPathMirror.canvas, 0, 0);
+            const { canvas } = this.canvas.__currentPathMirror;
+            this.drawImage(canvas, 0, 0);
 
             // set back transforms and re-enable patch
             if (originalTransform) {
@@ -57,7 +64,7 @@ export function applyMethodPatches(context: new () => CanvasRenderingContext2D) 
             this.canvas.__skipFilterPatch = false;
 
             // reset the mirror for next draw cycle
-            this.canvas.__currentPathMirror = createOffscreenContext(this);
+            this.canvas.__currentPathMirror = createOffscreenContext();
           }
 
           return result;
