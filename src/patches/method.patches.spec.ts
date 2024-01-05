@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
+import { applyCanvasPatches } from './canvas.patches';
 import { applyMethodPatches } from './method.patches';
 
 describe('patches/setter.patches', () => {
@@ -7,6 +8,7 @@ describe('patches/setter.patches', () => {
   let context: CanvasRenderingContext2D;
 
   before(() => {
+    applyCanvasPatches(HTMLCanvasElement);
     applyMethodPatches(CanvasRenderingContext2D);
   });
 
@@ -29,6 +31,15 @@ describe('patches/setter.patches', () => {
   it('should mirror method', () => {
     context.setLineDash([3]);
     expect(canvas.__currentPathMirror!.getLineDash()).to.deep.equal([3, 3]);
+  });
+
+  it('should reflect all canvas properties', () => {
+    canvas.height = 400;
+    canvas.width = 500;
+
+    context.setLineDash([3]);
+    expect(canvas.__currentPathMirror?.canvas.height).to.equal(400);
+    expect(canvas.__currentPathMirror?.canvas.width).to.equal(500);
   });
 
   it('should not mirror method if skip flag is set', () => {

@@ -8,16 +8,29 @@ export function applySetterPatches(context: new () => CanvasRenderingContext2D) 
     // do not overload these
     .filter(member => PROTECTED_KEYS.indexOf(member) < 0)
     // get the whole descriptor
-    .map(member => ({
-      member,
-      descriptor: Object.getOwnPropertyDescriptor(context.prototype, member),
-    }))
+    .map(
+      member =>
+        ({
+          member,
+          descriptor: Object.getOwnPropertyDescriptor(context.prototype, member),
+        }) as {
+          member: keyof CanvasRenderingContext2D;
+          descriptor: PropertyDescriptor | undefined;
+        },
+    )
     // get setters only
-    .filter(({ descriptor }) => descriptor!.set)
+    // .filter(({ descriptor }) => descriptor!.set)
     // apply monkey-patch to pass through
     .forEach(({ member, descriptor }) => {
-      // overload setter
       const original = descriptor;
+
+      // handle getter-only properties
+      // if (!!descriptor!.set) {
+      //   console.log(member, typeof descriptor?.[member as never])
+      //   return;
+      // }
+
+      // overload setter
       Object.defineProperty(context.prototype, member, {
         get: function () {
           if (this.canvas.__skipFilterPatch) {
@@ -35,7 +48,7 @@ export function applySetterPatches(context: new () => CanvasRenderingContext2D) 
 
           // prepare mirror context if missing
           if (!this.canvas.__currentPathMirror) {
-            this.canvas.__currentPathMirror = createOffscreenContext(this);
+            this.canvas.__currentPathMirror = createOffscreenContext();
           }
 
           // apply to mirror
