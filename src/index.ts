@@ -36,7 +36,11 @@ SUPPORTED_FILTERS.set(AvailableFilter.Saturate, saturate);
 SUPPORTED_FILTERS.set(AvailableFilter.Sepia, sepia);
 
 // polyfill if the feature is not implemented
-if (supportsCanvas() && supportsContext2D() && !supportsContextFilters()) {
+if (
+  supportsCanvas() &&
+  supportsContext2D() &&
+  (!supportsContextFilters() || window.__forceApplyContextFiltersPolyfill)
+) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
   applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);

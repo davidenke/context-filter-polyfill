@@ -12,4 +12,10 @@ export default {
   nodeResolve: true,
   plugins: [esbuildPlugin({ ts: true })],
   reporters: ci ? [junitReporter({ outputPath: './reports/junit.xml' })] : [defaultReporter()],
+  testRunnerHtml: testFramework => `
+    <body>
+      <script>window.__forceApplyContextFiltersPolyfill = true;</script>
+      <script type="module" src="${testFramework}"></script>
+    </body>
+  `,
 };
