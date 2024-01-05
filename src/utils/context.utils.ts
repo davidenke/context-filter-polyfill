@@ -1,4 +1,6 @@
 // detects feature availability
+export const supportsCanvas = () => typeof HTMLCanvasElement !== 'undefined';
+export const supportsContext2D = () => typeof CanvasRenderingContext2D !== 'undefined';
 export const supportsContextFilters = () => 'filter' in CanvasRenderingContext2D.prototype;
 
 // creates an offscreen context matching the origin

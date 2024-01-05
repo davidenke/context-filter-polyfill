@@ -2,7 +2,7 @@ import { AvailableFilter } from './enums/available-filter.enum';
 import { SUPPORTED_FILTERS } from './globals/supported-filters.global';
 
 // feature detector
-import { supportsContextFilters } from './utils/context.utils';
+import { supportsCanvas, supportsContext2D, supportsContextFilters } from './utils/context.utils';
 
 // the patches we'll be using
 import { applyPropertyPatches } from './patches/property.patches';
@@ -36,10 +36,7 @@ SUPPORTED_FILTERS.set(AvailableFilter.Saturate, saturate);
 SUPPORTED_FILTERS.set(AvailableFilter.Sepia, sepia);
 
 // polyfill if the feature is not implemented
-const isBrowser =
-  typeof HTMLCanvasElement !== 'undefined' && typeof CanvasRenderingContext2D !== 'undefined';
-
-if (isBrowser && !supportsContextFilters()) {
+if (supportsCanvas() && supportsContext2D() && !supportsContextFilters()) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
   applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);
