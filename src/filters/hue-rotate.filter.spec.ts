@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
+import { prepareTestBed, imageSample } from '../utils/test.utils';
 import { hueRotate } from './hue-rotate.filter';
 
 describe('filters/hue-rotate', () => {
@@ -32,5 +33,20 @@ describe('filters/hue-rotate', () => {
       hueRotate(context, '180deg').getImageData(0, 0, width, height).data,
     );
     expect(dataBefore).not.to.equal(dataAfter);
+  });
+
+  it('should apply the filter properly', () => {
+    const context = prepareTestBed({ filters: ['hue-rotate(180deg)'] });
+    const image = context.getImageData(0, 0, 6, 6).data;
+    expect(`${image}`).to.equal(
+      imageSample(`
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,109,109,255, 000,109,109,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,109,109,255, 000,109,109,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+      `),
+    );
   });
 });

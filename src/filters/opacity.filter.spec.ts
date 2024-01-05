@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
+import { prepareTestBed, imageSample } from '../utils/test.utils';
 import { opacity } from './opacity.filter';
 
 describe('filters/opacity', () => {
@@ -37,5 +38,20 @@ describe('filters/opacity', () => {
       .filter((_, index) => (index + 1) % 4 === 0)
       .reduce((sum, current) => sum + current, 0);
     expect(all).to.equal(0);
+  });
+
+  it('should apply the filter properly', () => {
+    const context = prepareTestBed({ filters: ['opacity(.5)'] });
+    const image = context.getImageData(0, 0, 6, 6).data;
+    expect(`${image}`).to.equal(
+      imageSample(`
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 255,000,000,127, 255,000,000,127, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 255,000,000,127, 255,000,000,127, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+      `),
+    );
   });
 });

@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
+import { prepareTestBed, imageSample } from '../utils/test.utils';
 import { grayscale } from './grayscale.filter';
 
 describe('filters/grayscale', () => {
@@ -30,5 +31,20 @@ describe('filters/grayscale', () => {
     const dataBefore = context.getImageData(0, 0, width, height).data.toString();
     const dataAfter = Array.from(grayscale(context, '1').getImageData(0, 0, width, height).data);
     expect(dataBefore).not.to.equal(dataAfter);
+  });
+
+  it('should apply the filter properly', () => {
+    const context = prepareTestBed({ filters: ['grayscale(50%)'] });
+    const image = context.getImageData(0, 0, 6, 6).data;
+    expect(`${image}`).to.equal(
+      imageSample(`
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 155,027,027,255, 155,027,027,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 155,027,027,255, 155,027,027,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+      `),
+    );
   });
 });

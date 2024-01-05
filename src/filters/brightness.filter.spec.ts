@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
+import { prepareTestBed, imageSample } from '../utils/test.utils';
 import { brightness } from './brightness.filter';
 
 describe('filters/brightness', () => {
@@ -30,5 +31,20 @@ describe('filters/brightness', () => {
     const dataBefore = context.getImageData(0, 0, width, height).data.toString();
     const dataAfter = Array.from(brightness(context, '2').getImageData(0, 0, width, height).data);
     expect(dataBefore).not.to.equal(dataAfter);
+  });
+
+  it('should apply the filter properly', () => {
+    const context = prepareTestBed({ filters: ['brightness(3)'], color: 0xf44 });
+    const image = context.getImageData(0, 0, 6, 6).data;
+    expect(`${image}`).to.equal(
+      imageSample(`
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 255,204,204,255, 255,204,204,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 255,204,204,255, 255,204,204,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+      `),
+    );
   });
 });

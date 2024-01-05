@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { imageDataMock } from '../mocks/mock.data';
+import { prepareTestBed, imageSample } from '../utils/test.utils';
 import { contrast } from './contrast.filter';
 
 describe('filters/contrast', () => {
@@ -30,5 +31,20 @@ describe('filters/contrast', () => {
     const dataBefore = context.getImageData(0, 0, width, height).data.toString();
     const dataAfter = Array.from(contrast(context, '2').getImageData(0, 0, width, height).data);
     expect(dataBefore).not.to.equal(dataAfter);
+  });
+
+  it('should apply the filter properly', () => {
+    const context = prepareTestBed({ filters: ['contrast(250%)'], color: 0x284 });
+    const image = context.getImageData(0, 0, 6, 6).data;
+    expect(`${image}`).to.equal(
+      imageSample(`
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,148,000,255, 000,148,000,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,148,000,255, 000,148,000,255, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+        000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000, 000,000,000,000,
+      `),
+    );
   });
 });
