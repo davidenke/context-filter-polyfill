@@ -17,6 +17,7 @@ describe('patches/property.patches', () => {
 
   afterEach(() => {
     canvas.__skipFilterPatch = false;
+    canvas.remove();
   });
 
   it('should apply internal skip flag property', () => {

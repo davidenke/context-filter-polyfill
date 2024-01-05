@@ -16,6 +16,7 @@ describe('patches/setter.patches', () => {
 
   afterEach(() => {
     canvas.__skipFilterPatch = false;
+    canvas.remove();
   });
 
   it('should have a mirror canvas after setting a value', () => {
