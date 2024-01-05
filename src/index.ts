@@ -5,6 +5,7 @@ import { SUPPORTED_FILTERS } from './globals/supported-filters.global';
 import { supportsCanvas, supportsContext2D, supportsContextFilters } from './utils/context.utils';
 
 // the patches we'll be using
+import { applyCanvasPatches } from './patches/canvas.patches';
 import { applyPropertyPatches } from './patches/property.patches';
 import { applySetterPatches } from './patches/setter.patches';
 import { applyMethodPatches } from './patches/method.patches';
@@ -46,4 +47,5 @@ if (
   applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);
   applySetterPatches(CanvasRenderingContext2D);
   applyMethodPatches(CanvasRenderingContext2D);
+  applyCanvasPatches(HTMLCanvasElement);
 }
