@@ -11,9 +11,7 @@ import { opacity } from './filters/opacity.filter.js';
 import { saturate } from './filters/saturate.filter.js';
 import { sepia } from './filters/sepia.filter.js';
 import { SUPPORTED_FILTERS } from './globals/supported-filters.global.js';
-import { applyMethodPatches } from './patches/method.patches.js';
-import { applyPropertyPatches } from './patches/property.patches.js';
-import { applySetterPatches } from './patches/setter.patches.js';
+import { proxyBuiltin } from './utils/proxy.utils.js';
 
 // filter to the imported, implemented function
 SUPPORTED_FILTERS.set(AvailableFilter.None, none);
@@ -28,8 +26,17 @@ SUPPORTED_FILTERS.set(AvailableFilter.Opacity, opacity);
 SUPPORTED_FILTERS.set(AvailableFilter.Saturate, saturate);
 SUPPORTED_FILTERS.set(AvailableFilter.Sepia, sepia);
 
-// we monkey-patch all context members to
-// apply everything to the current mirror
-applyPropertyPatches(HTMLCanvasElement, CanvasRenderingContext2D);
-applySetterPatches(CanvasRenderingContext2D);
-applyMethodPatches(CanvasRenderingContext2D);
+// use proxy and reflect to apply filters
+const handler = {
+  get(target, prop, receiver) {
+    console.log('get', target.constructor.name, { prop });
+    return Reflect.get(target, prop, receiver);
+  },
+  set(target, prop, value, receiver) {
+    console.log('set', target.constructor.name, { prop, value });
+    return Reflect.set(target, prop, value, receiver);
+  },
+} satisfies ProxyHandler<CanvasRenderingContext2D | HTMLCanvasElement>;
+
+proxyBuiltin(CanvasRenderingContext2D.prototype, handler);
+proxyBuiltin(HTMLCanvasElement.prototype, handler);
