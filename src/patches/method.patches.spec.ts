@@ -1,6 +1,7 @@
 import { expect } from '@esm-bundle/chai';
-import { imageDataMock } from '../mocks/mock.data';
-import { applyMethodPatches } from './method.patches';
+
+import { imageDataMock } from '../mocks/mock.data.js';
+import { applyMethodPatches } from './method.patches.js';
 
 describe('patches/setter.patches', () => {
   let canvas: HTMLCanvasElement;
@@ -22,7 +23,9 @@ describe('patches/setter.patches', () => {
 
   it('should have a mirror canvas after calling a method', () => {
     context.getLineDash();
-    expect(canvas.__currentPathMirror).to.be.instanceOf(CanvasRenderingContext2D);
+    expect(canvas.__currentPathMirror).to.be.instanceOf(
+      CanvasRenderingContext2D,
+    );
   });
 
   it('should mirror method', () => {

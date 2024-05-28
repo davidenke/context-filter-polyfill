@@ -1,5 +1,5 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeAngle } from '../utils/filter.utils';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeAngle } from '../utils/filter.utils.js';
 
 export const hueRotate: Filter = (context, rotation = '0deg') => {
   const amount = normalizeAngle(rotation);

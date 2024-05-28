@@ -1,5 +1,9 @@
 import { expect } from '@esm-bundle/chai';
-import { createOffscreenContext, supportsContextFilters } from './context.utils';
+
+import {
+  createOffscreenContext,
+  supportsContextFilters,
+} from './context.utils.js';
 
 describe('utils/context.utils', () => {
   describe('supportsContextFilters', () => {

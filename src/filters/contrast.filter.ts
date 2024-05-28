@@ -1,5 +1,5 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeNumberPercentage } from '../utils/filter.utils';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeNumberPercentage } from '../utils/filter.utils.js';
 
 export const contrast: Filter = (context, amount = '1') => {
   amount = normalizeNumberPercentage(amount);

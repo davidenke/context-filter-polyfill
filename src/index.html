@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr">
   <head>
     <title>CanvasContextRenderingContext2d.filter partial polyfill</title>
@@ -26,7 +26,7 @@
         width: 100%;
       }
     </style>
-    <script src="index.js"></script>
+    <script src="polyfill.js"></script>
   </head>
   <body>
     <main>
@@ -35,7 +35,9 @@
         <pre>none</pre>
         <script>
           const imgNone = new Image();
-          const ctxNone = document.querySelector('canvas.none').getContext('2d');
+          const ctxNone = document
+            .querySelector('canvas.none')
+            .getContext('2d');
           ctxNone.filter = 'none';
           imgNone.onload = function () {
             ctxNone.drawImage(imgNone, 0, 0);
@@ -49,7 +51,9 @@
         <pre>blur(6px)</pre>
         <script>
           const imgBlur = new Image();
-          const ctxBlur = document.querySelector('canvas.blur').getContext('2d');
+          const ctxBlur = document
+            .querySelector('canvas.blur')
+            .getContext('2d');
           ctxBlur.filter = 'blur(6px)';
           imgBlur.onload = function () {
             ctxBlur.drawImage(imgBlur, 0, 0);
@@ -63,7 +67,9 @@
         <pre>brightness(2)</pre>
         <script>
           const imgBrightness = new Image();
-          const ctxBrightness = document.querySelector('canvas.brightness').getContext('2d');
+          const ctxBrightness = document
+            .querySelector('canvas.brightness')
+            .getContext('2d');
           ctxBrightness.filter = 'brightness(2)';
           imgBrightness.onload = function () {
             ctxBrightness.drawImage(imgBrightness, 0, 0);
@@ -77,7 +83,9 @@
         <pre>contrast(250%)</pre>
         <script>
           const imgContrast = new Image();
-          const ctxContrast = document.querySelector('canvas.contrast').getContext('2d');
+          const ctxContrast = document
+            .querySelector('canvas.contrast')
+            .getContext('2d');
           ctxContrast.filter = 'contrast(250%)';
           imgContrast.onload = function () {
             ctxContrast.drawImage(imgContrast, 0, 0);
@@ -91,7 +99,9 @@
         <pre>drop-shadow(3px 3px 5px red)</pre>
         <script>
           const imgDropShadow = new Image();
-          const ctxDropShadow = document.querySelector('canvas.drop-shadow').getContext('2d');
+          const ctxDropShadow = document
+            .querySelector('canvas.drop-shadow')
+            .getContext('2d');
           ctxDropShadow.filter = 'drop-shadow(3px 3px 5px red)';
           imgDropShadow.onload = function () {
             ctxDropShadow.drawImage(imgDropShadow, 10, 10, 80, 110);
@@ -105,7 +115,9 @@
         <pre>grayscale(50%)</pre>
         <script>
           const imgGrayscale = new Image();
-          const ctxGrayscale = document.querySelector('canvas.grayscale').getContext('2d');
+          const ctxGrayscale = document
+            .querySelector('canvas.grayscale')
+            .getContext('2d');
           ctxGrayscale.filter = 'grayscale(50%)';
           imgGrayscale.onload = function () {
             ctxGrayscale.drawImage(imgGrayscale, 0, 0);
@@ -119,7 +131,9 @@
         <pre>hue-rotate(180deg)</pre>
         <script>
           const imgHueRotate = new Image();
-          const ctxHueRotate = document.querySelector('canvas.hue-rotate').getContext('2d');
+          const ctxHueRotate = document
+            .querySelector('canvas.hue-rotate')
+            .getContext('2d');
           ctxHueRotate.filter = 'hue-rotate(180deg)';
           imgHueRotate.onload = function () {
             ctxHueRotate.drawImage(imgHueRotate, 0, 0);
@@ -133,7 +147,9 @@
         <pre>invert(.9)</pre>
         <script>
           const imgInvert = new Image();
-          const ctxInvert = document.querySelector('canvas.invert').getContext('2d');
+          const ctxInvert = document
+            .querySelector('canvas.invert')
+            .getContext('2d');
           ctxInvert.filter = 'invert(.9)';
           imgInvert.onload = function () {
             ctxInvert.drawImage(imgInvert, 0, 0);
@@ -147,7 +163,9 @@
         <pre>opacity(.5)</pre>
         <script>
           const imgOpacity = new Image();
-          const ctxOpacity = document.querySelector('canvas.opacity').getContext('2d');
+          const ctxOpacity = document
+            .querySelector('canvas.opacity')
+            .getContext('2d');
           ctxOpacity.filter = 'opacity(.5)';
           imgOpacity.onload = function () {
             ctxOpacity.drawImage(imgOpacity, 0, 0);
@@ -161,7 +179,9 @@
         <pre>saturate(5)</pre>
         <script>
           const imgSaturate = new Image();
-          const ctxSaturate = document.querySelector('canvas.saturate').getContext('2d');
+          const ctxSaturate = document
+            .querySelector('canvas.saturate')
+            .getContext('2d');
           ctxSaturate.filter = 'saturate(5)';
           imgSaturate.onload = function () {
             ctxSaturate.drawImage(imgSaturate, 0, 0);
@@ -175,7 +195,9 @@
         <pre>sepia(100%)</pre>
         <script>
           const imgSepia = new Image();
-          const ctxSepia = document.querySelector('canvas.sepia').getContext('2d');
+          const ctxSepia = document
+            .querySelector('canvas.sepia')
+            .getContext('2d');
           ctxSepia.filter = 'sepia(100%)';
           imgSepia.onload = function () {
             ctxSepia.drawImage(imgSepia, 0, 0);
@@ -187,8 +209,15 @@
       <section>
         <canvas class="testOrigin" width="30px" height="30px"></canvas>
         <script>
-          const ctxTestOrigin = document.querySelector('canvas.testOrigin').getContext('2d');
-          const grdntTestOrigin = ctxTestOrigin.createLinearGradient(0, 0, 30, 30);
+          const ctxTestOrigin = document
+            .querySelector('canvas.testOrigin')
+            .getContext('2d');
+          const grdntTestOrigin = ctxTestOrigin.createLinearGradient(
+            0,
+            0,
+            30,
+            30,
+          );
           grdntTestOrigin.addColorStop(0.15, 'cyan');
           grdntTestOrigin.addColorStop(0.5, 'magenta');
           grdntTestOrigin.addColorStop(0.85, 'yellow');
@@ -200,7 +229,9 @@
       <section>
         <canvas class="test" width="30px" height="30px"></canvas>
         <script>
-          const ctxTest = document.querySelector('canvas.test').getContext('2d');
+          const ctxTest = document
+            .querySelector('canvas.test')
+            .getContext('2d');
           const grdntTest = ctxTestOrigin.createLinearGradient(0, 0, 30, 30);
           ctxTest.filter = 'invert(1)';
           grdntTest.addColorStop(0.15, 'cyan');

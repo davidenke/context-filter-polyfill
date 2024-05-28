@@ -1,6 +1,7 @@
 import { expect } from '@esm-bundle/chai';
-import { imageDataMock } from '../mocks/mock.data';
-import { none } from './none.filter';
+
+import { imageDataMock } from '../mocks/mock.data.js';
+import { none } from './none.filter.js';
 
 describe('filters/none', () => {
   let width: number;
@@ -20,8 +21,12 @@ describe('filters/none', () => {
   });
 
   it('should not manipulate image data', () => {
-    const dataBefore = context.getImageData(0, 0, width, height).data.toString();
-    const dataAfter = none(context).getImageData(0, 0, width, height).data.toString();
+    const dataBefore = context
+      .getImageData(0, 0, width, height)
+      .data.toString();
+    const dataAfter = none(context)
+      .getImageData(0, 0, width, height)
+      .data.toString();
     expect(dataBefore).to.equal(dataAfter);
   });
 });

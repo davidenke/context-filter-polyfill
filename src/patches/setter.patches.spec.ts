@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
-import { applySetterPatches } from './setter.patches';
+
+import { applySetterPatches } from './setter.patches.js';
 
 describe('patches/setter.patches', () => {
   let canvas: HTMLCanvasElement;
@@ -20,7 +21,9 @@ describe('patches/setter.patches', () => {
 
   it('should have a mirror canvas after setting a value', () => {
     context.textAlign = 'right';
-    expect(canvas.__currentPathMirror).to.be.instanceOf(CanvasRenderingContext2D);
+    expect(canvas.__currentPathMirror).to.be.instanceOf(
+      CanvasRenderingContext2D,
+    );
   });
 
   it('should mirror set property', () => {

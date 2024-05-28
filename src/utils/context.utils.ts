@@ -4,7 +4,8 @@ export const isBrowser = () =>
   typeof CanvasRenderingContext2D !== 'undefined';
 
 // detects feature availability
-export const supportsContextFilters = () => 'filter' in CanvasRenderingContext2D.prototype;
+export const supportsContextFilters = () =>
+  'filter' in CanvasRenderingContext2D.prototype;
 
 // creates an offscreen context matching the origin
 export const createOffscreenContext = (

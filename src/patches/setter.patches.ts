@@ -1,7 +1,9 @@
-import { PROTECTED_KEYS } from '../globals/protected-keys.global';
-import { createOffscreenContext } from '../utils/context.utils';
+import { PROTECTED_KEYS } from '../globals/protected-keys.global.js';
+import { createOffscreenContext } from '../utils/context.utils.js';
 
-export function applySetterPatches(context: new () => CanvasRenderingContext2D) {
+export function applySetterPatches(
+  context: new () => CanvasRenderingContext2D,
+) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
   Object.keys(context.prototype)

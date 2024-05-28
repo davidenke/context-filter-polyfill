@@ -1,9 +1,11 @@
-import { createOffscreenContext } from '../utils/context.utils';
-import { DRAWING_FUNCTIONS } from '../globals/drawing-functions.global';
-import { PROTECTED_KEYS } from '../globals/protected-keys.global';
-import { applyFilter } from '../utils/filter.utils';
+import { DRAWING_FUNCTIONS } from '../globals/drawing-functions.global.js';
+import { PROTECTED_KEYS } from '../globals/protected-keys.global.js';
+import { createOffscreenContext } from '../utils/context.utils.js';
+import { applyFilter } from '../utils/filter.utils.js';
 
-export function applyMethodPatches(context: new () => CanvasRenderingContext2D) {
+export function applyMethodPatches(
+  context: new () => CanvasRenderingContext2D,
+) {
   // we monkey-patch all context members to
   // apply everything to the current mirror
   Object.keys(context.prototype)
@@ -15,7 +17,10 @@ export function applyMethodPatches(context: new () => CanvasRenderingContext2D) 
       descriptor: Object.getOwnPropertyDescriptor(context.prototype, member),
     }))
     // get methods only
-    .filter(({ descriptor }) => descriptor!.value && typeof descriptor!.value === 'function')
+    .filter(
+      ({ descriptor }) =>
+        descriptor!.value && typeof descriptor!.value === 'function',
+    )
     // apply monkey-patch to pass through
     .forEach(({ member, descriptor }) => {
       const original = descriptor!.value;

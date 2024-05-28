@@ -6,14 +6,12 @@ import { dropShadow } from './filters/drop-shadow.filter.js';
 import { grayscale } from './filters/grayscale.filter.js';
 import { hueRotate } from './filters/hue-rotate.filter.js';
 import { invert } from './filters/invert.filter.js';
-// add supported filters here by mapping the available
 import { none } from './filters/none.filter.js';
 import { opacity } from './filters/opacity.filter.js';
 import { saturate } from './filters/saturate.filter.js';
 import { sepia } from './filters/sepia.filter.js';
 import { SUPPORTED_FILTERS } from './globals/supported-filters.global.js';
 import { applyMethodPatches } from './patches/method.patches.js';
-// the patches we'll be using
 import { applyPropertyPatches } from './patches/property.patches.js';
 import { applySetterPatches } from './patches/setter.patches.js';
 

@@ -1,6 +1,7 @@
 import { expect } from '@esm-bundle/chai';
-import { AvailableFilter } from '../enums/available-filter.enum';
-import { applyPropertyPatches } from './property.patches';
+
+import { AvailableFilter } from '../enums/available-filter.enum.js';
+import { applyPropertyPatches } from './property.patches.js';
 
 describe('patches/property.patches', () => {
   let canvas: HTMLCanvasElement;

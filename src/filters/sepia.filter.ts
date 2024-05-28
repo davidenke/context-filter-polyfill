@@ -1,5 +1,5 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeNumberPercentage } from '../utils/filter.utils';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeNumberPercentage } from '../utils/filter.utils.js';
 
 export const sepia: Filter = (context, amount = '0') => {
   amount = normalizeNumberPercentage(amount);
@@ -29,9 +29,12 @@ export const sepia: Filter = (context, amount = '0') => {
     const r = data[i + 0];
     const g = data[i + 1];
     const b = data[i + 2];
-    data[i + 0] = (0.393 * r + 0.769 * g + 0.189 * b) * amount + r * (1 - amount);
-    data[i + 1] = (0.349 * r + 0.686 * g + 0.168 * b) * amount + g * (1 - amount);
-    data[i + 2] = (0.272 * r + 0.534 * g + 0.131 * b) * amount + b * (1 - amount);
+    data[i + 0] =
+      (0.393 * r + 0.769 * g + 0.189 * b) * amount + r * (1 - amount);
+    data[i + 1] =
+      (0.349 * r + 0.686 * g + 0.168 * b) * amount + g * (1 - amount);
+    data[i + 2] =
+      (0.272 * r + 0.534 * g + 0.131 * b) * amount + b * (1 - amount);
   }
 
   // set back image data to context

@@ -1,6 +1,7 @@
 import { expect } from '@esm-bundle/chai';
-import { imageDataMock } from '../mocks/mock.data';
-import { grayscale } from './grayscale.filter';
+
+import { imageDataMock } from '../mocks/mock.data.js';
+import { grayscale } from './grayscale.filter.js';
 
 describe('filters/grayscale', () => {
   let width: number;
@@ -21,14 +22,22 @@ describe('filters/grayscale', () => {
   });
 
   it('should not manipulate image data with defaults', () => {
-    const dataBefore = context.getImageData(0, 0, width, height).data.toString();
-    const dataAfter = grayscale(context).getImageData(0, 0, width, height).data.toString();
+    const dataBefore = context
+      .getImageData(0, 0, width, height)
+      .data.toString();
+    const dataAfter = grayscale(context)
+      .getImageData(0, 0, width, height)
+      .data.toString();
     expect(dataBefore).to.equal(dataAfter);
   });
 
   it('should manipulate image data if arguments match', () => {
-    const dataBefore = context.getImageData(0, 0, width, height).data.toString();
-    const dataAfter = Array.from(grayscale(context, '1').getImageData(0, 0, width, height).data);
+    const dataBefore = context
+      .getImageData(0, 0, width, height)
+      .data.toString();
+    const dataAfter = Array.from(
+      grayscale(context, '1').getImageData(0, 0, width, height).data,
+    );
     expect(dataBefore).not.to.equal(dataAfter);
   });
 });

@@ -1,5 +1,5 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeNumberPercentage } from '../utils/filter.utils';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeNumberPercentage } from '../utils/filter.utils.js';
 
 export const grayscale: Filter = (context, amount = '0') => {
   amount = normalizeNumberPercentage(amount);

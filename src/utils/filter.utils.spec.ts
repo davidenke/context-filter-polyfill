@@ -2,15 +2,15 @@ import chai, { expect } from '@esm-bundle/chai';
 import { spy } from 'sinon';
 import { default as sinonChai } from 'sinon-chai-es';
 
-import { AvailableFilter } from '../enums/available-filter.enum';
-import { SUPPORTED_FILTERS } from '../globals/supported-filters.global';
-import { imageDataMock } from '../mocks/mock.data';
+import { AvailableFilter } from '../enums/available-filter.enum.js';
+import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
+import { imageDataMock } from '../mocks/mock.data.js';
 import {
   applyFilter,
   normalizeAngle,
   normalizeLength,
   normalizeNumberPercentage,
-} from './filter.utils';
+} from './filter.utils.js';
 
 chai.use(sinonChai);
 
@@ -27,7 +27,7 @@ describe('utils/filter.utils', () => {
 
     it('should apply a blur filter', () => {
       const blur = spy();
-      SUPPORTED_FILTERS.set(AvailableFilter.Blur, blur as any);
+      SUPPORTED_FILTERS.set(AvailableFilter.Blur, blur);
 
       const before = context.getImageData(0, 0, 30, 30).data;
       applyFilter(context, 'blur(5px)');
@@ -39,7 +39,9 @@ describe('utils/filter.utils', () => {
 
     it('should apply multiple filters', () => {
       applyFilter(context, 'blur(5px) rotate(180deg)');
-      expect(context.getImageData(0, 0, 1, 1).data).not.to.equal(imageDataMock.data);
+      expect(context.getImageData(0, 0, 1, 1).data).not.to.equal(
+        imageDataMock.data,
+      );
     });
   });
 

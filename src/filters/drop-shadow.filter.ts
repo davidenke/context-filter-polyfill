@@ -1,5 +1,5 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeLength } from '../utils/filter.utils';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeLength } from '../utils/filter.utils.js';
 
 export const dropShadow: Filter = (
   context,
