@@ -1,5 +1,6 @@
 import { parseArgs } from 'node:util';
-import { type BuildOptions, build, context } from 'esbuild';
+
+import { build, type BuildOptions, context } from 'esbuild';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
 
 const { values } = parseArgs({
@@ -11,7 +12,12 @@ const { values } = parseArgs({
 const { port, serve } = values;
 
 const options: BuildOptions = {
-  entryPoints: ['src/index.ts', 'src/index.html', 'src/mocks/mock-1.jpg', 'src/mocks/mock-2.png'],
+  entryPoints: [
+    'src/index.ts',
+    'src/index.html',
+    'src/mocks/mock-1.jpg',
+    'src/mocks/mock-2.png',
+  ],
   outdir: 'dist',
   format: 'esm',
   bundle: true,
@@ -28,7 +34,12 @@ try {
     const ctx = await context({
       ...options,
       banner: {
-        js: `new EventSource('/esbuild').addEventListener('change', () => location.reload())`,
+        js: `
+// reload page on file change
+if (typeof EventSource !== 'undefined') {
+  new EventSource('/esbuild').addEventListener('change', () => location.reload());
+}
+`,
       },
     });
     await ctx.watch();
