@@ -32,17 +32,7 @@ const options: BuildOptions = {
 
 try {
   if (serve) {
-    const ctx = await context({
-      ...options,
-      banner: {
-        js: `
-// reload page on file change
-if (typeof EventSource !== 'undefined') {
-  new EventSource('/esbuild').addEventListener('change', () => location.reload());
-}
-`,
-      },
-    });
+    const ctx = await context(options);
     await ctx.watch();
     await ctx.serve({ servedir: 'dist', port: Number(port) });
     console.log(`> Serving on http://localhost:${port}`);

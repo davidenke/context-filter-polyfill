@@ -26,6 +26,14 @@
         width: 100%;
       }
     </style>
+    <script>
+      // reload page on file change
+      if (typeof EventSource !== 'undefined') {
+        new EventSource('/esbuild').addEventListener('change', () =>
+          location.reload(),
+        );
+      }
+    </script>
     <script src="polyfill.js"></script>
   </head>
   <body>
