@@ -15,6 +15,7 @@ const options: BuildOptions = {
   entryPoints: [
     'src/index.ts',
     'src/index.html',
+    'src/polyfill.ts',
     'src/mocks/mock-1.jpg',
     'src/mocks/mock-2.png',
   ],
@@ -23,7 +24,7 @@ const options: BuildOptions = {
   bundle: true,
   sourcemap: true,
   minify: true,
-  splitting: true,
+  splitting: false,
   target: ['es6'],
   loader: { '.html': 'copy', '.jpg': 'copy', '.png': 'copy' },
   plugins: [dtsPlugin()],
