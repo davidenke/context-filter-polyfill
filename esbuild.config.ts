@@ -23,7 +23,7 @@ const options: BuildOptions = {
   bundle: true,
   sourcemap: true,
   minify: true,
-  splitting: false,
+  splitting: true,
   target: ['es6'],
   loader: { '.html': 'copy', '.jpg': 'copy', '.png': 'copy' },
   plugins: [dtsPlugin()],
