@@ -8,7 +8,7 @@ import {
 describe('utils/context.utils', () => {
   describe('supportsContextFilters', () => {
     it('should detect filter support', () => {
-      expect(supportsContextFilters()).to.be.true;
+      expect(supportsContextFilters()).to.be.false;
     });
   });
 

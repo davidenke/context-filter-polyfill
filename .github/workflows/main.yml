@@ -29,7 +29,8 @@ jobs:
           path: ~/.npm
           key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
           restore-keys: v1-npm-deps-
-      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npm install
       - run: npm run lint
       - run: npm run test:ci
       - uses: mikepenz/action-junit-report@v4
