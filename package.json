@@ -26,10 +26,11 @@
     "lint": "eslint",
     "test": "wtr",
     "test:watch": "wtr --watch",
+    "pretest:ci": "shx rm -rf coverage reports",
     "test:ci": "wtr --ci",
-    "prebuild": "rimraf dist",
-    "build": "ts-node esbuild.config.ts",
-    "start": "ts-node esbuild.config.ts --serve"
+    "prebuild": "shx rm -rf dist",
+    "build": "node --loader ts-node/esm ./esbuild.config.ts",
+    "start": "node --loader ts-node/esm ./esbuild.config.ts --serve"
   },
   "devDependencies": {
     "@esm-bundle/chai": "4.3.4-fix.0",
@@ -45,7 +46,7 @@
     "esbuild-plugin-d.ts": "1.2.3",
     "eslint": "8.57.0",
     "prettier": "3.2.5",
-    "rimraf": "5.0.7",
+    "shx": "0.3.4",
     "sinon": "18.0.0",
     "sinon-chai-es": "3.7.0",
     "ts-node": "10.9.2",
