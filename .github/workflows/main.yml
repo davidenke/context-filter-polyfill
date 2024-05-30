@@ -37,6 +37,7 @@ jobs:
         if: success() || failure()
         with:
           check_name: "report"
+          include_passed: true
           report_paths: "**/reports/junit.xml"
 
   build:
