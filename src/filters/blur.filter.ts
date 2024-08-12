@@ -1,3 +1,4 @@
+import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
 import type { Filter } from '../types/filter.type.js';
 import { normalizeLength } from '../utils/filter.utils.js';
 
@@ -172,3 +173,5 @@ export const blur: Filter = (context, radius = '0') => {
   // return the context itself
   return context;
 };
+
+SUPPORTED_FILTERS.set('blur', blur);

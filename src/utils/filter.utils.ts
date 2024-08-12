@@ -1,4 +1,3 @@
-import { AvailableFilter } from '../enums/available-filter.enum.js';
 import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
 
 // applies the given filter to the provided canvas 2d context
@@ -14,7 +13,7 @@ export const applyFilter = (
     ?.map(
       filter =>
         filter.match(/([-a-z]+)(?:\((.*)\))?/i)?.slice(1, 3) as [
-          AvailableFilter,
+          string,
           string,
         ],
     )

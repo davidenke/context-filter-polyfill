@@ -1,3 +1,4 @@
+import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
 import type { Filter } from '../types/filter.type.js';
 import { normalizeNumberPercentage } from '../utils/filter.utils.js';
 
@@ -36,3 +37,5 @@ export const invert: Filter = (context, amount = '0') => {
   // return the context itself
   return context;
 };
+
+SUPPORTED_FILTERS.set('invert', invert);
