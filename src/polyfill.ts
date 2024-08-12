@@ -10,18 +10,15 @@ import './filters/opacity.filter.js';
 import './filters/saturate.filter.js';
 import './filters/sepia.filter.js';
 
+import { applyFilter } from './utils/filter.utils.js';
 
-// use proxy and reflect to apply filters
-const handler = {
-  get(target, prop, receiver) {
-    console.log('get', target.constructor.name, { prop });
-    return Reflect.get(target, prop, receiver);
+Object.defineProperty(CanvasRenderingContext2D.prototype, 'filter', {
+  set: function (filter: string) {
+    this.__filter = filter;
+    applyFilter(this, this.__filter);
   },
-  set(target, prop, value, receiver) {
-    console.log('set', target.constructor.name, { prop, value });
-    return Reflect.set(target, prop, value, receiver);
+  get: function () {
+    return this.__filter;
   },
-} satisfies ProxyHandler<CanvasRenderingContext2D | HTMLCanvasElement>;
-
-proxyBuiltin(CanvasRenderingContext2D.prototype, handler);
-proxyBuiltin(HTMLCanvasElement.prototype, handler);
+  configurable: true,
+});

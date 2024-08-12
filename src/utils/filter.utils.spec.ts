@@ -2,7 +2,6 @@ import chai, { expect } from '@esm-bundle/chai';
 import { spy } from 'sinon';
 import { default as sinonChai } from 'sinon-chai-es';
 
-import { AvailableFilter } from '../enums/available-filter.enum.js';
 import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
 import { imageDataMock } from '../mocks/mock.data.js';
 import {
@@ -27,7 +26,7 @@ describe('utils/filter.utils', () => {
 
     it('should apply a blur filter', () => {
       const blur = spy();
-      SUPPORTED_FILTERS.set(AvailableFilter.Blur, blur);
+      SUPPORTED_FILTERS.set('blur', blur);
 
       const before = context.getImageData(0, 0, 30, 30).data;
       applyFilter(context, 'blur(5px)');
