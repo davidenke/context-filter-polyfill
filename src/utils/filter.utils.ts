@@ -20,7 +20,6 @@ export const applyFilter = (
     // apply all filters
     .reduce((input, [filter, options]) => {
       // do we have a appropriate filter implementation?
-      console.log(filter, SUPPORTED_FILTERS.has(filter));
       if (SUPPORTED_FILTERS.has(filter)) {
         // then filter and return the result
         return SUPPORTED_FILTERS.get(filter)!(
