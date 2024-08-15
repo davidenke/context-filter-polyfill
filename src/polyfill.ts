@@ -13,6 +13,15 @@ import './filters/sepia.filter.js';
 import { applyFilter } from './utils/filter.utils.js';
 import { applyProxy } from './utils/proxy.utils.js';
 
+declare global {
+  interface WindowEventMap {
+    'context-filter-polyfill:draw': CustomEvent<{
+      original: CanvasRenderingContext2D;
+      clone: CanvasRenderingContext2D;
+    }>;
+  }
+}
+
 /**
  * Applies the given command history to the given context.
  */
@@ -34,7 +43,6 @@ function applyHistory(
   });
 }
 
-let cloned = 0;
 applyProxy({
   onDraw(ctx, drawFn, drawArgs) {
     // prevent recursive loop on cloned contexts
@@ -69,11 +77,11 @@ applyProxy({
     ctx.__skipNextDraw = true;
     ctx.drawImage(clone.canvas, 0, 0);
 
-    if (ctx.canvas.parentElement?.classList.contains('debug')) {
-      ++cloned;
-      clone.canvas.classList.add('clone');
-      clone.canvas.style.setProperty('--i', `${cloned}`);
-      document.getElementById('clones')?.appendChild(clone.canvas);
-    }
+    // notify for debug purposes
+    window.dispatchEvent(
+      new CustomEvent('context-filter-polyfill:draw', {
+        detail: { original: ctx, clone },
+      }),
+    );
   },
 });

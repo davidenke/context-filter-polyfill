@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
 
 import { build, type BuildOptions, context } from 'esbuild';
+import copyStaticFiles from 'esbuild-copy-static-files';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
 
 const { values } = parseArgs({
@@ -14,10 +15,11 @@ const { port, serve } = values;
 const options: BuildOptions = {
   entryPoints: [
     'src/index.ts',
-    'src/index.html',
-    'src/index.css',
     'src/polyfill.ts',
-    'src/mocks/mock-1.jpg',
+
+    'src/example.ts',
+    'src/example.css',
+    'src/example.jpg',
   ],
   outdir: 'dist',
   format: 'esm',
@@ -26,8 +28,11 @@ const options: BuildOptions = {
   minify: true,
   splitting: false,
   target: ['es6'],
-  loader: { '.html': 'copy', '.jpg': 'copy', '.png': 'copy' },
-  plugins: [dtsPlugin()],
+  loader: { '.jpg': 'copy' },
+  plugins: [
+    dtsPlugin(),
+    copyStaticFiles({ src: 'src/example.html', dest: 'dist/index.html' }),
+  ],
 };
 
 try {

@@ -22,7 +22,7 @@ declare global {
 
 // a list of all drawing functions in CanvasRenderingContext2D
 const DRAWING_FN_PROPS: Array<keyof CanvasRenderingContext2D> = [
-  'clearRect',
+  // 'clearRect', // despite being a drawing function, it's not needed here
   'clip',
   'drawImage',
   'putImageData',
@@ -139,7 +139,7 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
 
         // skip eventually native implementation;
         // else the filter will be applied twice
-        if (prop === 'filter') return false;
+        if (prop === 'filter') return true;
 
         // handle property set: a.b = value
         return Reflect.set(target, prop, value, receiver);
