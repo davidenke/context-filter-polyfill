@@ -15,9 +15,9 @@ const options: BuildOptions = {
   entryPoints: [
     'src/index.ts',
     'src/index.html',
+    'src/index.css',
     'src/polyfill.ts',
     'src/mocks/mock-1.jpg',
-    'src/mocks/mock-2.png',
   ],
   outdir: 'dist',
   format: 'esm',

@@ -2,49 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <title>CanvasContextRenderingContext2d.filter partial polyfill</title>
-    <style>
-      body {
-        margin: 5px;
-      }
-      main {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-      main > section {
-        padding: 5px;
-        width: 100px;
-      }
-      main > section > pre {
-        font-size: 11px;
-        margin: 0;
-        padding: 5px 0 10px;
-        overflow: hidden;
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 100%;
-      }
-      .debug {
-        display: flex;
-        min-height: 350px;
-        flex-flow: row nowrap;
-        align-items: start;
-        justify-content: space-between;
-        background-color: #242424;
-      }
-      #clones {
-        position: relative;
-      }
-      .clone {
-        perspective: 100vw;
-        position: absolute;
-        right: calc(var(--i) * 25px);
-        top: calc(var(--i) * 25px);
-        border: 1px solid red;
-        transform: perspective(100vw) rotateY(-30deg);
-      }
-    </style>
+    <link rel="stylesheet" href="index.css" />
     <script>
       // reload page on file change
       if (typeof EventSource !== 'undefined') {
@@ -57,300 +15,201 @@
   </head>
   <body>
     <main>
-      <section>
-        <canvas class="none" width="100px" height="134px"></canvas>
-        <pre>none</pre>
-        <script>
-          const imgNone = new Image();
-          const ctxNone = document
-            .querySelector('canvas.none')
-            .getContext('2d');
-          ctxNone.filter = 'none';
-          imgNone.onload = function () {
-            ctxNone.drawImage(imgNone, 0, 0);
-          };
-          imgNone.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+      <article id="filters">
+        <section>
+          <canvas class="none" width="100" height="134"></canvas>
+          <pre>none</pre>
+        </section>
 
-      <section>
-        <canvas class="blur" width="100px" height="134px"></canvas>
-        <pre>blur(6px)</pre>
-        <script>
-          const imgBlur = new Image();
-          const ctxBlur = document
-            .querySelector('canvas.blur')
-            .getContext('2d');
-          ctxBlur.filter = 'blur(6px)';
-          imgBlur.onload = function () {
-            ctxBlur.drawImage(imgBlur, 0, 0);
-          };
-          imgBlur.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="blur" width="100" height="134"></canvas>
+          <pre>blur(6px)</pre>
+        </section>
 
-      <section>
-        <canvas class="brightness" width="100px" height="134px"></canvas>
-        <pre>brightness(2)</pre>
-        <script>
-          const imgBrightness = new Image();
-          const ctxBrightness = document
-            .querySelector('canvas.brightness')
-            .getContext('2d');
-          ctxBrightness.filter = 'brightness(2)';
-          imgBrightness.onload = function () {
-            ctxBrightness.drawImage(imgBrightness, 0, 0);
-          };
-          imgBrightness.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="brightness" width="100" height="134"></canvas>
+          <pre>brightness(2)</pre>
+        </section>
 
-      <section>
-        <canvas class="contrast" width="100px" height="134px"></canvas>
-        <pre>contrast(250%)</pre>
-        <script>
-          const imgContrast = new Image();
-          const ctxContrast = document
-            .querySelector('canvas.contrast')
-            .getContext('2d');
-          ctxContrast.filter = 'contrast(250%)';
-          imgContrast.onload = function () {
-            ctxContrast.drawImage(imgContrast, 0, 0);
-          };
-          imgContrast.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="contrast" width="100" height="134"></canvas>
+          <pre>contrast(250%)</pre>
+        </section>
 
-      <section>
-        <canvas class="drop-shadow" width="100px" height="134px"></canvas>
-        <pre>drop-shadow(3px 3px 5px red)</pre>
-        <script>
-          const imgDropShadow = new Image();
-          const ctxDropShadow = document
-            .querySelector('canvas.drop-shadow')
-            .getContext('2d');
-          ctxDropShadow.filter = 'drop-shadow(3px 3px 5px red)';
-          imgDropShadow.onload = function () {
-            ctxDropShadow.drawImage(imgDropShadow, 10, 10, 80, 110);
-          };
-          imgDropShadow.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="drop-shadow" width="100" height="134"></canvas>
+          <pre>drop-shadow(3px 3px 5px red)</pre>
+        </section>
 
-      <section>
-        <canvas class="grayscale" width="100px" height="134px"></canvas>
-        <pre>grayscale(50%)</pre>
-        <script>
-          const imgGrayscale = new Image();
-          const ctxGrayscale = document
-            .querySelector('canvas.grayscale')
-            .getContext('2d');
-          ctxGrayscale.filter = 'grayscale(50%)';
-          imgGrayscale.onload = function () {
-            ctxGrayscale.drawImage(imgGrayscale, 0, 0);
-          };
-          imgGrayscale.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="grayscale" width="100" height="134"></canvas>
+          <pre>grayscale(50%)</pre>
+        </section>
 
-      <section>
-        <canvas class="hue-rotate" width="100px" height="134px"></canvas>
-        <pre>hue-rotate(180deg)</pre>
-        <script>
-          const imgHueRotate = new Image();
-          const ctxHueRotate = document
-            .querySelector('canvas.hue-rotate')
-            .getContext('2d');
-          ctxHueRotate.filter = 'hue-rotate(180deg)';
-          imgHueRotate.onload = function () {
-            ctxHueRotate.drawImage(imgHueRotate, 0, 0);
-          };
-          imgHueRotate.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="hue-rotate" width="100" height="134"></canvas>
+          <pre>hue-rotate(180deg)</pre>
+        </section>
 
-      <section>
-        <canvas class="invert" width="100px" height="134px"></canvas>
-        <pre>invert(.9)</pre>
-        <script>
-          const imgInvert = new Image();
-          const ctxInvert = document
-            .querySelector('canvas.invert')
-            .getContext('2d');
-          ctxInvert.filter = 'invert(.9)';
-          imgInvert.onload = function () {
-            ctxInvert.drawImage(imgInvert, 0, 0);
-          };
-          imgInvert.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="invert" width="100" height="134"></canvas>
+          <pre>invert(.9)</pre>
+        </section>
 
-      <section>
-        <canvas class="opacity" width="100px" height="134px"></canvas>
-        <pre>opacity(.5)</pre>
-        <script>
-          const imgOpacity = new Image();
-          const ctxOpacity = document
-            .querySelector('canvas.opacity')
-            .getContext('2d');
-          ctxOpacity.filter = 'opacity(.5)';
-          imgOpacity.onload = function () {
-            ctxOpacity.drawImage(imgOpacity, 0, 0);
-          };
-          imgOpacity.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="opacity" width="100" height="134"></canvas>
+          <pre>opacity(.5)</pre>
+        </section>
 
-      <section>
-        <canvas class="saturate" width="100px" height="134px"></canvas>
-        <pre>saturate(5)</pre>
-        <script>
-          const imgSaturate = new Image();
-          const ctxSaturate = document
-            .querySelector('canvas.saturate')
-            .getContext('2d');
-          ctxSaturate.filter = 'saturate(5)';
-          imgSaturate.onload = function () {
-            ctxSaturate.drawImage(imgSaturate, 0, 0);
-          };
-          imgSaturate.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="saturate" width="100" height="134"></canvas>
+          <pre>saturate(5)</pre>
+        </section>
 
-      <section>
-        <canvas class="sepia" width="100px" height="134px"></canvas>
-        <pre>sepia(100%)</pre>
-        <script>
-          const imgSepia = new Image();
-          const ctxSepia = document
-            .querySelector('canvas.sepia')
-            .getContext('2d');
-          ctxSepia.filter = 'sepia(100%)';
-          imgSepia.onload = function () {
-            ctxSepia.drawImage(imgSepia, 0, 0);
-          };
-          imgSepia.src = 'mocks/mock-1.jpg';
-        </script>
-      </section>
+        <section>
+          <canvas class="sepia" width="100" height="134"></canvas>
+          <pre>sepia(100%)</pre>
+        </section>
 
-      <section>
-        <canvas class="testOrigin" width="30px" height="30px"></canvas>
         <script>
-          const ctxTestOrigin = document
-            .querySelector('canvas.testOrigin')
-            .getContext('2d');
-          const grdntTestOrigin = ctxTestOrigin.createLinearGradient(
-            0,
-            0,
-            30,
-            30,
-          );
-          grdntTestOrigin.addColorStop(0.15, 'cyan');
-          grdntTestOrigin.addColorStop(0.5, 'magenta');
-          grdntTestOrigin.addColorStop(0.85, 'yellow');
-          ctxTestOrigin.fillStyle = grdntTestOrigin;
-          ctxTestOrigin.fillRect(0, 0, 30, 30);
-        </script>
-      </section>
+          document.querySelectorAll('#filters section').forEach(section => {
+            const ctx = section.querySelector('canvas').getContext('2d');
+            ctx.filter = section.querySelector('pre').textContent;
 
-      <section>
-        <canvas class="test" width="30px" height="30px"></canvas>
-        <script>
-          const ctxTest = document
-            .querySelector('canvas.test')
-            .getContext('2d');
-          const grdntTest = ctxTestOrigin.createLinearGradient(0, 0, 30, 30);
-          ctxTest.filter = 'invert(1)';
-          grdntTest.addColorStop(0.15, 'cyan');
-          grdntTest.addColorStop(0.5, 'magenta');
-          grdntTest.addColorStop(0.85, 'yellow');
-          ctxTest.fillStyle = grdntTest;
-          ctxTest.fillRect(0, 0, 30, 30);
+            const img = new Image();
+            img.onload = () => ctx.drawImage(img, 0, 0);
+            img.src = 'mocks/mock-1.jpg';
+          });
         </script>
-      </section>
+      </article>
+
+      <article>
+        <section>
+          <canvas class="testOrigin" width="100" height="134"></canvas>
+          <script>
+            const ctxTestOrigin = document
+              .querySelector('canvas.testOrigin')
+              .getContext('2d');
+            const grdntTestOrigin = ctxTestOrigin.createLinearGradient(
+              0,
+              0,
+              100,
+              134,
+            );
+            grdntTestOrigin.addColorStop(0.15, 'cyan');
+            grdntTestOrigin.addColorStop(0.5, 'magenta');
+            grdntTestOrigin.addColorStop(0.85, 'yellow');
+            ctxTestOrigin.fillStyle = grdntTestOrigin;
+            ctxTestOrigin.fillRect(0, 0, 100, 134);
+          </script>
+        </section>
+
+        <section>
+          <canvas class="test" width="100" height="134"></canvas>
+          <script>
+            const ctxTest = document
+              .querySelector('canvas.test')
+              .getContext('2d');
+            const grdntTest = ctxTestOrigin.createLinearGradient(
+              0,
+              0,
+              100,
+              134,
+            );
+            ctxTest.filter = 'invert(1)';
+            grdntTest.addColorStop(0.15, 'cyan');
+            grdntTest.addColorStop(0.5, 'magenta');
+            grdntTest.addColorStop(0.85, 'yellow');
+            ctxTest.fillStyle = grdntTest;
+            ctxTest.fillRect(0, 0, 100, 134);
+          </script>
+        </section>
+
+        <section>
+          <canvas class="mixed" width="100" height="134"></canvas>
+          <script>
+            const ctxMixed = document
+              .querySelector('canvas.mixed')
+              .getContext('2d');
+
+            // 1st step: single filter - blurred text
+            ctxMixed.filter = 'blur(4px) drop-shadow(2px 2px 10px red)';
+            ctxMixed.font = '16px serif';
+            ctxMixed.fillText('Hello world', 10, 20);
+
+            // 2nd step: multiple filters - inverted, opaque and rotated rectangle
+            ctxMixed.filter =
+              'invert(.75) opacity(.5) drop-shadow(4px 4px 4px red)';
+            ctxMixed.fillStyle = '#f00';
+            ctxMixed.translate(50, 25);
+            ctxMixed.rotate((45 * Math.PI) / 180);
+            ctxMixed.fillRect(-25, -15, 50, 50);
+          </script>
+        </section>
+
+        <section>
+          <canvas class="comp" width="100" height="134"></canvas>
+          <script>
+            const ctxComp = document
+              .querySelector('canvas.comp')
+              .getContext('2d');
+            ctxComp.globalCompositeOperation = 'xor';
+            ctxComp.filter = 'invert(.75) blur(6px)';
+            ctxComp.fillStyle = 'blue';
+            ctxComp.fillRect(10, 10, 60, 60);
+            ctxComp.fillStyle = 'red';
+            ctxComp.fillRect(30, 30, 60, 60);
+          </script>
+        </section>
+
+        <section>
+          <canvas class="clear" width="100" height="134"></canvas>
+          <script>
+            const ctxClear = document
+              .querySelector('canvas.clear')
+              .getContext('2d');
+            ctxClear.globalCompositeOperation = 'xor';
+            ctxClear.filter = 'blur(5px)';
+            ctxClear.fillStyle = 'red';
+            ctxClear.fillRect(10, 10, 80, 114);
+            ctxClear.clearRect(25, 25, 50, 84);
+          </script>
+        </section>
+      </article>
+
+      <article class="debug">
+        <canvas height="200" width="300"></canvas>
+        <section id="clones"></section>
+        <script>
+          const ctxDebug = document
+            .querySelector('.debug canvas')
+            .getContext('2d');
+
+          ctxDebug.filter = 'blur(5px)';
+          ctxDebug.fillStyle = 'red';
+          ctxDebug.fillRect(50, 50, 200, 100);
+
+          ctxDebug.filter = 'invert(1)';
+          ctxDebug.fillText('Hello World', 30, 30);
+
+          ctxDebug.filter = 'invert(1) opacity(.25)';
+          ctxDebug.strokeStyle = 'black';
+          ctxDebug.beginPath();
+          ctxDebug.moveTo(20, 20);
+          ctxDebug.lineTo(20, 100);
+          ctxDebug.lineTo(70, 100);
+          ctxDebug.lineWidth = 10;
+          ctxDebug.lineCap = 'round';
+          ctxDebug.lineJoin = 'round';
+          ctxDebug.stroke();
+
+          ctxDebug.strokeStyle = 'yellow';
+          //ctxDebug.beginPath();
+          //ctxDebug.moveTo(70, 100);
+          ctxDebug.lineTo(20, 20);
+          ctxDebug.stroke();
+        </script>
+      </article>
     </main>
-
-    <canvas class="mixed" width="400px" height="200px"></canvas>
-    <script>
-      const ctxMixed = document.querySelector('canvas.mixed').getContext('2d');
-
-      // 1st step: single filter - blurred text
-      ctxMixed.filter = 'blur(4px) drop-shadow(2px 2px 10px red)';
-      ctxMixed.font = '48px serif';
-      ctxMixed.fillText('Hello world', 50, 80);
-
-      // 2nd step: multiple filters - inverted, opaque and rotated rectangle
-      ctxMixed.filter = 'invert(.75) opacity(.5) drop-shadow(4px 4px 4px red)';
-      ctxMixed.fillStyle = '#f00';
-      ctxMixed.translate(55, 55);
-      ctxMixed.rotate((45 * Math.PI) / 180);
-      ctxMixed.fillRect(-15, -15, 30, 30);
-    </script>
-
-    <canvas class="issue" width="283" height="278"></canvas>
-    <script>
-      const ctxIssue = document.querySelector('canvas.issue').getContext('2d');
-      ctxIssue.filter = 'blur(6px)';
-      const imgIssue = new Image();
-      imgIssue.onload = () => {
-        ctxIssue.drawImage(imgIssue, 0, 0);
-      };
-      imgIssue.src = 'mocks/mock-2.png';
-    </script>
-
-    <canvas class="comp" width="300" height="150"></canvas>
-    <script>
-      const ctxComp = document.querySelector('canvas.comp').getContext('2d');
-      ctxComp.globalCompositeOperation = 'xor';
-      ctxComp.filter = 'invert(.75) blur(6px)';
-      ctxComp.fillStyle = 'blue';
-      ctxComp.fillRect(10, 10, 100, 100);
-      ctxComp.fillStyle = 'red';
-      ctxComp.fillRect(50, 50, 100, 100);
-    </script>
-
-    <canvas class="clear" width="150" height="150"></canvas>
-    <script>
-      const ctxClear = document.querySelector('canvas.clear').getContext('2d');
-      ctxClear.globalCompositeOperation = 'xor';
-      ctxClear.filter = 'blur(5px)';
-      ctxClear.fillStyle = 'red';
-      ctxClear.fillRect(10, 10, 130, 130);
-      ctxClear.clearRect(35, 35, 80, 80);
-    </script>
-
-    <div class="debug">
-      <canvas height="200" width="300"></canvas>
-      <section id="clones"></section>
-      <script>
-        const ctxDebug = document
-          .querySelector('.debug canvas')
-          .getContext('2d');
-
-        ctxDebug.filter = 'blur(5px)';
-        ctxDebug.fillStyle = 'red';
-        ctxDebug.fillRect(50, 50, 200, 100);
-
-        ctxDebug.filter = 'invert(1)';
-        ctxDebug.fillText('Hello World', 30, 30);
-
-        ctxDebug.filter = 'invert(1) opacity(.25)';
-        ctxDebug.strokeStyle = 'black';
-        ctxDebug.beginPath();
-        ctxDebug.moveTo(20, 20);
-        ctxDebug.lineTo(20, 100);
-        ctxDebug.lineTo(70, 100);
-        ctxDebug.lineWidth = 10;
-        ctxDebug.lineCap = 'round';
-        ctxDebug.lineJoin = 'round';
-        ctxDebug.stroke();
-
-        ctxDebug.strokeStyle = 'yellow';
-        //ctxDebug.beginPath();
-        //ctxDebug.moveTo(70, 100);
-        ctxDebug.lineTo(20, 20);
-        ctxDebug.stroke();
-      </script>
-    </div>
   </body>
 </html>
