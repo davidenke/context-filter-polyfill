@@ -36,21 +36,30 @@ const DRAWING_FN_PROPS: Array<keyof CanvasRenderingContext2D> = [
   'restore',
 ];
 
-export function addHistoryEntry(
-  context: CanvasRenderingContext2D,
-  entry: CanvasRenderingContext2DHistoryEntry,
-) {
-  if (!context.canvas.__history) context.canvas.__history = [];
-  context.canvas.__history.push(entry);
-}
-
-export function applyProxy(
+export type ProxyOptions = {
+  onHistoryUpdate: (history: CanvasRenderingContext2DHistory) => void;
   onDraw: (
     context: CanvasRenderingContext2D,
     drawFn: string,
     args?: unknown[],
-  ) => void,
+  ) => void;
+};
+
+export function addHistoryEntry(
+  context: CanvasRenderingContext2D,
+  entry: CanvasRenderingContext2DHistoryEntry,
+  onUpdate?: ProxyOptions['onHistoryUpdate'],
 ) {
+  if (!context.canvas.__history) context.canvas.__history = [];
+  context.canvas.__history.push(entry);
+  onUpdate?.(context.canvas.__history);
+}
+
+export function applyProxy(options: Partial<ProxyOptions> = {}) {
+  // extract options
+  const { onDraw, onHistoryUpdate: onHistory } = options;
+
+  // create a mirror of the 2d context
   const mirror = {
     __cloned: false,
     __clearRect(
@@ -71,7 +80,7 @@ export function applyProxy(
     },
   } as unknown as CanvasRenderingContext2D;
 
-  // create a mirror of the 2d context
+  // copy all properties from the original context
   const properties = Object.getOwnPropertyDescriptors(
     CanvasRenderingContext2D.prototype,
   );
@@ -101,12 +110,16 @@ export function applyProxy(
           return (...args: unknown[]) => {
             // skip drawing functions, apply our own magic
             if (DRAWING_FN_PROPS.includes(prop)) {
-              onDraw(receiver, prop, args);
-              addHistoryEntry(receiver, { type: 'draw', prop, args });
+              onDraw?.(receiver, prop, args);
+              addHistoryEntry(
+                receiver,
+                { type: 'draw', prop, args },
+                onHistory,
+              );
               return;
             }
 
-            addHistoryEntry(receiver, { type: 'apply', prop, args });
+            addHistoryEntry(receiver, { type: 'apply', prop, args }, onHistory);
             // @ts-expect-error - it's a function, we checked!
             return target[prop].apply(receiver, args);
           };
@@ -122,7 +135,7 @@ export function applyProxy(
         receiver: CanvasRenderingContext2D,
       ) {
         // update history
-        addHistoryEntry(receiver, { type: 'set', prop, value });
+        addHistoryEntry(receiver, { type: 'set', prop, value }, onHistory);
 
         // skip eventually native implementation;
         // else the filter will be applied twice

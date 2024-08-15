@@ -35,41 +35,45 @@ function applyHistory(
 }
 
 let cloned = 0;
-applyProxy((ctx, drawFn, drawArgs) => {
-  // prevent recursive loop on cloned contexts
-  if (ctx.__cloned) {
-    ctx.__skipNextDraw = true;
+applyProxy({
+  onDraw(ctx, drawFn, drawArgs) {
+    // prevent recursive loop on cloned contexts
+    if (ctx.__cloned) {
+      ctx.__skipNextDraw = true;
+      // @ts-expect-error - all good things come in threes
+      ctx[drawFn](...drawArgs);
+      return;
+    }
+
+    // prepare a clone of the canvas to to adopt its settings
+    const _canvas = ctx.canvas.cloneNode() as HTMLCanvasElement;
+    const clone = _canvas.getContext('2d')!;
+    clone.__cloned = true;
+
+    // apply the history of the original context to the clone
+    applyHistory(clone, ctx.canvas.__history);
+
+    // apply the draw function itself
     // @ts-expect-error - all good things come in threes
-    ctx[drawFn](...drawArgs);
-    return;
-  }
+    clone[drawFn](...drawArgs);
 
-  // prepare a clone of the canvas to to adopt its settings
-  const _canvas = ctx.canvas.cloneNode() as HTMLCanvasElement;
-  const clone = _canvas.getContext('2d')!;
-  clone.__cloned = true;
+    // now apply the latest filter to the clone (if any)
+    const filter = ctx.canvas.__history.findLast(
+      ({ prop }) => prop === 'filter',
+    );
+    if (filter?.value) {
+      applyFilter(clone, filter.value as string);
+    }
 
-  // apply the history of the original context to the clone
-  applyHistory(clone, ctx.canvas.__history);
+    // add the result to the original canvas
+    ctx.__skipNextDraw = true;
+    ctx.drawImage(clone.canvas, 0, 0);
 
-  // apply the draw function itself
-  // @ts-expect-error - all good things come in threes
-  clone[drawFn](...drawArgs);
-
-  // now apply the latest filter to the clone (if any)
-  const filter = ctx.canvas.__history.findLast(({ prop }) => prop === 'filter');
-  if (filter?.value) {
-    applyFilter(clone, filter.value as string);
-  }
-
-  // add the result to the original canvas
-  ctx.__skipNextDraw = true;
-  ctx.drawImage(clone.canvas, 0, 0);
-
-  if (ctx.canvas.parentElement?.classList.contains('debug')) {
-    ++cloned;
-    clone.canvas.classList.add('clone');
-    clone.canvas.style.setProperty('--i', `${cloned}`);
-    document.getElementById('clones')?.appendChild(clone.canvas);
-  }
+    if (ctx.canvas.parentElement?.classList.contains('debug')) {
+      ++cloned;
+      clone.canvas.classList.add('clone');
+      clone.canvas.style.setProperty('--i', `${cloned}`);
+      document.getElementById('clones')?.appendChild(clone.canvas);
+    }
+  },
 });
