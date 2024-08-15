@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 20.13.1
+          node-version: 20.16.0
       - uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 20.13.1
+          node-version: 20.16.0
       - uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -97,7 +97,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 20.13.1
+          node-version: 20.16.0
           registry-url: https://registry.npmjs.org/
       - uses: actions/download-artifact@v3
         with:
