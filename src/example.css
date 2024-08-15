@@ -105,6 +105,17 @@ article:not(.debug) {
   display: block;
   aspect-ratio: 1;
   width: 300px;
+
+  &:has(.clone:hover) {
+    .clone {
+      opacity: .25;
+      background-color: transparent;
+    }
+    .clone:hover {
+      opacity: 1;
+      background-color: #555;
+    }
+  }
 }
 
 .clone {
@@ -118,4 +129,6 @@ article:not(.debug) {
 
   border: 1px solid red;
   transform: perspective(500px) rotateY(-45deg);
+  transition: .2s ease;
+  transition-property: opacity, background-color;
 }

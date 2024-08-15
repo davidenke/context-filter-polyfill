@@ -73,6 +73,11 @@ applyProxy({
       applyFilter(clone, filter.value as string);
     }
 
+    // the canvas needs to be prepared for the next draw,
+    // that means resetting the transformation matrix, but
+    // for some reasons to keep the rotation, scaling, etc.
+    ctx.__skipNextDraw = true;
+    ctx.resetTransform();
     // add the result to the original canvas
     ctx.__skipNextDraw = true;
     ctx.drawImage(clone.canvas, 0, 0);

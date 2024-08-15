@@ -241,13 +241,28 @@
 
             ctxDebug.filter = 'blur(5px)';
             ctxDebug.fillStyle = 'red';
+            ctxDebug.rotate((5 * Math.PI) / 180);
             ctxDebug.fillRect(50, 50, 200, 100);
+            ctxDebug.clearRect(55, 55, 190, 90);
 
             ctxDebug.filter = 'invert(1)';
+            ctxDebug.rotate((2 * Math.PI) / 180);
+            ctxDebug.rotate((2 * Math.PI) / 180);
+            ctxDebug.rotate((2 * Math.PI) / 180);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
             ctxDebug.fillText('Hello World', 30, 30);
 
             ctxDebug.filter = 'invert(1) opacity(.25)';
             ctxDebug.strokeStyle = 'black';
+            ctxDebug.translate(100, 50);
+            ctxDebug.rotate((45 * Math.PI) / 180);
             ctxDebug.beginPath();
             ctxDebug.moveTo(20, 20);
             ctxDebug.lineTo(20, 100);
@@ -258,10 +273,9 @@
             ctxDebug.stroke();
 
             ctxDebug.strokeStyle = 'yellow';
-            //ctxDebug.beginPath();
-            //ctxDebug.moveTo(70, 100);
             ctxDebug.lineTo(20, 20);
             ctxDebug.stroke();
+            console.log(ctxDebug.canvas.__history)
           </script>
         </article>
 
