@@ -1,47 +1,5 @@
-// 1. proxy everything from 2d context into a mirror
-// 2. on every draw function, replicate into a canvas copy
-// 3. apply latest filter to current copy
-
-import {
-  CanvasRenderingContext2DHistory,
-  type CanvasRenderingContext2DHistoryEntry,
-} from './history.utils.js';
-
-type PickByType<T, Value> = {
-  [P in keyof T as T[P] extends Value | undefined ? P : never]: T[P];
-};
-
-declare global {
-  type CanvasRenderingContext2DFn = PickByType<
-    CanvasRenderingContext2D,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-    Function
-  >;
-  interface CanvasRenderingContext2D {
-    __cloned: boolean;
-    __withoutSideEffects: CanvasRenderingContext2DFn;
-  }
-
-  interface HTMLCanvasElement {
-    __history: CanvasRenderingContext2DHistory;
-  }
-}
-
-// a list of all drawing functions in CanvasRenderingContext2D
-const DRAWING_FN_PROPS = [
-  'clearRect',
-  'clip',
-  'drawImage',
-  'putImageData',
-  'fill',
-  'fillRect',
-  'fillText',
-  'stroke',
-  'strokeRect',
-  'strokeText',
-  'reset',
-  'restore',
-] as const satisfies Partial<Array<keyof CanvasRenderingContext2D>>;
+import { addHistoryEntry, isDrawingFn } from './context.utils.js';
+import type { CanvasRenderingContext2DHistory } from './history.utils.js';
 
 export type ProxyOptions = {
   onHistoryUpdate: (history: CanvasRenderingContext2DHistory) => void;
@@ -51,26 +9,6 @@ export type ProxyOptions = {
     args?: unknown[],
   ) => void;
 };
-
-export function isDrawingFn(
-  property: string,
-): property is (typeof DRAWING_FN_PROPS)[number] {
-  return DRAWING_FN_PROPS.includes(
-    property as (typeof DRAWING_FN_PROPS)[number],
-  );
-}
-
-export function addHistoryEntry(
-  context: CanvasRenderingContext2D,
-  entry: CanvasRenderingContext2DHistoryEntry,
-  onUpdate?: ProxyOptions['onHistoryUpdate'],
-) {
-  if (!context.canvas.__history) {
-    context.canvas.__history = new CanvasRenderingContext2DHistory();
-  }
-  context.canvas.__history.add(entry);
-  onUpdate?.(context.canvas.__history);
-}
 
 export function applyProxy(options: Partial<ProxyOptions> = {}) {
   // extract options
@@ -95,7 +33,11 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
   Object.setPrototypeOf(
     CanvasRenderingContext2D.prototype,
     new Proxy<CanvasRenderingContext2D>(mirror, {
-      get(target, prop: string, receiver: CanvasRenderingContext2D) {
+      get(
+        target,
+        prop: keyof CanvasRenderingContext2D,
+        receiver: CanvasRenderingContext2D,
+      ) {
         // trap access to the __withoutSideEffects property to provide a proxy
         // which exposes all 2d unpatched functions without side effects
         if (prop === '__withoutSideEffects') {
@@ -125,15 +67,7 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
               return;
             }
 
-            addHistoryEntry(
-              receiver,
-              {
-                type: 'apply',
-                prop: prop as keyof CanvasRenderingContext2D,
-                args,
-              },
-              onHistory,
-            );
+            addHistoryEntry(receiver, { type: 'apply', prop, args }, onHistory);
             // @ts-expect-error - it's a function, we checked!
             return target[prop].apply(receiver, args);
           };
@@ -156,6 +90,7 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
         if (prop === 'filter') return true;
 
         // handle property set: a.b = value
+        // @ts-expect-error - TS2589: type instantiation is excessively deep and possibly infinite
         return Reflect.set(target, prop, value, receiver);
       },
     }),
