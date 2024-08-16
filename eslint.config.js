@@ -11,15 +11,13 @@ export default eslintTs.config(
   ...eslintTs.configs.recommended,
   eslintPluginPrettierRecommended,
   {
-    ignores: ['**/dist/', '**/node_modules/', '**/generated/'],
-  },
-  {
-    languageOptions: {
-      parserOptions: {
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+    ignores: [
+      '**/node_modules/',
+      '**/generated/',
+      '**/dist/',
+      '**/coverage/',
+      '**/reports/',
+    ],
   },
   {
     plugins: {
