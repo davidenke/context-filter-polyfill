@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>CanvasContextRenderingContext2d.filter partial polyfill</title>
+    <script type="module">
+      // reload page on file change
+      if (typeof EventSource !== 'undefined') {
+        new EventSource('/esbuild').addEventListener('change', () =>
+          location.reload(),
+        );
+      }
+    </script>
+    <script type="module" src="polyfill.js"></script>
+    <script type="module" src="example.js"></script>
+  </head>
+  <body>
+    <div id="intro">
+      <h1>context-filter-polyfill</h1>
+      <p>
+        Polyfills
+        <code>CanvasRenderingContext2d.prototype.filter</code> capability of
+        adopting CSS3 filters to canvas contexts at least partially.
+      </p>
+      <p>
+        Right now
+        <s
+          >only WebKit
+          <a href="https://bugs.webkit.org/show_bug.cgi?id=198416"
+            >misses an implementation (Bugzilla #198416)</a
+          ></s
+        >
+        all engines support it natively, despite Safari not having shipped it
+        yet in the stable release channel.
+      </p>
+      <p>
+        This example will show the polyfilled filters on the left and the
+        untouched native implementation on the right.
+        <em
+          >Thus, <strong>no difference</strong> can be seen on
+          <strong>WebKit</strong>-based browsers, which are polyfilled either
+          way.</em
+        >
+      </p>
+      <p>
+        So in this case here, you're using <em data-debug="browser"></em>, which
+        <strong data-debug="polyfilled"></strong> polyfilled.
+      </p>
+    </div>
+
+    <div id="side-by-side">
+      <main>
+        <h2>Polyfilled</h2>
+        <article id="filters">
+          <section>
+            <canvas class="none" width="100" height="134"></canvas>
+            <code>none</code>
+          </section>
+
+          <section>
+            <canvas class="blur" width="100" height="134"></canvas>
+            <code>blur(6px)</code>
+          </section>
+
+          <section>
+            <canvas class="brightness" width="100" height="134"></canvas>
+            <code>brightness(2)</code>
+          </section>
+
+          <section>
+            <canvas class="contrast" width="100" height="134"></canvas>
+            <code>contrast(250%)</code>
+          </section>
+
+          <section>
+            <canvas class="drop-shadow" width="100" height="134"></canvas>
+            <code>drop-shadow(3px 3px 5px red)</code>
+          </section>
+
+          <section>
+            <canvas class="grayscale" width="100" height="134"></canvas>
+            <code>grayscale(50%)</code>
+          </section>
+
+          <section>
+            <canvas class="hue-rotate" width="100" height="134"></canvas>
+            <code>hue-rotate(180deg)</code>
+          </section>
+
+          <section>
+            <canvas class="invert" width="100" height="134"></canvas>
+            <code>invert(.9)</code>
+          </section>
+
+          <section>
+            <canvas class="opacity" width="100" height="134"></canvas>
+            <code>opacity(.5)</code>
+          </section>
+
+          <section>
+            <canvas class="saturate" width="100" height="134"></canvas>
+            <code>saturate(5)</code>
+          </section>
+
+          <section>
+            <canvas class="sepia" width="100" height="134"></canvas>
+            <code>sepia(100%)</code>
+          </section>
+
+          <script type="module">
+            document.querySelectorAll('#filters section').forEach(section => {
+              const ctx = section.querySelector('canvas').getContext('2d');
+              const filter = section.querySelector('code').textContent;
+              ctx.filter = filter;
+
+              const img = new Image();
+              img.onload = () => {
+                if (filter.startsWith('drop-shadow')) {
+                  ctx.drawImage(img, 10, 10, 80, 110);
+                } else {
+                  ctx.drawImage(img, 0, 0);
+                }
+              };
+              img.src = 'example.jpg';
+            });
+          </script>
+        </article>
+
+        <article>
+          <section>
+            <canvas class="testOrigin" width="100" height="134"></canvas>
+            <script type="module">
+              const ctxTestOrigin = document
+                .querySelector('canvas.testOrigin')
+                .getContext('2d');
+              const grdntTestOrigin = ctxTestOrigin.createLinearGradient(
+                0,
+                0,
+                100,
+                134,
+              );
+              grdntTestOrigin.addColorStop(0.15, 'cyan');
+              grdntTestOrigin.addColorStop(0.5, 'magenta');
+              grdntTestOrigin.addColorStop(0.85, 'yellow');
+              ctxTestOrigin.fillStyle = grdntTestOrigin;
+              ctxTestOrigin.fillRect(0, 0, 100, 134);
+            </script>
+          </section>
+
+          <section>
+            <canvas class="test" width="100" height="134"></canvas>
+            <script type="module">
+              const ctxTest = document
+                .querySelector('canvas.test')
+                .getContext('2d');
+              const ctxTestOrigin = document
+                .querySelector('canvas.testOrigin')
+                .getContext('2d');
+              const grdntTest = ctxTestOrigin.createLinearGradient(
+                0,
+                0,
+                100,
+                134,
+              );
+              ctxTest.filter = 'invert(1)';
+              grdntTest.addColorStop(0.15, 'cyan');
+              grdntTest.addColorStop(0.5, 'magenta');
+              grdntTest.addColorStop(0.85, 'yellow');
+              ctxTest.fillStyle = grdntTest;
+              ctxTest.fillRect(0, 0, 100, 134);
+            </script>
+          </section>
+
+          <section>
+            <canvas class="mixed" width="100" height="134"></canvas>
+            <script type="module">
+              const ctxMixed = document
+                .querySelector('canvas.mixed')
+                .getContext('2d');
+
+              // 1st step: single filter - blurred text
+              ctxMixed.font = '16px serif';
+              ctxMixed.fillStyle = 'cyan';
+              // TODO: this line fails on Safari Technology Preview: check again after release
+              const isSafariTP =
+                navigator.userAgent.includes('AppleWebKit') &&
+                parseInt(
+                  navigator.userAgent.match(/Version\/(\d+)/)?.[1] ?? 0,
+                ) > 17;
+              if (!isSafariTP) {
+                ctxMixed.filter = 'blur(4px) drop-shadow(2px 2px 10px red)';
+              }
+              ctxMixed.fillText('Hello world', 10, 20);
+
+              // 2nd step: multiple filters - inverted, opaque and rotated rectangle
+              ctxMixed.filter =
+                'invert(.75) opacity(.5) drop-shadow(4px 4px 4px red)';
+              ctxMixed.fillStyle = '#f00';
+              ctxMixed.translate(50, 25);
+              ctxMixed.rotate((45 * Math.PI) / 180);
+              ctxMixed.fillRect(-25, -15, 50, 50);
+            </script>
+          </section>
+
+          <section>
+            <canvas class="comp" width="100" height="134"></canvas>
+            <script type="module">
+              const ctxComp = document
+                .querySelector('canvas.comp')
+                .getContext('2d');
+              ctxComp.globalCompositeOperation = 'xor';
+              ctxComp.filter = 'invert(.75) blur(6px)';
+              ctxComp.fillStyle = 'blue';
+              ctxComp.fillRect(10, 10, 60, 60);
+              ctxComp.fillStyle = 'red';
+              ctxComp.fillRect(30, 30, 60, 60);
+            </script>
+          </section>
+
+          <section>
+            <canvas class="clear" width="100" height="134"></canvas>
+            <script type="module">
+              const ctxClear = document
+                .querySelector('canvas.clear')
+                .getContext('2d');
+              ctxClear.globalCompositeOperation = 'xor';
+              ctxClear.filter = 'blur(5px)';
+              ctxClear.fillStyle = 'red';
+              ctxClear.fillRect(10, 10, 80, 114);
+              ctxClear.clearRect(25, 25, 50, 84);
+            </script>
+          </section>
+        </article>
+
+        <article class="debug">
+          <canvas height="200" width="300"></canvas>
+          <section id="clones"></section>
+          <script type="module">
+            const ctxDebug = document
+              .querySelector('.debug canvas')
+              .getContext('2d');
+
+            ctxDebug.fillStyle = '#44f';
+            ctxDebug.scale(2, 2);
+            ctxDebug.fillRect(100, 20, 25, 75);
+            ctxDebug.scale(0.5, 0.5);
+
+            ctxDebug.filter = 'blur(5px)';
+            ctxDebug.fillStyle = 'red';
+            ctxDebug.rotate((5 * Math.PI) / 180);
+            ctxDebug.fillRect(50, 50, 200, 100);
+            ctxDebug.clearRect(55, 55, 190, 90);
+
+            ctxDebug.filter = 'invert(1)';
+            ctxDebug.rotate((2 * Math.PI) / 180);
+            ctxDebug.rotate((2 * Math.PI) / 180);
+            ctxDebug.rotate((2 * Math.PI) / 180);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.translate(10, 0);
+            ctxDebug.fillText('Hello World', 30, 30);
+            ctxDebug.reset()
+
+            ctxDebug.filter = 'invert(1) opacity(.25)';
+            ctxDebug.strokeStyle = 'black';
+            ctxDebug.translate(100, 50);
+            ctxDebug.rotate((45 * Math.PI) / 180);
+            ctxDebug.beginPath();
+            ctxDebug.moveTo(20, 20);
+            ctxDebug.lineTo(20, 100);
+            ctxDebug.lineTo(70, 100);
+            ctxDebug.lineWidth = 10;
+            ctxDebug.lineCap = 'round';
+            ctxDebug.lineJoin = 'round';
+            ctxDebug.stroke();
+
+            ctxDebug.scale(2, 1);
+            ctxDebug.clearRect(10, 20, 10, 50);
+            ctxDebug.fillRect(15, 20, 10, 50);
+
+            ctxDebug.strokeStyle = 'yellow';
+            ctxDebug.lineTo(20, 20);
+            ctxDebug.stroke();
+          </script>
+        </article>
+
+        <style>
+          @import url(example.css);
+        </style>
+      </main>
+      <iframe></iframe>
+    </div>
+  </body>
+</html>

@@ -1,5 +1,6 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeNumberPercentage } from '../utils/filter.utils';
+import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeNumberPercentage } from '../utils/filter.utils.js';
 
 export const opacity: Filter = (context, amount = '1') => {
   amount = normalizeNumberPercentage(amount);
@@ -30,3 +31,5 @@ export const opacity: Filter = (context, amount = '1') => {
   // return the context itself
   return context;
 };
+
+SUPPORTED_FILTERS.set('opacity', opacity);

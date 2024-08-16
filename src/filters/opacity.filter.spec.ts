@@ -1,6 +1,7 @@
 import { expect } from '@esm-bundle/chai';
-import { imageDataMock } from '../mocks/mock.data';
-import { opacity } from './opacity.filter';
+
+import { imageDataMock } from '../mocks/mock.data.js';
+import { opacity } from './opacity.filter.js';
 
 describe('filters/opacity', () => {
   let width: number;
@@ -21,19 +22,29 @@ describe('filters/opacity', () => {
   });
 
   it('should not manipulate image data with defaults', () => {
-    const dataBefore = context.getImageData(0, 0, width, height).data.toString();
-    const dataAfter = opacity(context).getImageData(0, 0, width, height).data.toString();
+    const dataBefore = context
+      .getImageData(0, 0, width, height)
+      .data.toString();
+    const dataAfter = opacity(context)
+      .getImageData(0, 0, width, height)
+      .data.toString();
     expect(dataBefore).to.equal(dataAfter);
   });
 
   it('should manipulate image data if arguments match', () => {
-    const dataBefore = context.getImageData(0, 0, width, height).data.toString();
-    const dataAfter = Array.from(opacity(context, '.5').getImageData(0, 0, width, height).data);
+    const dataBefore = context
+      .getImageData(0, 0, width, height)
+      .data.toString();
+    const dataAfter = Array.from(
+      opacity(context, '.5').getImageData(0, 0, width, height).data,
+    );
     expect(dataBefore).not.to.equal(dataAfter);
   });
 
   it('should have empty alpha channels on full opacity', () => {
-    const all = Array.from(opacity(context, '0').getImageData(0, 0, width, height).data)
+    const all = Array.from(
+      opacity(context, '0').getImageData(0, 0, width, height).data,
+    )
       .filter((_, index) => (index + 1) % 4 === 0)
       .reduce((sum, current) => sum + current, 0);
     expect(all).to.equal(0);

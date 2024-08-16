@@ -1,5 +1,6 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeAngle } from '../utils/filter.utils';
+import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeAngle } from '../utils/filter.utils.js';
 
 export const hueRotate: Filter = (context, rotation = '0deg') => {
   const amount = normalizeAngle(rotation);
@@ -88,3 +89,5 @@ export const hueRotate: Filter = (context, rotation = '0deg') => {
   // return the context itself
   return context;
 };
+
+SUPPORTED_FILTERS.set('hue-rotate', hueRotate);

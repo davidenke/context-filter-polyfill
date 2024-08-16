@@ -1,17 +1,14 @@
 # context-filter-polyfill
 
 [![Build Status](https://github.com/davidenke/context-filter-polyfill/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/davidenke/context-filter-polyfill)
+[![NPM Version][npm-version-image]][npm-url]
+[![NPM Install Size][npm-install-size-image]][npm-install-size-url]
 
-https://davidenke.github.io/context-filter-polyfill/
+Examples: https://davidenke.github.io/context-filter-polyfill/
 
 Polyfills [`CanvasRenderingContext2d.filter`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter) capability of adopting CSS3 filters to canvas contexts at least partially.
 
-Successfully tested on
-
-- macOS Safari
-- iOS Safari
-- Windows 10 IE11
-- Windows 10 Edge 16-18
+Right now ~~only WebKit [misses an implementation (Bugzilla #198416)](https://bugs.webkit.org/show_bug.cgi?id=198416)~~ all engines support it natively, despite Safari not having shipped it yet in the stable release channel.
 
 ## Installation
 
@@ -35,6 +32,15 @@ npm install context-filter-polyfill
 import 'context-filter-polyfill';
 ```
 
+## Changes in 0.4
+
+Since version 0.4.0 the method of how the polyfill is applied has been reworked.
+It now polyfills the filter on each drawing function call instead of applying it once on the context in the end.
+
+This results in more accurate behavior compared to the native implementation.
+
+The [polyfilled and native results](https://davidenke.github.io/context-filter-polyfill/) can be compared with a non-WebKit browser like Firefox or Chrome.
+
 ## Supported filters
 
 - [`url`](<https://developer.mozilla.org/en-US/docs/Web/CSS/filter#url()>) ✗
@@ -52,26 +58,13 @@ import 'context-filter-polyfill';
 
 ## See it in action
 
-Just open the [integration demo](https://davidenke.github.io/context-filter-polyfill/) on Safari / iOS or IE11.
+Just open the [integration demo](https://davidenke.github.io/context-filter-polyfill/) on Safari / iOS.
 
-## Strategy
+## License
 
-The polyfill is applied by the following steps:
+[MIT](LICENSE)
 
-1. monkey patching all properties of the `CanvasRenderingContext2d`
-1. monkey patching all getters and setters of the `CanvasRenderingContext2d`
-1. monkey patching all methods of the `CanvasRenderingContext2d`
-
-These patches are proxying all changes to a **offscreen canvas** which applies the appropriate filter polyfills everytime a _drawing
-function_ is called:
-
-- `clearRect`
-- `drawImage`
-- `fill`
-- `fillRect`
-- `fillText`
-- `stroke`
-- `strokeRect`
-- `strokeText`
-
-The contents of the **offscreen canvas** are applied back to the original canvas and is then resetted.
+[npm-install-size-image]: https://badgen.net/packagephobia/install/context-filter-polyfill
+[npm-install-size-url]: https://packagephobia.com/result?p=context-filter-polyfill
+[npm-url]: https://npmjs.org/package/context-filter-polyfill
+[npm-version-image]: https://badgen.net/npm/v/context-filter-polyfill

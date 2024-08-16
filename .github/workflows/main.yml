@@ -1,4 +1,4 @@
-name: Build and release
+name: test and build
 on:
   push:
     branches: [main]
@@ -23,19 +23,21 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.13.0
+          node-version: 20.16.0
       - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
           restore-keys: v1-npm-deps-
-      - run: npm ci
+      - run: npx --package @rollup/rollup-linux-x64-gnu --package playwright playwright install --with-deps webkit
+      - run: npm install
       - run: npm run lint
       - run: npm run test:ci
       - uses: mikepenz/action-junit-report@v4
         if: success() || failure()
         with:
           check_name: "report"
+          include_passed: true
           report_paths: "**/reports/junit.xml"
 
   build:
@@ -45,7 +47,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.13.0
+          node-version: 20.16.0
       - uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -95,7 +97,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.13.0
+          node-version: 20.16.0
           registry-url: https://registry.npmjs.org/
       - uses: actions/download-artifact@v3
         with:

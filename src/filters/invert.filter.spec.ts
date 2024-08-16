@@ -1,6 +1,7 @@
 import { expect } from '@esm-bundle/chai';
-import { imageDataMock } from '../mocks/mock.data';
-import { invert } from './invert.filter';
+
+import { imageDataMock } from '../mocks/mock.data.js';
+import { invert } from './invert.filter.js';
 
 describe('filters/invert', () => {
   const size = 30;
@@ -21,7 +22,9 @@ describe('filters/invert', () => {
 
   it('should not manipulate image data with defaults', () => {
     const dataBefore = context.getImageData(0, 0, size, size).data.toString();
-    const dataAfter = invert(context).getImageData(0, 0, size, size).data.toString();
+    const dataAfter = invert(context)
+      .getImageData(0, 0, size, size)
+      .data.toString();
     expect(dataBefore).to.equal(dataAfter);
   });
 

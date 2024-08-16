@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
-import { type BuildOptions, build, context } from 'esbuild';
-import { dtsPlugin } from 'esbuild-plugin-d.ts';
+
+import { build, type BuildOptions, context } from 'esbuild';
+import copyStaticFiles from 'esbuild-copy-static-files';
 
 const { values } = parseArgs({
   options: {
@@ -11,7 +12,14 @@ const { values } = parseArgs({
 const { port, serve } = values;
 
 const options: BuildOptions = {
-  entryPoints: ['src/index.ts', 'src/index.html', 'src/mocks/mock-1.jpg', 'src/mocks/mock-2.png'],
+  entryPoints: [
+    'src/index.ts',
+    'src/polyfill.ts',
+
+    'src/example.ts',
+    'src/example.css',
+    'src/example.jpg',
+  ],
   outdir: 'dist',
   format: 'esm',
   bundle: true,
@@ -19,18 +27,16 @@ const options: BuildOptions = {
   minify: true,
   splitting: false,
   target: ['es6'],
-  loader: { '.html': 'copy', '.jpg': 'copy', '.png': 'copy' },
-  plugins: [dtsPlugin()],
+  loader: { '.jpg': 'copy' },
+  plugins: [
+    copyStaticFiles({ src: 'src/module.d.ts', dest: 'dist/index.d.ts' }),
+    copyStaticFiles({ src: 'src/example.html', dest: 'dist/index.html' }),
+  ],
 };
 
 try {
   if (serve) {
-    const ctx = await context({
-      ...options,
-      banner: {
-        js: `new EventSource('/esbuild').addEventListener('change', () => location.reload())`,
-      },
-    });
+    const ctx = await context(options);
     await ctx.watch();
     await ctx.serve({ servedir: 'dist', port: Number(port) });
     console.log(`> Serving on http://localhost:${port}`);

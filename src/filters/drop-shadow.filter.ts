@@ -1,5 +1,6 @@
-import type { Filter } from '../types/filter.type';
-import { normalizeLength } from '../utils/filter.utils';
+import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
+import type { Filter } from '../types/filter.type.js';
+import { normalizeLength } from '../utils/filter.utils.js';
 
 export const dropShadow: Filter = (
   context,
@@ -34,3 +35,5 @@ export const dropShadow: Filter = (
   // return the context itself
   return context;
 };
+
+SUPPORTED_FILTERS.set('drop-shadow', dropShadow);
