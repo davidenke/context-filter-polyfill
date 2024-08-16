@@ -2,17 +2,24 @@
 // 2. on every draw function, replicate into a canvas copy
 // 3. apply latest filter to current copy
 
+import {
+  CanvasRenderingContext2DHistory,
+  type CanvasRenderingContext2DHistoryEntry,
+} from './history.utils.js';
+
+type PickByType<T, Value> = {
+  [P in keyof T as T[P] extends Value | undefined ? P : never]: T[P];
+};
+
 declare global {
-  type CanvasRenderingContext2DHistoryEntry = {
-    type: 'set' | 'apply' | 'draw';
-    prop: string | symbol;
-    value?: unknown;
-    args?: unknown[];
-  };
-  type CanvasRenderingContext2DHistory = CanvasRenderingContext2DHistoryEntry[];
+  type CanvasRenderingContext2DFn = PickByType<
+    CanvasRenderingContext2D,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    Function
+  >;
   interface CanvasRenderingContext2D {
     __cloned: boolean;
-    __skipNextDraw: boolean;
+    __withoutSideEffects: CanvasRenderingContext2DFn;
   }
 
   interface HTMLCanvasElement {
@@ -21,8 +28,8 @@ declare global {
 }
 
 // a list of all drawing functions in CanvasRenderingContext2D
-const DRAWING_FN_PROPS: Array<keyof CanvasRenderingContext2D> = [
-  // 'clearRect', // despite being a drawing function, it's not needed here
+const DRAWING_FN_PROPS = [
+  'clearRect',
   'clip',
   'drawImage',
   'putImageData',
@@ -34,7 +41,7 @@ const DRAWING_FN_PROPS: Array<keyof CanvasRenderingContext2D> = [
   'strokeText',
   'reset',
   'restore',
-];
+] as const satisfies Partial<Array<keyof CanvasRenderingContext2D>>;
 
 export type ProxyOptions = {
   onHistoryUpdate: (history: CanvasRenderingContext2DHistory) => void;
@@ -45,13 +52,23 @@ export type ProxyOptions = {
   ) => void;
 };
 
+export function isDrawingFn(
+  property: string,
+): property is (typeof DRAWING_FN_PROPS)[number] {
+  return DRAWING_FN_PROPS.includes(
+    property as (typeof DRAWING_FN_PROPS)[number],
+  );
+}
+
 export function addHistoryEntry(
   context: CanvasRenderingContext2D,
   entry: CanvasRenderingContext2DHistoryEntry,
   onUpdate?: ProxyOptions['onHistoryUpdate'],
 ) {
-  if (!context.canvas.__history) context.canvas.__history = [];
-  context.canvas.__history.push(entry);
+  if (!context.canvas.__history) {
+    context.canvas.__history = new CanvasRenderingContext2DHistory();
+  }
+  context.canvas.__history.add(entry);
   onUpdate?.(context.canvas.__history);
 }
 
@@ -62,22 +79,7 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
   // create a mirror of the 2d context
   const mirror = {
     __cloned: false,
-    __clearRect(
-      this: CanvasRenderingContext2D,
-      ...args: Parameters<CanvasRenderingContext2D['clearRect']>
-    ) {
-      this.__skipNextDraw = true;
-      this.clearRect(...args);
-      this.__skipNextDraw = false;
-    },
-    __drawImage(
-      this: CanvasRenderingContext2D,
-      ...args: Parameters<CanvasRenderingContext2D['drawImage']>
-    ) {
-      this.__skipNextDraw = true;
-      this.drawImage(...args);
-      this.__skipNextDraw = false;
-    },
+    __withoutSideEffects: {},
   } as unknown as CanvasRenderingContext2D;
 
   // copy all properties from the original context
@@ -85,31 +87,35 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
     CanvasRenderingContext2D.prototype,
   );
   Object.defineProperties(mirror, properties);
-  Object.keys(properties).forEach(property => {
+  Object.keys(properties).forEach(prop => {
     // @ts-expect-error - we're doing nasty things here
-    delete CanvasRenderingContext2D.prototype[property];
+    delete CanvasRenderingContext2D.prototype[prop];
   });
 
   Object.setPrototypeOf(
     CanvasRenderingContext2D.prototype,
     new Proxy<CanvasRenderingContext2D>(mirror, {
-      get(
-        target,
-        prop: keyof CanvasRenderingContext2D,
-        receiver: CanvasRenderingContext2D,
-      ) {
+      get(target, prop: string, receiver: CanvasRenderingContext2D) {
+        // trap access to the __withoutSideEffects property to provide a proxy
+        // which exposes all 2d unpatched functions without side effects
+        if (prop === '__withoutSideEffects') {
+          return new Proxy(
+            {},
+            {
+              get: (_, prop: string) => {
+                // @ts-expect-error - our types aren't perfect
+                return target[prop].bind(receiver);
+              },
+            },
+          );
+        }
+
         // handle function calls: a.b(...args)
         if (prop in properties && 'value' in properties[prop as string]) {
-          // use the default implementation if needed
-          if (receiver.__skipNextDraw) {
-            receiver.__skipNextDraw = false;
-            return Reflect.get(target, prop, receiver);
-          }
-
           // provide a wrapper function to intercept arguments
           return (...args: unknown[]) => {
             // skip drawing functions, apply our own magic
-            if (DRAWING_FN_PROPS.includes(prop)) {
+            if (isDrawingFn(prop)) {
               onDraw?.(receiver, prop, args);
               addHistoryEntry(
                 receiver,
@@ -119,7 +125,15 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
               return;
             }
 
-            addHistoryEntry(receiver, { type: 'apply', prop, args }, onHistory);
+            addHistoryEntry(
+              receiver,
+              {
+                type: 'apply',
+                prop: prop as keyof CanvasRenderingContext2D,
+                args,
+              },
+              onHistory,
+            );
             // @ts-expect-error - it's a function, we checked!
             return target[prop].apply(receiver, args);
           };

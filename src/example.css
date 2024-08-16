@@ -105,17 +105,6 @@ article:not(.debug) {
   display: block;
   aspect-ratio: 1;
   width: 300px;
-
-  &:has(.clone:hover) {
-    .clone {
-      opacity: .25;
-      background-color: transparent;
-    }
-    .clone:hover {
-      opacity: 1;
-      background-color: #555;
-    }
-  }
 }
 
 .clone {
@@ -128,7 +117,34 @@ article:not(.debug) {
   width: 75%;
 
   border: 1px solid red;
-  transform: perspective(500px) rotateY(-45deg);
-  transition: .2s ease;
-  transition-property: opacity, background-color;
+  transform: perspective(1000px) rotateY(-25deg);
+  transition: 0.5s ease;
+  transition-property: background-color, opacity, transform;
+
+  code {
+    position: absolute;
+    inset: 5px auto auto 5px;
+    opacity: 0.5;
+    font-size: 11px;
+    transition: 0.5s ease opacity;
+  }
+
+  canvas {
+    width: 100%;
+  }
+
+  #clones:has(.clone:hover) &:not(:hover) {
+    opacity: 0.15;
+    background-color: transparent;
+  }
+
+  &:hover {
+    opacity: 1;
+    background-color: #2e2e2e;
+    transform: perspective(1000px) rotateY(0deg);
+
+    code {
+      opacity: 1;
+    }
+  }
 }

@@ -28,11 +28,18 @@ document.querySelector('iframe')!.srcdoc = document
 
 let cloned = 0;
 window.addEventListener('context-filter-polyfill:draw', ({ detail }) => {
-  const { original, clone } = detail;
+  const { original, clone, drawFn, drawArgs } = detail;
   if (original.canvas.parentElement?.classList.contains('debug')) {
     ++cloned;
-    clone.canvas.classList.add('clone');
-    clone.canvas.style.setProperty('--i', `${cloned}`);
-    document.getElementById('clones')?.appendChild(clone.canvas);
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('clone');
+    wrapper.style.setProperty('--i', `${cloned}`);
+
+    const label = document.createElement('code');
+    label.textContent = `${drawFn}(${drawArgs.map(String).join(', ')})`;
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(clone.canvas);
+    document.getElementById('clones')?.appendChild(wrapper);
   }
 });

@@ -3,7 +3,7 @@ import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
 // applies the given filter to the provided canvas 2d context
 export const applyFilter = (
   context: CanvasRenderingContext2D,
-  canvasFilters: CanvasFilters['filter'],
+  canvasFilters: CanvasFilters['filter'] = 'none',
 ) => {
   // parse applied filters and call implementations
   canvasFilters

@@ -239,6 +239,11 @@
               .querySelector('.debug canvas')
               .getContext('2d');
 
+            ctxDebug.fillStyle = '#44f';
+            ctxDebug.scale(2, 2);
+            ctxDebug.fillRect(100, 20, 25, 75);
+            ctxDebug.scale(0.5, 0.5);
+
             ctxDebug.filter = 'blur(5px)';
             ctxDebug.fillStyle = 'red';
             ctxDebug.rotate((5 * Math.PI) / 180);
@@ -258,6 +263,7 @@
             ctxDebug.translate(10, 0);
             ctxDebug.translate(10, 0);
             ctxDebug.fillText('Hello World', 30, 30);
+            ctxDebug.reset()
 
             ctxDebug.filter = 'invert(1) opacity(.25)';
             ctxDebug.strokeStyle = 'black';
@@ -272,10 +278,13 @@
             ctxDebug.lineJoin = 'round';
             ctxDebug.stroke();
 
+            ctxDebug.scale(2, 1);
+            ctxDebug.clearRect(10, 20, 10, 50);
+            ctxDebug.fillRect(15, 20, 10, 50);
+
             ctxDebug.strokeStyle = 'yellow';
             ctxDebug.lineTo(20, 20);
             ctxDebug.stroke();
-            console.log(ctxDebug.canvas.__history)
           </script>
         </article>
 
