@@ -52,6 +52,11 @@
         <h2>Polyfilled</h2>
         <article id="filters">
           <section>
+            <canvas class="undefined" width="100" height="134"></canvas>
+            <code>undefined</code>
+          </section>
+
+          <section>
             <canvas class="none" width="100" height="134"></canvas>
             <code>none</code>
           </section>
@@ -110,7 +115,7 @@
             document.querySelectorAll('#filters section').forEach(section => {
               const ctx = section.querySelector('canvas').getContext('2d');
               const filter = section.querySelector('code').textContent;
-              ctx.filter = filter;
+              if (filter !== 'undefined') ctx.filter = filter;
 
               const img = new Image();
               img.onload = () => {
@@ -263,7 +268,7 @@
             ctxDebug.translate(10, 0);
             ctxDebug.translate(10, 0);
             ctxDebug.fillText('Hello World', 30, 30);
-            ctxDebug.reset()
+            ctxDebug.reset();
 
             ctxDebug.filter = 'invert(1) opacity(.25)';
             ctxDebug.strokeStyle = 'black';
