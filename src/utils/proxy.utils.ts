@@ -1,5 +1,5 @@
-import { addHistoryEntry, isDrawingFn } from './context.utils.js';
-import type { CanvasRenderingContext2DHistory } from './history.utils.js';
+import { isDrawingFn } from './context.utils.js';
+import { CanvasRenderingContext2DHistory } from './history.utils.js';
 
 export type ProxyOptions = {
   onHistoryUpdate: (history: CanvasRenderingContext2DHistory) => void;
@@ -28,6 +28,19 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
   Object.keys(properties).forEach(prop => {
     // @ts-expect-error - we're doing nasty things here
     delete CanvasRenderingContext2D.prototype[prop];
+  });
+
+  // prepare history on canvas
+  Object.defineProperty(HTMLCanvasElement.prototype, '__history', {
+    get(): CanvasRenderingContext2DHistory {
+      if (!this.___history) {
+        this.___history = new CanvasRenderingContext2DHistory();
+      }
+      return this.___history;
+    },
+    set(value: CanvasRenderingContext2DHistory) {
+      this.___history = value;
+    },
   });
 
   Object.setPrototypeOf(
@@ -59,15 +72,11 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
             // skip drawing functions, apply our own magic
             if (isDrawingFn(prop)) {
               onDraw?.(receiver, prop, args);
-              addHistoryEntry(
-                receiver,
-                { type: 'draw', prop, args },
-                onHistory,
-              );
+              receiver.canvas.__history.add({ type: 'draw', prop, args });
               return;
             }
 
-            addHistoryEntry(receiver, { type: 'apply', prop, args }, onHistory);
+            receiver.canvas.__history.add({ type: 'apply', prop, args });
             // @ts-expect-error - it's a function, we checked!
             return target[prop].apply(receiver, args);
           };
@@ -83,7 +92,7 @@ export function applyProxy(options: Partial<ProxyOptions> = {}) {
         receiver: CanvasRenderingContext2D,
       ) {
         // update history
-        addHistoryEntry(receiver, { type: 'set', prop, value }, onHistory);
+        receiver.canvas.__history.add({ type: 'set', prop, value });
 
         // skip eventually native implementation;
         // else the filter will be applied twice

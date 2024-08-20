@@ -1,7 +1,4 @@
-import {
-  CanvasRenderingContext2DHistory,
-  type CanvasRenderingContext2DHistoryEntry,
-} from './history.utils.js';
+import { CanvasRenderingContext2DHistory } from './history.utils.js';
 
 declare global {
   // some utility types
@@ -52,16 +49,4 @@ export function isDrawingFn(
   return DRAWING_FN_PROPS.includes(
     property as (typeof DRAWING_FN_PROPS)[number],
   );
-}
-
-export function addHistoryEntry(
-  context: CanvasRenderingContext2D,
-  entry: CanvasRenderingContext2DHistoryEntry,
-  onUpdate?: (history: CanvasRenderingContext2DHistory) => void,
-) {
-  if (!context.canvas.__history) {
-    context.canvas.__history = new CanvasRenderingContext2DHistory();
-  }
-  context.canvas.__history.add(entry);
-  onUpdate?.(context.canvas.__history);
 }
