@@ -2,7 +2,6 @@ import { isDrawingFn } from './context.utils.js';
 import { CanvasRenderingContext2DHistory } from './history.utils.js';
 
 export type ProxyOptions = {
-  onHistoryUpdate: (history: CanvasRenderingContext2DHistory) => void;
   onDraw: (
     context: CanvasRenderingContext2D,
     drawFn: string,
@@ -10,10 +9,7 @@ export type ProxyOptions = {
   ) => void;
 };
 
-export function applyProxy(options: Partial<ProxyOptions> = {}) {
-  // extract options
-  const { onDraw, onHistoryUpdate: onHistory } = options;
-
+export function applyProxy({ onDraw }: Partial<ProxyOptions> = {}) {
   // create a mirror of the 2d context
   const mirror = {
     __cloned: false,
