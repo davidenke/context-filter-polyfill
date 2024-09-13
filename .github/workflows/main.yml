@@ -20,17 +20,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20.17.0
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.npm
           key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
           restore-keys: v1-npm-deps-
-      - run: npx --package @rollup/rollup-linux-x64-gnu --package playwright playwright install --with-deps webkit
-      - run: npm install
+      - run: npm ci
+      - run: npx -y playwright install --with-deps webkit
       - run: npm run lint
       - run: npm run test:ci
       - uses: mikepenz/action-junit-report@v4
@@ -38,24 +38,24 @@ jobs:
         with:
           check_name: "report"
           include_passed: true
-          report_paths: "**/reports/junit.xml"
+          report_paths: "reports/junit.xml"
 
   build:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20.17.0
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.npm
           key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
           restore-keys: v1-npm-deps-
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           name: latest
@@ -73,18 +73,18 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/configure-pages@v3
-      - uses: actions/download-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v4
+      - uses: actions/download-artifact@v4
         with:
           name: latest
           path: dist
-      - uses: actions/upload-pages-artifact@v1
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: "dist"
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
 
   release:
     if: github.ref == 'refs/heads/main'
@@ -94,12 +94,12 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20.17.0
           registry-url: https://registry.npmjs.org/
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: latest
           path: dist
