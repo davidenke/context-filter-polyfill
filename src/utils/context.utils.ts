@@ -1,4 +1,5 @@
-import { CanvasRenderingContext2DHistory } from './history.utils.js';
+import type { Context2DHistory } from './history.utils.js';
+import type { Context2D } from './proxy.utils.js';
 
 declare global {
   // some utility types
@@ -9,21 +10,28 @@ declare global {
   type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 
   // all callable functions in CanvasRenderingContext2D
-  type CanvasRenderingContext2DFn = PickByType<
-    CanvasRenderingContext2D,
+  type Context2DFn = PickByType<
+    Context2D,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
     Function
   >;
 
-  // add some properties to the 2d context
+  // add some properties to the 2d contexts
   interface CanvasRenderingContext2D {
     __cloned: boolean;
-    __withoutSideEffects: CanvasRenderingContext2DFn;
+    __withoutSideEffects: Context2DFn;
+  }
+  interface OffscreenCanvasRenderingContext2D {
+    __cloned: boolean;
+    __withoutSideEffects: Context2DFn;
   }
 
-  // add a history to the canvas element
+  // add a history to the canvas objects
   interface HTMLCanvasElement {
-    __history: CanvasRenderingContext2DHistory;
+    __history: Context2DHistory;
+  }
+  interface OffscreenCanvas {
+    __history: Context2DHistory;
   }
 }
 
