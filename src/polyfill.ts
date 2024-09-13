@@ -33,8 +33,13 @@ applyProxy({
       return;
     }
 
-    // prepare a clone of the canvas to to adopt its settings
-    const _canvas = ctx.canvas.cloneNode() as HTMLCanvasElement;
+    // prepare a clone of the (offscreen) canvas to adopt its settings
+    let _canvas: HTMLCanvasElement | OffscreenCanvas;
+    if (ctx.canvas instanceof HTMLCanvasElement) {
+      _canvas = ctx.canvas.cloneNode() as HTMLCanvasElement;
+    } else {
+      _canvas = new OffscreenCanvas(ctx.canvas.width, ctx.canvas.height);
+    }
     const clone = _canvas.getContext('2d')!;
     clone.__cloned = true;
 

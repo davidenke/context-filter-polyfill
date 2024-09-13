@@ -1,12 +1,14 @@
-export type CanvasRenderingContext2DHistoryEntry = {
+import type { Context2D } from './proxy.utils';
+
+export type Context2DHistoryEntry = {
   type: 'set' | 'apply' | 'draw';
   prop: keyof CanvasRenderingContext2D;
   value?: unknown;
   args?: unknown[];
 };
 
-export class CanvasRenderingContext2DHistory extends Set<CanvasRenderingContext2DHistoryEntry> {
-  applyTo(context: CanvasRenderingContext2D) {
+export class Context2DHistory extends Set<Context2DHistoryEntry> {
+  applyTo(context: Context2D): void {
     this.forEach(({ type, prop, value, args }) => {
       switch (type) {
         case 'set':
@@ -23,7 +25,7 @@ export class CanvasRenderingContext2DHistory extends Set<CanvasRenderingContext2
 
   lastValueOf(
     prop: keyof CanvasRenderingContext2D,
-  ): CanvasRenderingContext2DHistoryEntry | undefined {
+  ): Context2DHistoryEntry | undefined {
     return [...this].findLast(entry => entry.prop === prop);
   }
 }
