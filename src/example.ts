@@ -1,3 +1,5 @@
+import { supportsContextFilters } from './utils/detection.utils';
+
 function detectBrowser() {
   const ua = navigator.userAgent;
   if (ua.includes('Edg')) {
@@ -14,8 +16,9 @@ function detectBrowser() {
 
   return 'as unknown browser';
 }
+
 function isPolyfilled() {
-  return 'filter' in CanvasRenderingContext2D.prototype ? 'is not' : 'is';
+  return supportsContextFilters() ? 'is not' : 'is';
 }
 
 document.querySelector('[data-debug="browser"]')!.textContent = detectBrowser();
@@ -29,7 +32,10 @@ document.querySelector('iframe')!.srcdoc = document
 let cloned = 0;
 window.addEventListener('context-filter-polyfill:draw', ({ detail }) => {
   const { original, clone, drawFn, drawArgs } = detail;
-  if (original.canvas.parentElement?.classList.contains('debug')) {
+  if (
+    'parentElement' in original.canvas &&
+    original.canvas.parentElement?.classList.contains('debug')
+  ) {
     ++cloned;
     const wrapper = document.createElement('div');
     wrapper.classList.add('clone');
@@ -39,7 +45,7 @@ window.addEventListener('context-filter-polyfill:draw', ({ detail }) => {
     label.textContent = `${drawFn}(${drawArgs.map(String).join(', ')})`;
 
     wrapper.appendChild(label);
-    wrapper.appendChild(clone.canvas);
+    wrapper.appendChild(clone.canvas as HTMLCanvasElement);
     document.getElementById('clones')?.appendChild(wrapper);
   }
 });

@@ -7,9 +7,10 @@ declare global {
     [P in keyof T as T[P] extends Value | undefined ? P : never]: T[P];
   };
 
+  // convenience type for making all properties writeable
   type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 
-  // all callable functions in CanvasRenderingContext2D
+  // all callable functions in 2d contexts
   type Context2DFn = PickByType<
     Context2D,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -35,7 +36,7 @@ declare global {
   }
 }
 
-// a list of all drawing functions in CanvasRenderingContext2D
+// a list of all drawing functions in 2d contexts
 export const DRAWING_FN_PROPS = [
   'clearRect',
   'clip',
@@ -49,7 +50,7 @@ export const DRAWING_FN_PROPS = [
   'strokeText',
   'reset',
   'restore',
-] as const satisfies Partial<Array<keyof CanvasRenderingContext2D>>;
+] as const satisfies Partial<Array<keyof Context2D>>;
 
 export function isDrawingFn(
   property: string,

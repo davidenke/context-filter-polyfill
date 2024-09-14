@@ -1,13 +1,14 @@
 import { expect } from '@esm-bundle/chai';
 
 import { imageDataMock } from '../mocks/mock.data.js';
+import type { Context2D } from '../utils/proxy.utils.js';
 import { saturate } from './saturate.filter.js';
 
 describe('filters/saturate', () => {
   let width: number;
   let height: number;
   let canvas: HTMLCanvasElement;
-  let context: CanvasRenderingContext2D;
+  let context: Context2D;
 
   beforeEach(() => {
     canvas = document.createElement('canvas');

@@ -6,7 +6,7 @@
 
 Examples: https://davidenke.github.io/context-filter-polyfill/
 
-Polyfills [`CanvasRenderingContext2d.filter`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter) capability of adopting CSS3 filters to canvas contexts at least partially.
+Polyfills [`CanvasRenderingContext2d`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D) and [`OffscreenCanvasRenderingContext2d`](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvasRenderingContext2d) capability of adopting [CSS3 filters](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter) on canvas contexts (at least partially).
 
 Right now ~~only WebKit [misses an implementation (Bugzilla #198416)](https://bugs.webkit.org/show_bug.cgi?id=198416)~~ all engines support it natively, despite Safari not having shipped it yet in the stable release channel.
 

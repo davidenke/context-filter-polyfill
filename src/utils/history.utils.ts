@@ -2,7 +2,7 @@ import type { Context2D } from './proxy.utils';
 
 export type Context2DHistoryEntry = {
   type: 'set' | 'apply' | 'draw';
-  prop: keyof CanvasRenderingContext2D;
+  prop: keyof Context2D;
   value?: unknown;
   args?: unknown[];
 };
@@ -23,9 +23,7 @@ export class Context2DHistory extends Set<Context2DHistoryEntry> {
     });
   }
 
-  lastValueOf(
-    prop: keyof CanvasRenderingContext2D,
-  ): Context2DHistoryEntry | undefined {
+  lastValueOf(prop: keyof Context2D): Context2DHistoryEntry | undefined {
     return [...this].findLast(entry => entry.prop === prop);
   }
 }

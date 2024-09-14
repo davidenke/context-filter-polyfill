@@ -11,13 +11,13 @@ import './filters/saturate.filter.js';
 import './filters/sepia.filter.js';
 
 import { applyFilter } from './utils/filter.utils.js';
-import { applyProxy } from './utils/proxy.utils.js';
+import { applyProxy, type Context2D } from './utils/proxy.utils.js';
 
 declare global {
   interface WindowEventMap {
     'context-filter-polyfill:draw': CustomEvent<{
-      original: CanvasRenderingContext2D;
-      clone: CanvasRenderingContext2D;
+      original: Context2D;
+      clone: Context2D;
       drawFn: string;
       drawArgs: unknown[];
     }>;

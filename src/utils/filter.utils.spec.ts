@@ -16,7 +16,7 @@ chai.use(sinonChai);
 describe('utils/filter.utils', () => {
   describe('applyFilter', () => {
     let canvas: HTMLCanvasElement;
-    let context: CanvasRenderingContext2D;
+    let context: Context2D;
 
     beforeEach(() => {
       canvas = document.createElement('canvas');

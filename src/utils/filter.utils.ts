@@ -1,8 +1,9 @@
 import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
+import type { Context2D } from './proxy.utils.js';
 
 // applies the given filter to the provided canvas 2d context
 export const applyFilter = (
-  context: CanvasRenderingContext2D,
+  context: Context2D,
   canvasFilters: CanvasFilters['filter'] = 'none',
 ) => {
   // parse applied filters and call implementations

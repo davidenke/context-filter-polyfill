@@ -1,12 +1,13 @@
 import { expect } from '@esm-bundle/chai';
 
 import { imageDataMock } from '../mocks/mock.data.js';
+import type { Context2D } from '../utils/proxy.utils.js';
 import { invert } from './invert.filter.js';
 
 describe('filters/invert', () => {
   const size = 30;
   let canvas: HTMLCanvasElement;
-  let context: CanvasRenderingContext2D;
+  let context: Context2D;
 
   beforeEach(() => {
     canvas = document.createElement('canvas');

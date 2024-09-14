@@ -18,8 +18,10 @@
       <h1>context-filter-polyfill</h1>
       <p>
         Polyfills
-        <code>CanvasRenderingContext2d.prototype.filter</code> capability of
-        adopting CSS3 filters to canvas contexts at least partially.
+        <code>CanvasRenderingContext2d.prototype.filter</code> and
+        <code>OffscreenCanvasRenderingContext2D.prototype.filter</code>
+        capability of adopting CSS3 filters to canvas contexts at least
+        partially.
       </p>
       <p>
         Right now
@@ -35,11 +37,6 @@
       <p>
         This example will show the polyfilled filters on the left and the
         untouched native implementation on the right.
-        <em
-          >Thus, <strong>no difference</strong> can be seen on
-          <strong>WebKit</strong>-based browsers, which are polyfilled either
-          way.</em
-        >
       </p>
       <p>
         So in this case here, you're using <em data-debug="browser"></em>, which

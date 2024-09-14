@@ -1,5 +1,7 @@
+import type { Context2D } from '../utils/proxy.utils';
+
 export type Filter = (
-  context: CanvasRenderingContext2D,
+  context: Context2D,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...options: any[]
-) => CanvasRenderingContext2D;
+) => Context2D;
