@@ -62,7 +62,7 @@ jobs:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -87,12 +87,14 @@ jobs:
         uses: actions/deploy-pages@v4
 
   release:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
       id-token: write
+    outputs:
+      version: ${{ steps.version.outputs.latest }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -104,8 +106,25 @@ jobs:
           name: latest
           path: dist
 
-      - run: git config user.email "${{ vars.NPM_EMAIL }}"
-      - run: git config user.name "${{ vars.NPM_USER }}"
-      - run: npx release-it --ci --verbose
+      - run: |
+          git config user.email "${{ vars.NPM_EMAIL }}"
+          git config user.name "${{ vars.NPM_USER }}"
+          npm config set //registry.npmjs.org/:_authToken ${{secrets.NPM_TOKEN}}
+
+      - run: |
+          npx --package release-it --package @release-it/conventional-changelog release-it \
+            --ci \
+            --npm.skipChecks \
+            --npm.publish \
+            --no-github.release \
+            --git.commitMessage='chore: release v${version}' \
+            --git.pushArgs=--follow-tags \
+            --plugins.@release-it/conventional-changelog.infile=CHANGELOG.md \
+            --plugins.@release-it/conventional-changelog.header='# context-filter-polyfill' \
+            --plugins.@release-it/conventional-changelog.preset=angular
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - run: |
+          version=$(node -e "console.log(require('./package.json').version);")
+          echo "Released ${version} :rocket:" >> $GITHUB_STEP_SUMMARY
