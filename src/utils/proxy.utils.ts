@@ -11,7 +11,7 @@ export type ProxyOptions = {
   onDraw: (context: Context2D, drawFn: string, args?: unknown[]) => void;
 };
 
-function applyProxyTo(
+export function applyProxyTo(
   objectCtor: typeof HTMLCanvasElement | typeof OffscreenCanvas,
   contextCtor: Context2DCtor,
   { onDraw }: Partial<ProxyOptions>,
@@ -54,7 +54,7 @@ function applyProxyTo(
             {
               get: (_, prop: string) => {
                 // @ts-expect-error - our types aren't perfect
-                return target[prop].bind(receiver);
+                return target[prop]?.bind(receiver);
               },
             },
           );
@@ -73,7 +73,7 @@ function applyProxyTo(
 
             receiver.canvas.__history.add({ type: 'apply', prop, args });
             // @ts-expect-error - it's a function, we checked!
-            return target[prop].apply(receiver, args);
+            return target[prop]?.apply(receiver, args);
           };
         }
 
@@ -98,9 +98,4 @@ function applyProxyTo(
       },
     }),
   );
-}
-
-export function applyProxy(options: Partial<ProxyOptions> = {}) {
-  applyProxyTo(HTMLCanvasElement, CanvasRenderingContext2D, options);
-  applyProxyTo(OffscreenCanvas, OffscreenCanvasRenderingContext2D, options);
 }
