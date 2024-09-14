@@ -133,7 +133,7 @@
             <script type="module">
               const ctxOffscreen = document
                 .querySelector('canvas.offscreen')
-                .getContext('bitmaprenderer');
+                .getContext('2d');
 
               const ctxRemote = new OffscreenCanvas(100, 134).getContext('2d');
               const img = new Image();
@@ -141,8 +141,8 @@
                 ctxRemote.filter = 'saturate(25) invert(1)';
                 ctxRemote.drawImage(img, 0, 0);
 
-                const bitmap = ctxRemote.canvas.transferToImageBitmap();
-                ctxOffscreen.transferFromImageBitmap(bitmap);
+                const imageData = ctxRemote.getImageData(0, 0, 100, 134);
+                ctxOffscreen.putImageData(imageData, 0, 0);
               };
               img.src = 'example.jpg';
             </script>

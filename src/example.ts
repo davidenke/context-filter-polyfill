@@ -1,3 +1,5 @@
+import pixelmatch from 'pixelmatch';
+
 import { supportsContextFilters } from './utils/detection.utils';
 
 function detectBrowser() {
@@ -101,8 +103,23 @@ document.addEventListener(
           const mainIndex = rootPath.findIndex(s => s.startsWith('main'));
           const path = rootPath.slice(mainIndex).join(' ');
           const iframe = document.querySelector('iframe');
-          const counter = iframe?.contentDocument?.querySelector(path);
-          console.log(path, canvas, counter);
+          const counter =
+            iframe?.contentDocument?.querySelector<HTMLCanvasElement>(path);
+
+          if (!counter) return;
+
+          const width = Math.min(canvas.width, counter.width);
+          const height = Math.min(canvas.height, counter.height);
+          const diff = pixelmatch(
+            canvas.getContext('2d')!.getImageData(0, 0, width, height).data,
+            counter.getContext('2d')!.getImageData(0, 0, width, height).data,
+            null,
+            width,
+            height,
+          );
+          const match = 100 - diff / (height * width);
+
+          console.log(match === 100 ? '100' : match.toFixed(4));
         },
         { passive: true },
       );
