@@ -24,7 +24,7 @@ function isPolyfilled() {
 }
 
 // https://stackoverflow.com/a/66143123/1146207
-function getDomPath(element: Element): string[] {
+function getDomPath(element: Element, useIds = false): string[] {
   const stack = [];
 
   while (element.parentNode !== null) {
@@ -46,7 +46,7 @@ function getDomPath(element: Element): string[] {
     // Ignore `html` as a parent node
     if (nodeName === 'html') break;
 
-    if (element.hasAttribute('id') && element.id !== '') {
+    if (useIds && element.hasAttribute('id') && element.id !== '') {
       stack.unshift(`#${CSS.escape(element.id)}`);
       // Remove this `break` if you want the entire path
       break;
@@ -95,35 +95,125 @@ window.addEventListener('context-filter-polyfill:draw', ({ detail }) => {
 document.addEventListener(
   'DOMContentLoaded',
   () => {
-    document.querySelectorAll('canvas').forEach(canvas => {
-      canvas.addEventListener(
-        'click',
-        () => {
-          const rootPath = getDomPath(canvas);
-          const mainIndex = rootPath.findIndex(s => s.startsWith('main'));
-          const path = rootPath.slice(mainIndex).join(' ');
+    window.addEventListener(
+      'click',
+      (event: MouseEvent) => {
+        if (event.target instanceof HTMLCanvasElement) {
+          const leftPath = getDomPath(event.target);
+          const rightPath = leftPath.slice(leftPath.indexOf('main')).join(' ');
           const iframe = document.querySelector('iframe');
-          const counter =
-            iframe?.contentDocument?.querySelector<HTMLCanvasElement>(path);
+          const counter = iframe?.contentDocument?.querySelector(rightPath);
 
           if (!counter) return;
 
-          const width = Math.min(canvas.width, counter.width);
-          const height = Math.min(canvas.height, counter.height);
-          const diff = pixelmatch(
-            canvas.getContext('2d')!.getImageData(0, 0, width, height).data,
-            counter.getContext('2d')!.getImageData(0, 0, width, height).data,
-            null,
-            width,
-            height,
-          );
-          const match = 100 - diff / (height * width);
+          document.querySelector('cfp-compare')?.remove();
+          const compare = document.createElement('cfp-compare');
+          document.body.appendChild(compare);
 
-          console.log(match === 100 ? '100' : match.toFixed(4));
-        },
-        { passive: true },
-      );
-    });
+          compare.between(event.target, counter as HTMLCanvasElement);
+        } else {
+          document.querySelector('cfp-compare')?.remove();
+        }
+      },
+      { passive: true },
+    );
   },
   { passive: true },
 );
+
+class Compare extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+
+  #render() {
+    this.shadowRoot!.innerHTML = `
+      <style>
+        :host {
+          position: fixed;
+          inset: 0;
+          background-color: rgba(0, 0, 0, 0.75);
+
+          display: flex;
+          flex-flow: column nowrap;
+          gap: 5px;
+          align-items: center;
+          justify-content: center;
+        }
+        section {
+          display: flex;
+          flex-flow: row nowrap;
+          gap: 5px;
+          padding: 5px;
+          background-color: #000;
+
+          canvas {
+            image-rendering: pixelated;
+            width: 30vw;
+          }
+        }
+        code {
+          padding: 0.1em 0.3em;
+          border-radius: 3px;
+          background-color: #4d4d4d;
+
+          font-size: 10px;
+          overflow: hidden;
+          text-align: right;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          max-width: 100%;
+        }
+      </style>
+      <section></section>
+      <code></code>
+    `;
+  }
+
+  between(left: HTMLCanvasElement, right: HTMLCanvasElement) {
+    const width = Math.min(left.width, right.width);
+    const height = Math.min(left.height, right.height);
+    const output = new Uint8ClampedArray(width * height * 4);
+    const leftImg = left.getContext('2d')!.getImageData(0, 0, width, height);
+    const rightImg = right.getContext('2d')!.getImageData(0, 0, width, height);
+    const offset = pixelmatch(
+      leftImg.data,
+      rightImg.data,
+      output,
+      width,
+      height,
+    );
+    const match = 100 - offset / (height * width);
+
+    const diff = document.createElement('canvas');
+    diff.width = width;
+    diff.height = height;
+    diff
+      .getContext('2d')!
+      .putImageData(new ImageData(output, width, height), 0, 0);
+
+    const leftClone = left.cloneNode() as HTMLCanvasElement;
+    leftClone.getContext('2d')!.putImageData(leftImg, 0, 0);
+    const rightClone = right.cloneNode() as HTMLCanvasElement;
+    rightClone.getContext('2d')!.putImageData(rightImg, 0, 0);
+
+    this.#render();
+    const section = this.shadowRoot!.querySelector('section')!;
+    const code = this.shadowRoot!.querySelector('code')!;
+    section.appendChild(leftClone);
+    section.appendChild(diff);
+    section.appendChild(rightClone);
+    code.textContent = `${match === 100 ? '100' : match.toFixed(4)}%`;
+  }
+}
+
+if (!window.customElements.get('cfp-compare')) {
+  window.customElements.define('cfp-compare', Compare);
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'cfp-compare': Compare;
+  }
+}
