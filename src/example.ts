@@ -89,3 +89,24 @@ window.addEventListener('context-filter-polyfill:draw', ({ detail }) => {
     document.getElementById('clones')?.appendChild(wrapper);
   }
 });
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+    document.querySelectorAll('canvas').forEach(canvas => {
+      canvas.addEventListener(
+        'click',
+        () => {
+          const rootPath = getDomPath(canvas);
+          const mainIndex = rootPath.findIndex(s => s.startsWith('main'));
+          const path = rootPath.slice(mainIndex).join(' ');
+          const iframe = document.querySelector('iframe');
+          const counter = iframe?.contentDocument?.querySelector(path);
+          console.log(path, canvas, counter);
+        },
+        { passive: true },
+      );
+    });
+  },
+  { passive: true },
+);
