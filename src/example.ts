@@ -69,62 +69,76 @@ document.querySelector('[data-debug="polyfilled"]')!.textContent =
 
 document.querySelector('iframe')!.srcdoc = document
   .querySelector('main')!
-  .outerHTML.replace('<h2>Polyfilled</h2>', '<h2>Native</h2>');
+  .outerHTML.replace('<h2>Polyfilled</h2>', '<h2>Native</h2>')
+  .replace('</main>', '</main><style>html, body { overflow: hidden }</style>');
 
 let cloned = 0;
 window.addEventListener('context-filter-polyfill:draw', ({ detail }) => {
   const { original, clone, drawFn, drawArgs } = detail;
   if (
     'parentElement' in original.canvas &&
-    original.canvas.parentElement?.classList.contains('debug')
+    original.canvas.parentElement?.id === 'history'
   ) {
     ++cloned;
     const wrapper = document.createElement('div');
     wrapper.classList.add('clone');
-    wrapper.style.setProperty('--i', `${cloned}`);
+    wrapper.style.setProperty('---clone-index', `${cloned}`);
 
     const label = document.createElement('code');
     label.textContent = `${drawFn}(${drawArgs.map(String).join(', ')})`;
 
     wrapper.appendChild(label);
     wrapper.appendChild(clone.canvas as HTMLCanvasElement);
-    document.getElementById('clones')?.appendChild(wrapper);
+    const clones = document.getElementById('clones');
+    clones?.appendChild(wrapper);
+    clones?.style.setProperty('---clone-count', `${cloned}`);
   }
 });
 
 document.addEventListener(
   'DOMContentLoaded',
   () => {
-    window.addEventListener(
-      'click',
-      (event: MouseEvent) => {
-        if (event.target instanceof HTMLCanvasElement) {
-          const leftPath = getDomPath(event.target);
-          const rightPath = leftPath.slice(leftPath.indexOf('main')).join(' ');
-          const iframe = document.querySelector('iframe');
-          const counter = iframe?.contentDocument?.querySelector(rightPath);
-
-          if (!counter) return;
-
-          document.querySelector('cfp-compare')?.remove();
-          const compare = document.createElement('cfp-compare');
-          document.body.appendChild(compare);
-
-          compare.between(event.target, counter as HTMLCanvasElement);
-        } else {
-          document.querySelector('cfp-compare')?.remove();
-        }
-      },
-      { passive: true },
-    );
+    window.addEventListener('click', toggleComparison);
+    window.addEventListener('touchend', toggleComparison);
   },
   { passive: true },
 );
+
+function toggleComparison(event: MouseEvent | TouchEvent) {
+  if (!(event.target instanceof HTMLCanvasElement)) return;
+
+  event.preventDefault();
+
+  const leftPath = getDomPath(event.target);
+  const rightPath = leftPath.slice(leftPath.indexOf('main')).join(' ');
+  const iframe = document.querySelector('iframe');
+  const counter = iframe?.contentDocument?.querySelector(rightPath);
+
+  if (!counter) return;
+
+  document.querySelector('cfp-compare')?.remove();
+  const compare = document.createElement('cfp-compare');
+  document.body.appendChild(compare);
+
+  compare.between(event.target, counter as HTMLCanvasElement);
+}
 
 class Compare extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.addEventListener('click', this.#destroy);
+    this.addEventListener('touchend', this.#destroy);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener('click', this.#destroy);
+    this.removeEventListener('touchend', this.#destroy);
+  }
+
+  #destroy(event: MouseEvent | TouchEvent) {
+    event.preventDefault();
+    this.remove();
   }
 
   #render() {

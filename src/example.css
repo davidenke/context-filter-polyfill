@@ -16,6 +16,10 @@
 
 body {
   margin: 0;
+
+  -webkit-font-smoothing: antialiased;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 #intro {
@@ -25,10 +29,10 @@ body {
 #side-by-side {
   display: flex;
   flex-flow: row nowrap;
+}
 
-  > :first-child {
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-  }
+#side-by-side > :first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 main,
@@ -58,39 +62,40 @@ h2 {
 }
 
 code {
+  font-family: Courier, Menlo, monospace;
   font-size: 1em;
   padding: 0.1em 0.3em;
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-article:not(.debug) {
+article:not(#history) {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
   justify-content: space-evenly;
 
   gap: 10px;
   margin: 10px;
-
-  section {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: 5px;
-    align-items: center;
-    width: 100px;
-
-    code {
-      font-size: 10px;
-      overflow: hidden;
-      text-align: right;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 100%;
-    }
-  }
 }
 
-.debug {
+article:not(#history) section {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 5px;
+  align-items: center;
+  width: 100px;
+}
+
+article:not(#history) code {
+  font-size: 10px;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+#history {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
@@ -98,53 +103,63 @@ article:not(.debug) {
   align-items: center;
   justify-content: space-evenly;
   background-color: #2e2e2e;
+
+  canvas {
+    width: 100%;
+    max-width: 350px;
+  }
 }
 
 #clones {
   position: relative;
   display: block;
   aspect-ratio: 1;
-  width: 300px;
+  width: 100%;
+
+  ---clone-count: 1;
+  ---clone-width: 50%;
+  ---clone-offset: calc(var(---clone-width) / var(---clone-count));
 }
 
-.clone {
+#clones .clone {
   position: absolute;
-  right: calc(var(--i) * 7.5%);
-  top: calc(var(--i) * 7.5%);
+  right: calc(var(---clone-index) * var(---clone-offset));
+  top: calc(var(---clone-index) * var(---clone-offset));
 
   aspect-ratio: 3 / 2;
   box-sizing: border-box;
-  width: 75%;
+  max-width: 350px;
+  width: var(---clone-width);
 
   border: 1px solid red;
   transform: perspective(1000px) rotateY(-25deg);
   transition: 0.5s ease;
   transition-property: background-color, opacity, transform;
+}
 
-  code {
-    position: absolute;
-    inset: 5px auto auto 5px;
-    opacity: 0.5;
-    font-size: 11px;
-    transition: 0.5s ease opacity;
-  }
+#clones code {
+  position: absolute;
+  inset: 5px auto auto 5px;
+  opacity: 0.5;
+  font-size: 11px;
+  transition: 0.5s ease opacity;
+}
 
-  canvas {
-    width: 100%;
-  }
+#clones canvas {
+  width: 100%;
+}
 
-  #clones:has(.clone:hover) &:not(:hover) {
-    opacity: 0.15;
-    background-color: transparent;
-  }
+#clones:has(.clone:hover) #clones .clone:not(:hover) {
+  opacity: 0.15;
+  background-color: transparent;
+}
 
-  &:hover {
-    opacity: 1;
-    background-color: #2e2e2e;
-    transform: perspective(1000px) rotateY(0deg);
+#clones .clone:hover {
+  opacity: 1;
+  background-color: #2e2e2e;
+  transform: perspective(1000px) rotateY(0deg);
+}
 
-    code {
-      opacity: 1;
-    }
-  }
+#clones .clone:hover code {
+  opacity: 1;
 }

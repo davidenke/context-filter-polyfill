@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en" dir="ltr">
   <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>CanvasContextRenderingContext2d.filter partial polyfill</title>
     <script type="module">
       // reload page on file change
@@ -135,16 +141,18 @@
                 .querySelector('canvas.offscreen')
                 .getContext('2d');
 
-              const ctxRemote = new OffscreenCanvas(100, 134).getContext('2d');
-              const img = new Image();
-              img.onload = () => {
-                ctxRemote.filter = 'saturate(25) invert(1)';
-                ctxRemote.drawImage(img, 0, 0);
+              if (typeof OffscreenCanvas !== 'undefined') {
+                const ctxRmt = new OffscreenCanvas(100, 134).getContext('2d');
+                const img = new Image();
+                img.onload = () => {
+                  ctxRmt.filter = 'saturate(25) invert(1)';
+                  ctxRmt.drawImage(img, 0, 0);
 
-                const imageData = ctxRemote.getImageData(0, 0, 100, 134);
-                ctxOffscreen.putImageData(imageData, 0, 0);
-              };
-              img.src = 'example.jpg';
+                  const imageData = ctxRmt.getImageData(0, 0, 100, 134);
+                  ctxOffscreen.putImageData(imageData, 0, 0);
+                };
+                img.src = 'example.jpg';
+              }
             </script>
             <code>offscreen</code>
           </section>
@@ -259,19 +267,20 @@
           </section>
         </article>
 
-        <article class="debug">
+        <article id="history">
           <canvas height="200" width="300"></canvas>
-          <section id="clones"></section>
           <script type="module">
             const ctxDebug = document
-              .querySelector('.debug canvas')
+              .querySelector('#history canvas')
               .getContext('2d');
 
             ctxDebug.fillStyle = 'red';
             ctxDebug.scale(2, 2);
             ctxDebug.fillRect(100, 20, 25, 75);
             ctxDebug.scale(0.25, 0.25);
-            ctxDebug.reset();
+
+            // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/reset#browser_compatibility
+            if ('reset' in ctxDebug) ctxDebug.reset();
 
             ctxDebug.fillStyle = '#44f';
             ctxDebug.scale(2, 2);
@@ -327,5 +336,6 @@
       </main>
       <iframe></iframe>
     </div>
+    <section id="clones"></section>
   </body>
 </html>
