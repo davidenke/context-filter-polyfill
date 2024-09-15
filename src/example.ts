@@ -198,7 +198,7 @@ class Compare extends HTMLElement {
       width,
       height,
     );
-    const match = 100 - offset / (height * width);
+    const match = 100 - (offset / (height * width)) * 100;
 
     const diff = document.createElement('canvas');
     diff.width = width;
@@ -218,7 +218,7 @@ class Compare extends HTMLElement {
     section.appendChild(leftClone);
     section.appendChild(diff);
     section.appendChild(rightClone);
-    code.textContent = `${match === 100 ? '100' : match.toFixed(4)}%`;
+    code.textContent = `${match === 100 ? '100' : match.toFixed(2)}%`;
   }
 }
 
