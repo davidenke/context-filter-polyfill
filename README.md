@@ -37,7 +37,7 @@ import 'context-filter-polyfill';
 Since version 0.3.14 the method of how the polyfill is applied has been reworked.
 It now polyfills the filter on each drawing function call instead of applying it once on the context in the end.
 
-This results in more accurate behavior compared to the native implementation.
+This results in more accurate behavior compared to the previous implementation.
 
 The [polyfilled and native results](https://davidenke.github.io/context-filter-polyfill/) can be compared with a non-WebKit browser like Firefox or Chrome.
 
