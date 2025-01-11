@@ -1,4 +1,4 @@
-import { expect } from '@esm-bundle/chai';
+import { expect } from 'chai';
 
 import { imageDataMock } from '../mocks/mock.data.js';
 import type { Context2D } from '../utils/proxy.utils.js';

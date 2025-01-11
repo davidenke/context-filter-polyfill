@@ -1,6 +1,6 @@
-import chai, { expect } from '@esm-bundle/chai';
+import { expect, use as useChai } from 'chai';
 import { spy } from 'sinon';
-import { default as sinonChai } from 'sinon-chai-es';
+import sinonChai from 'sinon-chai';
 
 import { SUPPORTED_FILTERS } from '../globals/supported-filters.global.js';
 import { imageDataMock } from '../mocks/mock.data.js';
@@ -10,8 +10,9 @@ import {
   normalizeLength,
   normalizeNumberPercentage,
 } from './filter.utils.js';
+import type { Context2D } from './proxy.utils.js';
 
-chai.use(sinonChai);
+useChai(sinonChai);
 
 describe('utils/filter.utils', () => {
   describe('applyFilter', () => {
