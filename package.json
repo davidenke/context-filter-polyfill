@@ -24,15 +24,15 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint",
-    "test": "cross-env NODE_OPTIONS='--loader ts-node/esm --no-warnings' wtr --config web-test-runner.config.ts",
-    "test:watch": "cross-env NODE_OPTIONS='--loader ts-node/esm --no-warnings' wtr --config web-test-runner.config.ts --watch",
+    "test": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --disable-warning=ExperimentalWarning\" wtr --config web-test-runner.config.ts",
+    "test:watch": "npm run test -- --watch",
     "test:ci:clean": "shx rm -rf coverage reports",
-    "test:ci:run": "cross-env NODE_OPTIONS='--loader ts-node/esm --no-warnings' wtr --config web-test-runner.config.ts --ci",
+    "test:ci:run": "npm run test -- --ci",
     "test:ci": "run-s test:ci:*",
     "build:clean": "shx rm -rf dist",
-    "build:bundle": "node --loader ts-node/esm ./esbuild.config.ts",
+    "build:bundle": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --disable-warning=ExperimentalWarning\" ./esbuild.config.ts",
     "build": "run-s build:*",
-    "start": "node --loader ts-node/esm ./esbuild.config.ts --serve"
+    "start": "npm run build:bundle -- --serve"
   },
   "devDependencies": {
     "@enke.dev/lint": "0.3.0",
