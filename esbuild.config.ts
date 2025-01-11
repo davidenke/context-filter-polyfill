@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { parseArgs } from 'node:util';
 
 import { build, type BuildOptions, context } from 'esbuild';
