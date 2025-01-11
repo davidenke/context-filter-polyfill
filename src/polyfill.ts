@@ -24,7 +24,7 @@ declare global {
   }
 }
 
-function onDraw(ctx: Context2D, drawFn: string, drawArgs?: unknown[]) {
+export function onDraw(ctx: Context2D, drawFn: string, drawArgs?: unknown[]) {
   // prevent recursive loop on cloned contexts
   if (ctx.__cloned) {
     // @ts-expect-error - all good things come in threes
