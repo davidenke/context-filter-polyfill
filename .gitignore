@@ -12,7 +12,9 @@
 **/dist/
 
 # ide
-.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 
 # logs
 lerna-debug.log
