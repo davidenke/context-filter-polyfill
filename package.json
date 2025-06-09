@@ -24,13 +24,13 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint",
-    "test": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --disable-warning=ExperimentalWarning\" wtr --config web-test-runner.config.ts",
+    "test": "cross-env NODE_OPTIONS=\"--import tsx\" wtr --config web-test-runner.config.ts",
     "test:watch": "npm run test -- --watch",
     "test:ci:clean": "shx rm -rf coverage reports",
     "test:ci:run": "npm run test -- --ci",
     "test:ci": "run-s test:ci:*",
     "build:clean": "shx rm -rf dist",
-    "build:bundle": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --disable-warning=ExperimentalWarning\" ./esbuild.config.ts",
+    "build:bundle": "cross-env NODE_OPTIONS=\"--import tsx\" ./esbuild.config.ts",
     "build": "run-s build:*",
     "start": "npm run build:bundle -- --serve"
   },
@@ -57,7 +57,7 @@
     "shx": "0.4.0",
     "sinon": "20.0.0",
     "sinon-chai": "npm:sinon-chai-es@3.7.0",
-    "ts-node": "10.9.2",
+    "tsx": "4.19.4",
     "typescript": "5.8.3"
   },
   "overrides": {

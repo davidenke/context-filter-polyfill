@@ -11,9 +11,5 @@
     "strict": true,
     "target": "esnext"
   },
-  "exclude": ["coverage", "dist", "node_modules", "reports"],
-  "ts-node": {
-    "esm": true,
-    "files": true
-  }
+  "exclude": ["coverage", "dist", "node_modules", "reports"]
 }
