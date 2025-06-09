@@ -11,7 +11,8 @@ import './filters/saturate.filter.js';
 import './filters/sepia.filter.js';
 
 import { applyFilter } from './utils/filter.utils.js';
-import { applyProxyTo, type Context2D } from './utils/proxy.utils.js';
+import type { Context2D } from './utils/proxy.utils.js';
+import { applyProxyTo } from './utils/proxy.utils.js';
 
 declare global {
   interface WindowEventMap {

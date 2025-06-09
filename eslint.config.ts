@@ -1,4 +1,4 @@
-import config from '@enke.dev/lint';
+import config from '@davidenke/lint';
 import type { Linter } from 'eslint';
 
 export default [

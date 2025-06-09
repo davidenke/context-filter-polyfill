@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { parseArgs } from 'node:util';
 
-import { build, type BuildOptions, context } from 'esbuild';
+import type { BuildOptions } from 'esbuild';
+import { build, context } from 'esbuild';
 import copyStaticFiles from 'esbuild-copy-static-files';
 
 const { values } = parseArgs({
